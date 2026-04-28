@@ -8,97 +8,72 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root {
-  --deep: #0b1e2d;
-  --water: #0e3348;
-  --teal: #1a6b5a;
-  --teal-bright: #22957a;
-  --teal-light: rgba(34,149,122,0.15);
-  --amber: #e8922a;
-  --amber-light: rgba(232,146,42,0.15);
-  --amber-pale: rgba(232,146,42,0.08);
-  --gold: #f5c842;
-  --cream: #f5f0e8;
-  --text: #e8e4dc;
-  --muted: rgba(232,228,220,0.55);
-  --border: rgba(232,228,220,0.1);
-  --border-strong: rgba(232,228,220,0.18);
-  --surface: rgba(255,255,255,0.04);
-  --surface2: rgba(255,255,255,0.07);
-  --surface3: rgba(255,255,255,0.11);
-  --radius-sm: 8px;
-  --radius: 14px;
-  --radius-lg: 20px;
-  --ff-display: 'Fraunces', Georgia, serif;
-  --ff-body: 'DM Sans', sans-serif;
-  --shadow: 0 8px 32px rgba(0,0,0,0.4);
-  --glow: 0 0 24px rgba(34,149,122,0.2);
+:root{
+  --deep:#0b1e2d;--water:#0e3348;--teal:#1a6b5a;--teal-bright:#22957a;
+  --teal-light:rgba(34,149,122,0.15);--amber:#e8922a;--amber-light:rgba(232,146,42,0.15);
+  --amber-pale:rgba(232,146,42,0.08);--gold:#f5c842;--text:#e8e4dc;
+  --muted:rgba(232,228,220,0.55);--border:rgba(232,228,220,0.1);
+  --border-strong:rgba(232,228,220,0.18);--surface:rgba(255,255,255,0.04);
+  --surface2:rgba(255,255,255,0.07);--surface3:rgba(255,255,255,0.11);
+  --radius-sm:8px;--radius:14px;--radius-lg:20px;
+  --ff-display:'Fraunces',Georgia,serif;--ff-body:'DM Sans',sans-serif;
+  --shadow:0 8px 32px rgba(0,0,0,0.4);--glow:0 0 24px rgba(34,149,122,0.2);
 }
-
 html,body{height:100%;background:var(--deep);}
 body{font-family:var(--ff-body);color:var(--text);font-size:15px;line-height:1.5;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 80% 60% at 10% 0%,rgba(14,51,72,0.9) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 90% 100%,rgba(26,107,90,0.25) 0%,transparent 55%),
+  radial-gradient(ellipse 100% 100% at 50% 50%,var(--deep) 0%,#061218 100%);
+  z-index:-2;pointer-events:none;}
+#app{max-width:440px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
 
-/* — BG texture — */
-body::before{
-  content:'';position:fixed;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% 0%,rgba(14,51,72,0.9) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 80% at 90% 100%,rgba(26,107,90,0.25) 0%,transparent 55%),
-    radial-gradient(ellipse 100% 100% at 50% 50%,var(--deep) 0%,#061218 100%);
-  z-index:-2;pointer-events:none;
-}
-
-/* — LAYOUT — */
-#app{max-width:440px;margin:0 auto;min-height:100vh;position:relative;display:flex;flex-direction:column;}
-
-/* — HEADER — */
-.header{padding:1.5rem 1.25rem 1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+/* HEADER */
+.header{padding:1.25rem 1.25rem 0.75rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .header-brand{display:flex;align-items:center;gap:10px;}
-.header-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-bright));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow);}
-.header-text{}
-.header-title{font-family:var(--ff-display);font-size:21px;font-weight:600;letter-spacing:-0.4px;line-height:1.15;}
-.header-sub{font-size:12px;color:var(--muted);margin-top:1px;}
-.profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--teal-bright);flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;transition:border-color 0.2s;}
-.profile-avatar:hover{border-color:var(--amber);}
+.header-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-bright));display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:var(--glow);}
+.header-title{font-family:var(--ff-display);font-size:20px;font-weight:600;letter-spacing:-0.4px;line-height:1.2;}
+.header-sub{font-size:11px;color:var(--muted);}
+.profile-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--teal-bright);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:border-color 0.2s;overflow:hidden;flex-shrink:0;}
+.profile-btn:hover{border-color:var(--amber);}
+.profile-btn img{width:100%;height:100%;object-fit:cover;}
 
-/* — NAV — */
+/* NAV */
 .nav{display:flex;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);}
 .nav::-webkit-scrollbar{display:none;}
-.nav-btn{flex:1;min-width:70px;background:none;border:none;border-bottom:2px solid transparent;padding:11px 8px 10px;font-family:var(--ff-body);font-size:11.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s;white-space:nowrap;letter-spacing:0.2px;}
-.nav-btn svg{display:block;margin:0 auto 4px;opacity:0.6;}
+.nav-btn{flex:1;min-width:62px;background:none;border:none;border-bottom:2px solid transparent;padding:10px 6px 9px;font-family:var(--ff-body);font-size:10.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s;white-space:nowrap;letter-spacing:0.1px;}
+.nav-btn .nav-icon{font-size:15px;display:block;margin-bottom:3px;}
 .nav-btn.active{color:var(--teal-bright);border-bottom-color:var(--teal-bright);}
-.nav-btn.active svg{opacity:1;}
 .nav-btn:hover:not(.active){color:var(--text);}
 
-/* — VIEWS — */
+/* VIEWS */
 .view{display:none;padding:1rem 1.25rem 5rem;flex:1;animation:fadeIn 0.2s ease;}
 .view.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* — SECTION HEADER — */
+/* TYPOGRAPHY */
 .section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
 .section-title{font-family:var(--ff-display);font-size:20px;font-weight:600;letter-spacing:-0.3px;}
 
-/* — CARDS — */
+/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:12px;}
 .card-glass{background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03));border:1px solid var(--border-strong);border-radius:var(--radius);backdrop-filter:blur(8px);}
 
-/* — STATS DASHBOARD — */
+/* DASHBOARD STATS */
 .stats-hero{background:linear-gradient(135deg,rgba(14,51,72,0.8),rgba(26,107,90,0.3));border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:14px;position:relative;overflow:hidden;}
 .stats-hero::before{content:'🎣';position:absolute;right:-10px;bottom:-15px;font-size:80px;opacity:0.06;pointer-events:none;}
-.stats-hero-name{font-family:var(--ff-display);font-size:14px;font-weight:300;font-style:italic;color:var(--muted);margin-bottom:2px;}
-.stats-hero-val{font-family:var(--ff-display);font-size:42px;font-weight:700;line-height:1;color:var(--teal-bright);letter-spacing:-2px;}
+.stats-hero-name{font-family:var(--ff-display);font-size:13px;font-weight:300;font-style:italic;color:var(--muted);margin-bottom:2px;}
+.stats-hero-val{font-family:var(--ff-display);font-size:44px;font-weight:700;line-height:1;color:var(--teal-bright);letter-spacing:-2px;}
 .stats-hero-label{font-size:12px;color:var(--muted);margin-top:4px;}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;}
 .stat-tile{background:rgba(255,255,255,0.05);border-radius:10px;padding:10px 8px;text-align:center;}
 .stat-tile-val{font-family:var(--ff-display);font-size:22px;font-weight:600;color:var(--text);line-height:1;}
-.stat-tile-lbl{font-size:10.5px;color:var(--muted);margin-top:3px;letter-spacing:0.3px;}
+.stat-tile-lbl{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:0.3px;}
 
-/* — RECENT CATCHES — */
-.catch-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+/* CATCH ITEMS */
+.catch-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;}
 .catch-item:last-child{border-bottom:none;}
-.catch-thumb{width:46px;height:46px;border-radius:10px;background:var(--surface2);object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;}
+.catch-thumb{width:46px;height:46px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0;}
 .catch-thumb img{width:100%;height:100%;object-fit:cover;}
 .catch-info{flex:1;min-width:0;}
 .catch-species{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -108,8 +83,7 @@ body::before{
 .catch-weight-unit{font-size:11px;color:var(--muted);}
 .pb-badge{display:inline-block;background:linear-gradient(135deg,var(--amber),#c9720e);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.5px;margin-left:5px;vertical-align:middle;}
 
-/* — FORMS — */
-.form-section{margin-bottom:14px;}
+/* FORMS */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .form-row.triple{grid-template-columns:1fr 1fr 1fr;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
@@ -117,115 +91,139 @@ body::before{
 .form-input{background:var(--surface2);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:9px 12px;font-family:var(--ff-body);font-size:14px;color:var(--text);width:100%;transition:border-color 0.15s,box-shadow 0.15s;-webkit-appearance:none;}
 .form-input::placeholder{color:rgba(232,228,220,0.3);}
 .form-input:focus{outline:none;border-color:var(--teal-bright);box-shadow:0 0 0 3px rgba(34,149,122,0.12);}
-.form-input option{background:var(--water);color:var(--text);}
+.form-input option{background:#112130;color:var(--text);}
 textarea.form-input{resize:vertical;min-height:70px;}
 
-/* — PHOTO UPLOAD — */
-.photo-upload-zone{border:2px dashed var(--border-strong);border-radius:var(--radius);padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--surface);}
-.photo-upload-zone:hover,.photo-upload-zone.drag{border-color:var(--teal-bright);background:var(--teal-light);}
+/* PHOTO UPLOAD */
+.photo-upload-zone{border:2px dashed var(--border-strong);border-radius:var(--radius);padding:1.25rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--surface);}
+.photo-upload-zone:hover{border-color:var(--teal-bright);background:var(--teal-light);}
 .photo-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .photo-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
 .photo-thumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--surface2);}
 .photo-thumb img{width:100%;height:100%;object-fit:cover;}
-.photo-thumb .del-btn{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-thumb .del-btn{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-/* — BUTTONS — */
-.btn{padding:10px 18px;border-radius:var(--radius-sm);font-family:var(--ff-body);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all 0.16s;letter-spacing:0.1px;}
+/* BUTTONS */
+.btn{padding:10px 18px;border-radius:var(--radius-sm);font-family:var(--ff-body);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all 0.16s;}
 .btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal-bright));color:white;box-shadow:0 4px 14px rgba(34,149,122,0.3);}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(34,149,122,0.4);}
-.btn-primary:active{transform:none;}
 .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border-strong);}
 .btn-ghost:hover{background:var(--surface3);}
-.btn-amber{background:linear-gradient(135deg,#c9720e,var(--amber));color:white;box-shadow:0 4px 14px rgba(232,146,42,0.25);}
-.btn-amber:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,146,42,0.35);}
+.btn-species{background:linear-gradient(135deg,#1a4060,#1e5278);color:var(--text);border:1px solid rgba(34,149,122,0.3);}
+.btn-species:hover{border-color:var(--teal-bright);transform:translateY(-1px);}
 .btn-danger{background:rgba(180,40,40,0.15);color:#f08080;border:1px solid rgba(180,40,40,0.25);}
 .btn-sm{padding:6px 12px;font-size:12.5px;}
 .btn-full{width:100%;}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* — AI BOX — */
-.ai-box{background:linear-gradient(135deg,var(--amber-pale),rgba(245,200,66,0.05));border:1px solid rgba(232,146,42,0.25);border-radius:var(--radius);padding:1rem 1.15rem;margin-top:10px;}
-.ai-label{font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;display:flex;align-items:center;gap:5px;}
-.ai-result{font-size:13.5px;color:var(--text);line-height:1.65;}
-.ai-result strong{color:var(--amber);}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(232,146,42,0.3);border-top-color:var(--amber);border-radius:50%;animation:spin 0.7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* — PB WALL — */
+/* PB WALL */
 .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .pb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
 .pb-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
-.pb-card-img{width:100%;height:110px;object-fit:cover;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:42px;}
+.pb-card-img{width:100%;height:110px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:42px;overflow:hidden;}
 .pb-card-img img{width:100%;height:100%;object-fit:cover;}
 .pb-card-body{padding:8px 10px 10px;}
 .pb-species{font-family:var(--ff-display);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pb-weight{font-size:18px;font-weight:700;color:var(--amber);font-family:var(--ff-display);}
-.pb-weight-unit{font-size:10px;color:var(--muted);font-family:var(--ff-body);}
 .pb-date{font-size:11px;color:var(--muted);}
 .pb-crown{position:absolute;top:8px;right:8px;background:linear-gradient(135deg,var(--amber),var(--gold));border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:#5c3800;letter-spacing:0.4px;}
 
-/* — SESSIONS — */
-.session-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s;}
-.session-item:hover{border-color:var(--border-strong);}
+/* SESSIONS */
+.session-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:10px;}
 .session-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
 .session-date{font-family:var(--ff-display);font-size:16px;font-weight:600;}
 .session-loc{font-size:12.5px;color:var(--muted);margin-top:2px;}
 .session-badge{background:var(--teal-light);color:var(--teal-bright);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap;}
 .session-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .fish-chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;}
-.session-notes{font-size:12.5px;color:var(--muted);margin-top:8px;font-style:italic;}
 
-/* — PROFILE — */
-.profile-hero{text-align:center;padding:1.5rem 1rem;background:linear-gradient(135deg,rgba(14,51,72,0.8),rgba(26,107,90,0.2));border:1px solid var(--border-strong);border-radius:var(--radius-lg);margin-bottom:16px;position:relative;overflow:hidden;}
-.profile-avatar-big{width:80px;height:80px;border-radius:50%;border:3px solid var(--teal-bright);margin:0 auto 12px;font-size:40px;background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color 0.2s;overflow:hidden;}
+/* SPECIES GUIDE */
+.species-search-wrap{position:relative;margin-bottom:12px;}
+.species-search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:0.4;pointer-events:none;}
+.species-search{padding-left:36px !important;}
+.species-filters{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.species-filters::-webkit-scrollbar{display:none;}
+.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.15s;}
+.filter-btn.active{background:var(--teal-light);border-color:var(--teal-bright);color:var(--teal-bright);}
+.species-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.species-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;gap:6px;}
+.species-card:hover{border-color:var(--teal-bright);transform:translateY(-1px);}
+.species-card-top{display:flex;align-items:center;gap:8px;}
+.species-emoji{font-size:26px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px;flex-shrink:0;}
+.species-card-name{font-family:var(--ff-display);font-size:14px;font-weight:600;line-height:1.2;}
+.species-card-sci{font-size:10px;color:var(--muted);font-style:italic;margin-top:1px;}
+.species-eat-row{display:flex;align-items:center;justify-content:space-between;}
+.eat-stars{color:var(--amber);font-size:11px;letter-spacing:1px;}
+.species-type-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:2px 7px;border-radius:20px;}
+.tag-salt{background:rgba(30,82,120,0.4);color:#7bb8d4;}
+.tag-fresh{background:rgba(26,107,60,0.4);color:#7bd4a0;}
+.tag-estuary{background:rgba(26,90,107,0.4);color:#7bd4cc;}
+
+/* SPECIES DETAIL MODAL */
+.spp-hero{background:linear-gradient(135deg,rgba(14,51,72,0.9),rgba(26,107,90,0.3));border-radius:12px;padding:1.25rem;margin-bottom:14px;position:relative;}
+.spp-emoji{font-size:56px;margin-bottom:8px;display:block;}
+.spp-name{font-family:var(--ff-display);font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+.spp-aka{font-size:12px;color:var(--muted);margin-top:2px;}
+.spp-sci{font-size:13px;color:var(--teal-bright);font-style:italic;margin-top:4px;}
+.spp-type-badge{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:3px 10px;border-radius:20px;}
+.spp-section{margin-bottom:14px;}
+.spp-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--muted);margin-bottom:8px;}
+.spp-desc{font-size:13.5px;line-height:1.65;color:var(--text);}
+.id-box{background:rgba(34,149,122,0.1);border:1px solid rgba(34,149,122,0.2);border-radius:10px;padding:10px 12px;}
+.id-box-text{font-size:13px;line-height:1.6;color:var(--text);}
+.spp-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.spp-stat{background:var(--surface2);border-radius:10px;padding:10px 12px;}
+.spp-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;}
+.spp-stat-val{font-size:14px;font-weight:600;line-height:1.3;}
+.eating-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.eat-stars-lg{color:var(--amber);font-size:20px;letter-spacing:2px;}
+.eat-rating-lbl{font-size:13px;font-weight:600;}
+.eat-notes{font-size:13px;color:var(--muted);font-style:italic;}
+.legal-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.legal-table th{text-align:left;padding:6px 8px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);border-bottom:1px solid var(--border);}
+.legal-table td{padding:7px 8px;border-bottom:1px solid var(--border);}
+.legal-table tr:last-child td{border-bottom:none;}
+.legal-table tr:hover td{background:var(--surface2);}
+.legal-min{font-weight:600;color:var(--teal-bright);}
+.legal-bag{color:var(--amber);}
+.bait-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.bait-pill{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;}
+.season-bar{height:8px;border-radius:4px;background:var(--surface2);overflow:hidden;margin-top:6px;}
+.season-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright));}
+
+/* PROFILE */
+.profile-hero{text-align:center;padding:1.5rem 1rem;background:linear-gradient(135deg,rgba(14,51,72,0.8),rgba(26,107,90,0.2));border:1px solid var(--border-strong);border-radius:var(--radius-lg);margin-bottom:16px;}
+.profile-avatar-big{width:80px;height:80px;border-radius:50%;border:3px solid var(--teal-bright);margin:0 auto 12px;font-size:40px;background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;}
 .profile-avatar-big img{width:100%;height:100%;object-fit:cover;}
-.profile-avatar-big:hover{border-color:var(--amber);}
 .profile-name-big{font-family:var(--ff-display);font-size:26px;font-weight:700;letter-spacing:-0.5px;}
-.profile-handle{font-size:13px;color:var(--muted);margin-top:2px;}
-.profile-since{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic;}
 .profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-top:16px;}
 .ps-tile{background:var(--surface);padding:12px 8px;text-align:center;}
 .ps-val{font-family:var(--ff-display);font-size:20px;font-weight:600;color:var(--teal-bright);}
-.ps-lbl{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:0.3px;}
+.ps-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
 
-/* — MODAL — */
-.modal-backdrop{position:fixed;inset:0;background:rgba(6,18,24,0.8);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px);}
+/* MODAL */
+.modal-backdrop{position:fixed;inset:0;background:rgba(6,18,24,0.85);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px);}
 .modal-backdrop.open{display:flex;}
-.modal{background:#112130;border:1px solid var(--border-strong);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s cubic-bezier(0.16,1,0.3,1);}
+.modal{background:#0e2234;border:1px solid var(--border-strong);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:1.25rem 1.25rem 2.5rem;width:100%;max-width:440px;max-height:92vh;overflow-y:auto;animation:slideUp 0.25s cubic-bezier(0.16,1,0.3,1);}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
 .modal-drag{width:40px;height:4px;border-radius:2px;background:var(--border-strong);margin:0 auto 1.25rem;}
 .modal-title{font-family:var(--ff-display);font-size:20px;font-weight:600;margin-bottom:1.25rem;}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;}
 
-/* — CATCH DETAIL MODAL — */
-.detail-fish-img{width:100%;height:200px;border-radius:12px;object-fit:cover;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:70px;margin-bottom:16px;overflow:hidden;}
-.detail-fish-img img{width:100%;height:100%;object-fit:cover;}
+/* CATCH DETAIL */
 .detail-species{font-family:var(--ff-display);font-size:26px;font-weight:700;letter-spacing:-0.5px;}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
 .detail-tile{background:var(--surface2);border-radius:10px;padding:10px 12px;}
 .detail-tile-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
 .detail-tile-val{font-size:16px;font-weight:600;font-family:var(--ff-display);}
 
-/* — EMPTY — */
+/* MISC */
 .empty{text-align:center;padding:3rem 1rem;color:var(--muted);}
 .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.6;}
 .empty-title{font-family:var(--ff-display);font-size:18px;color:var(--text);margin-bottom:6px;}
 .empty-sub{font-size:13px;}
-
-/* — MISC — */
-.divider{height:1px;background:var(--border);margin:12px 0;}
-.tag{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--muted);}
-.text-amber{color:var(--amber);}
-.text-teal{color:var(--teal-bright);}
-.flex-center{display:flex;align-items:center;gap:8px;}
-.ml-auto{margin-left:auto;}
-select.form-input{cursor:pointer;}
-
-/* — TOAST — */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a6b5a;color:white;padding:10px 20px;border-radius:30px;font-size:13.5px;font-weight:500;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);z-index:999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal);color:white;padding:10px 20px;border-radius:30px;font-size:13.5px;font-weight:500;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);z-index:999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* — SCROLL — */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:2px;}
@@ -234,243 +232,180 @@ select.form-input{cursor:pointer;}
 <body>
 <div id="app">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-brand">
-      <div class="header-icon">🎣</div>
-      <div class="header-text">
-        <div class="header-title" id="hdrTitle">My Fishing Journal</div>
-        <div class="header-sub" id="hdrSub">Personal catch log</div>
-      </div>
+<header class="header">
+  <div class="header-brand">
+    <div class="header-icon">🎣</div>
+    <div>
+      <div class="header-title" id="hdrTitle">My Fishing Journal</div>
+      <div class="header-sub" id="hdrSub">Personal catch log</div>
     </div>
-    <div class="profile-avatar" onclick="switchView('profile',document.querySelectorAll('.nav-btn')[4])" id="profileAvatar">😊</div>
-  </header>
-
-  <!-- NAV -->
-  <nav class="nav">
-    <button class="nav-btn active" onclick="switchView('dashboard',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-      Dashboard
-    </button>
-    <button class="nav-btn" onclick="switchView('logCatch',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      Log Catch
-    </button>
-    <button class="nav-btn" onclick="switchView('myPBs',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      My PBs
-    </button>
-    <button class="nav-btn" onclick="switchView('sessions',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Sessions
-    </button>
-    <button class="nav-btn" onclick="switchView('profile',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Profile
-    </button>
-  </nav>
-
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="view active">
-    <div class="stats-hero card-glass" style="margin-bottom:14px;">
-      <div class="stats-hero-name" id="heroGreeting">Total Catches</div>
-      <div class="stats-hero-val" id="heroVal">0</div>
-      <div class="stats-hero-label" id="heroLabel">fish recorded in your journal</div>
-      <div class="stats-grid">
-        <div class="stat-tile">
-          <div class="stat-tile-val" id="statTotalKg">0.0<span style="font-size:12px;color:var(--muted)"> kg</span></div>
-          <div class="stat-tile-lbl">Total Weight</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-tile-val" id="statSpecies">0</div>
-          <div class="stat-tile-lbl">Species</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-tile-val" id="statSessions">0</div>
-          <div class="stat-tile-lbl">Sessions</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-hd">
-      <div class="section-title">Recent Catches</div>
-      <button class="btn btn-ghost btn-sm" onclick="switchView('logCatch',document.querySelectorAll('.nav-btn')[1])">+ Add</button>
-    </div>
-    <div class="card" id="recentList">
-      <div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish to get started</div></div>
-    </div>
-
-    <div class="section-hd" style="margin-top:6px;">
-      <div class="section-title">Top PBs</div>
-      <button class="btn btn-ghost btn-sm" onclick="switchView('myPBs',document.querySelectorAll('.nav-btn')[2])">See all</button>
-    </div>
-    <div id="dashPBs"></div>
   </div>
+  <div class="profile-btn" id="profileBtn" onclick="switchView('profile',document.querySelectorAll('.nav-btn')[5])">😊</div>
+</header>
 
-  <!-- LOG CATCH -->
-  <div id="logCatch" class="view">
-    <div class="section-title" style="margin-bottom:1rem;">Log a Catch</div>
+<nav class="nav">
+  <button class="nav-btn active" onclick="switchView('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</button>
+  <button class="nav-btn" onclick="switchView('logCatch',this)"><span class="nav-icon">➕</span>Log Catch</button>
+  <button class="nav-btn" onclick="switchView('myPBs',this)"><span class="nav-icon">⭐</span>My PBs</button>
+  <button class="nav-btn" onclick="switchView('sessions',this)"><span class="nav-icon">📅</span>Sessions</button>
+  <button class="nav-btn" onclick="switchView('speciesGuide',this)"><span class="nav-icon">🐟</span>Species</button>
+  <button class="nav-btn" onclick="switchView('profile',this)"><span class="nav-icon">👤</span>Profile</button>
+</nav>
 
-    <div class="card">
-      <div class="form-row" style="margin-bottom:10px;">
-        <div class="form-group">
-          <label class="form-label">Date</label>
-          <input type="date" class="form-input" id="catchDate">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Time</label>
-          <input type="time" class="form-input" id="catchTime">
-        </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="view active">
+  <div class="stats-hero card-glass">
+    <div class="stats-hero-name" id="heroGreeting">Total Catches</div>
+    <div class="stats-hero-val" id="heroVal">0</div>
+    <div class="stats-hero-label" id="heroLabel">fish in your journal</div>
+    <div class="stats-grid">
+      <div class="stat-tile"><div class="stat-tile-val" id="statTotalKg">0.0<span style="font-size:12px;color:var(--muted)"> kg</span></div><div class="stat-tile-lbl">Total Weight</div></div>
+      <div class="stat-tile"><div class="stat-tile-val" id="statSpecies">0</div><div class="stat-tile-lbl">Species</div></div>
+      <div class="stat-tile"><div class="stat-tile-val" id="statSessions">0</div><div class="stat-tile-lbl">Sessions</div></div>
+    </div>
+  </div>
+  <div class="section-hd">
+    <div class="section-title">Recent Catches</div>
+    <button class="btn btn-ghost btn-sm" onclick="switchView('logCatch',document.querySelectorAll('.nav-btn')[1])">+ Add</button>
+  </div>
+  <div class="card" id="recentList"></div>
+  <div class="section-hd" style="margin-top:6px;">
+    <div class="section-title">Top PBs</div>
+    <button class="btn btn-ghost btn-sm" onclick="switchView('myPBs',document.querySelectorAll('.nav-btn')[2])">See all</button>
+  </div>
+  <div id="dashPBs"></div>
+</div>
+
+<!-- LOG CATCH -->
+<div id="logCatch" class="view">
+  <div class="section-title" style="margin-bottom:1rem;">Log a Catch</div>
+  <div class="card">
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="catchDate"></div>
+      <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input" id="catchTime"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Species</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" class="form-input" id="catchFish" placeholder="e.g. Snapper" list="speciesList" style="flex:1;">
+        <button class="btn btn-species btn-sm" onclick="lookupSpecies()" title="Species info">🐟 Info</button>
       </div>
-
-      <div class="form-row triple" style="margin-bottom:10px;">
-        <div class="form-group">
-          <label class="form-label">Species</label>
-          <input type="text" class="form-input" id="catchFish" placeholder="e.g. Snapper" list="speciesList">
-          <datalist id="speciesList"></datalist>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Weight (kg)</label>
-          <input type="number" class="form-input" id="catchWeight" placeholder="2.4" step="0.01" min="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Length (cm)</label>
-          <input type="number" class="form-input" id="catchLength" placeholder="45" step="1" min="0">
-        </div>
-      </div>
-
-      <div class="form-row" style="margin-bottom:10px;">
-        <div class="form-group">
-          <label class="form-label">Location</label>
-          <input type="text" class="form-input" id="catchLocation" placeholder="e.g. Lake Macquarie">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Bait / Lure</label>
-          <input type="text" class="form-input" id="catchBait" placeholder="e.g. Live prawn">
-        </div>
-      </div>
-
-      <div class="form-group" style="margin-bottom:12px;">
-        <label class="form-label">Method</label>
+      <datalist id="speciesList"></datalist>
+    </div>
+    <div class="form-row triple" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input type="number" class="form-input" id="catchWeight" placeholder="2.4" step="0.01" min="0"></div>
+      <div class="form-group"><label class="form-label">Length (cm)</label><input type="number" class="form-input" id="catchLength" placeholder="45" step="1" min="0"></div>
+      <div class="form-group"><label class="form-label">Method</label>
         <select class="form-input" id="catchMethod">
-          <option value="">Select method…</option>
-          <option>Spinning</option><option>Bait fishing</option><option>Trolling</option>
-          <option>Fly fishing</option><option>Jigging</option><option>Surfcasting</option>
-          <option>Rock fishing</option><option>Kayak fishing</option><option>Boat fishing</option><option>Other</option>
+          <option value="">–</option><option>Spinning</option><option>Bait fishing</option>
+          <option>Trolling</option><option>Fly fishing</option><option>Jigging</option>
+          <option>Surfcasting</option><option>Rock fishing</option><option>Kayak</option><option>Boat</option>
         </select>
       </div>
-
-      <div class="form-group" style="margin-bottom:12px;">
-        <label class="form-label">Notes</label>
-        <textarea class="form-input" id="catchNotes" placeholder="Conditions, tackle, anything worth remembering…"></textarea>
-      </div>
-
-      <!-- Photo upload -->
-      <div class="form-group" style="margin-bottom:12px;">
-        <label class="form-label">Photos</label>
-        <div class="photo-upload-zone" id="uploadZone">
-          <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
-          <div style="font-size:28px;margin-bottom:6px;">📷</div>
-          <div style="font-size:13px;font-weight:500;">Tap to add photos</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px;">JPG, PNG · multiple allowed</div>
-        </div>
-        <div class="photo-preview-grid" id="photoPreview"></div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" style="flex:1;" onclick="logCatch()">💾 Save Catch</button>
-        <button class="btn btn-amber" onclick="identifyFish()">✦ AI Identify</button>
-      </div>
-
-      <div id="aiResult" style="display:none;" class="ai-box">
-        <div class="ai-label"><span class="spinner" id="aiSpinner" style="display:none;"></span>✦ AI Fish ID</div>
-        <div id="aiText" class="ai-result"></div>
-      </div>
     </div>
-  </div>
-
-  <!-- MY PBs -->
-  <div id="myPBs" class="view">
-    <div class="section-hd">
-      <div class="section-title">Personal Bests</div>
-      <select class="form-input" id="pbSort" onchange="renderPBs()" style="width:auto;font-size:12px;padding:6px 10px;background:var(--surface2);">
-        <option value="weight">By Weight</option>
-        <option value="species">A–Z Species</option>
-        <option value="date">Most Recent</option>
-      </select>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="catchLocation" placeholder="e.g. Lake Macquarie"></div>
+      <div class="form-group"><label class="form-label">Bait / Lure</label><input type="text" class="form-input" id="catchBait" placeholder="e.g. Live prawn"></div>
     </div>
-    <div id="pbGrid" class="pb-grid"></div>
-    <div id="pbEmpty" class="empty" style="display:none;">
-      <div class="empty-icon">⭐</div>
-      <div class="empty-title">No PBs yet</div>
-      <div class="empty-sub">Log your first catch to start your PB wall</div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="catchNotes" placeholder="Conditions, tackle, anything worth remembering…"></textarea>
     </div>
-  </div>
-
-  <!-- SESSIONS -->
-  <div id="sessions" class="view">
-    <div class="section-hd">
-      <div class="section-title">Fishing Sessions</div>
-      <button class="btn btn-primary btn-sm" onclick="openModal('addSessionModal')">+ New</button>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Photos</label>
+      <div class="photo-upload-zone">
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
+        <div style="font-size:24px;margin-bottom:4px;">📷</div>
+        <div style="font-size:13px;font-weight:500;">Tap to add photos</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Multiple allowed</div>
+      </div>
+      <div class="photo-preview-grid" id="photoPreview"></div>
     </div>
-    <div id="sessionList">
-      <div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No sessions logged</div><div class="empty-sub">Track your fishing trips here</div></div>
-    </div>
-  </div>
-
-  <!-- PROFILE -->
-  <div id="profile" class="view">
-    <div class="profile-hero card-glass">
-      <div class="profile-avatar-big" id="profileAvatarBig" onclick="document.getElementById('avatarPhotoInput').click()">😊
-        <img id="profileAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
-        <input type="file" id="avatarPhotoInput" accept="image/*" style="display:none;" onchange="handleAvatarPhoto(this.files)">
-      </div>
-      <div class="profile-name-big" id="profileNameDisplay">Angler</div>
-      <div class="profile-handle" id="profileHandle">Tap to set up your profile</div>
-      <div class="profile-since" id="profileSince"></div>
-      <div class="profile-stats">
-        <div class="ps-tile"><div class="ps-val" id="psCatches">0</div><div class="ps-lbl">Catches</div></div>
-        <div class="ps-tile"><div class="ps-val" id="psSpecies">0</div><div class="ps-lbl">Species</div></div>
-        <div class="ps-tile"><div class="ps-val" id="psKg">0</div><div class="ps-lbl">kg Total</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Profile Settings</div>
-      <div class="form-group" style="margin-bottom:10px;">
-        <label class="form-label">Your Name</label>
-        <input type="text" class="form-input" id="profileName" placeholder="e.g. Mick">
-      </div>
-      <div class="form-group" style="margin-bottom:10px;">
-        <label class="form-label">Home Waters</label>
-        <input type="text" class="form-input" id="profileWaters" placeholder="e.g. Lake Macquarie, NSW">
-      </div>
-      <div class="form-row" style="margin-bottom:10px;">
-        <div class="form-group">
-          <label class="form-label">Fishing Since</label>
-          <input type="number" class="form-input" id="profileSinceYear" placeholder="e.g. 2010" min="1900" max="2099">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Favourite Species</label>
-          <input type="text" class="form-input" id="profileFavSpecies" placeholder="e.g. Snapper">
-        </div>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
-    </div>
-
-    <div class="card" style="margin-top:4px;">
-      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Data</div>
-      <div class="btn-row">
-        <button class="btn btn-ghost btn-sm" onclick="exportData()">⬇ Export JSON</button>
-        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importInput').click()">⬆ Import JSON</button>
-        <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importData(this.files)">
-      </div>
-      <div style="margin-top:14px;">
-        <button class="btn btn-danger btn-sm" onclick="confirmClear()">🗑 Clear All Data</button>
-      </div>
-    </div>
+    <button class="btn btn-primary btn-full" onclick="logCatch()">💾 Save Catch</button>
   </div>
 </div>
+
+<!-- MY PBs -->
+<div id="myPBs" class="view">
+  <div class="section-hd">
+    <div class="section-title">Personal Bests</div>
+    <select class="form-input" id="pbSort" onchange="renderPBs()" style="width:auto;font-size:12px;padding:6px 10px;background:var(--surface2);">
+      <option value="weight">By Weight</option><option value="species">A–Z</option><option value="date">Recent</option>
+    </select>
+  </div>
+  <div id="pbGrid" class="pb-grid"></div>
+  <div id="pbEmpty" class="empty" style="display:none;">
+    <div class="empty-icon">⭐</div><div class="empty-title">No PBs yet</div>
+    <div class="empty-sub">Log your first catch to start your PB wall</div>
+  </div>
+</div>
+
+<!-- SESSIONS -->
+<div id="sessions" class="view">
+  <div class="section-hd">
+    <div class="section-title">Sessions</div>
+    <button class="btn btn-primary btn-sm" onclick="openModal('addSessionModal')">+ New</button>
+  </div>
+  <div id="sessionList"></div>
+</div>
+
+<!-- SPECIES GUIDE -->
+<div id="speciesGuide" class="view">
+  <div class="section-title" style="margin-bottom:12px;">Australian Species Guide</div>
+  <div class="species-search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" class="form-input species-search" id="speciesSearch" placeholder="Search species…" oninput="renderSpeciesGuide()">
+  </div>
+  <div class="species-filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All (35)</button>
+    <button class="filter-btn" onclick="setFilter('saltwater',this)">🌊 Saltwater</button>
+    <button class="filter-btn" onclick="setFilter('freshwater',this)">🏞 Freshwater</button>
+    <button class="filter-btn" onclick="setFilter('estuary',this)">🌿 Estuary</button>
+  </div>
+  <div id="speciesGridEl" class="species-grid"></div>
+  <div id="speciesEmpty" class="empty" style="display:none;">
+    <div class="empty-icon">🔍</div><div class="empty-title">No species found</div>
+    <div class="empty-sub">Try a different search term</div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="view">
+  <div class="profile-hero card-glass">
+    <div class="profile-avatar-big" id="profileAvatarBig" onclick="document.getElementById('avatarInput').click()">😊
+      <img id="profileAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="handleAvatar(this.files)">
+    </div>
+    <div class="profile-name-big" id="profileNameDisplay">Angler</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="profileHandleDisplay"></div>
+    <div class="profile-stats">
+      <div class="ps-tile"><div class="ps-val" id="psCatches">0</div><div class="ps-lbl">Catches</div></div>
+      <div class="ps-tile"><div class="ps-val" id="psSpecies">0</div><div class="ps-lbl">Species</div></div>
+      <div class="ps-tile"><div class="ps-val" id="psKg">0</div><div class="ps-lbl">kg Total</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Profile</div>
+    <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Your Name</label><input type="text" class="form-input" id="profileName" placeholder="e.g. Mick"></div>
+    <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Home Waters</label><input type="text" class="form-input" id="profileWaters" placeholder="e.g. Lake Macquarie, NSW"></div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Fishing Since</label><input type="number" class="form-input" id="profileSinceYear" placeholder="2010"></div>
+      <div class="form-group"><label class="form-label">Fav Species</label><input type="text" class="form-input" id="profileFavSpecies" placeholder="e.g. Snapper"></div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
+  </div>
+  <div class="card">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Data</div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="exportData()">⬇ Export JSON</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importInput').click()">⬆ Import JSON</button>
+      <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importData(this.files)">
+    </div>
+    <div style="margin-top:12px;"><button class="btn btn-danger btn-sm" onclick="confirmClear()">🗑 Clear All Data</button></div>
+  </div>
+</div>
+
+</div><!-- /app -->
 
 <!-- ADD SESSION MODAL -->
 <div class="modal-backdrop" id="addSessionModal">
@@ -478,31 +413,17 @@ select.form-input{cursor:pointer;}
     <div class="modal-drag"></div>
     <div class="modal-title">New Session</div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Date</label>
-        <input type="date" class="form-input" id="sessionDate">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Duration</label>
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="sessionDate"></div>
+      <div class="form-group"><label class="form-label">Duration</label>
         <select class="form-input" id="sessionDuration">
-          <option value="">–</option>
-          <option>1 hour</option><option>2 hours</option><option>3 hours</option>
+          <option value="">–</option><option>1 hour</option><option>2 hours</option><option>3 hours</option>
           <option>Half day</option><option>Full day</option><option>Overnight</option><option>Weekend</option>
         </select>
       </div>
     </div>
-    <div class="form-group" style="margin-bottom:10px;">
-      <label class="form-label">Location</label>
-      <input type="text" class="form-input" id="sessionLoc" placeholder="e.g. Lake Macquarie">
-    </div>
-    <div class="form-group" style="margin-bottom:10px;">
-      <label class="form-label">Conditions</label>
-      <input type="text" class="form-input" id="sessionConditions" placeholder="e.g. Light NE breeze, overcast">
-    </div>
-    <div class="form-group" style="margin-bottom:10px;">
-      <label class="form-label">Notes</label>
-      <textarea class="form-input" id="sessionNotes" placeholder="What worked, what didn't, anything memorable…" style="min-height:80px;"></textarea>
-    </div>
+    <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Location</label><input type="text" class="form-input" id="sessionLoc" placeholder="e.g. Lake Macquarie"></div>
+    <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Conditions</label><input type="text" class="form-input" id="sessionConditions" placeholder="e.g. Light NE breeze, overcast"></div>
+    <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Notes</label><textarea class="form-input" id="sessionNotes" placeholder="What worked, what didn't…" style="min-height:70px;"></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('addSessionModal')">Cancel</button>
       <button class="btn btn-primary" onclick="addSession()">Save Session</button>
@@ -511,84 +432,488 @@ select.form-input{cursor:pointer;}
 </div>
 
 <!-- CATCH DETAIL MODAL -->
-<div class="modal-backdrop" id="catchDetailModal">
-  <div class="modal" id="catchDetailContent"></div>
-</div>
+<div class="modal-backdrop" id="catchDetailModal"><div class="modal" id="catchDetailContent"></div></div>
 
-<!-- PB DETAIL MODAL -->
-<div class="modal-backdrop" id="pbDetailModal">
-  <div class="modal" id="pbDetailContent"></div>
-</div>
+<!-- SPECIES DETAIL MODAL -->
+<div class="modal-backdrop" id="speciesDetailModal"><div class="modal" id="speciesDetailContent"></div></div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────
-const FISH_EMOJI = {snapper:'🐟',bass:'🎣',trout:'🐟',salmon:'🐟',bream:'🐠',carp:'🐡',perch:'🐟',
-  tuna:'🐟',flathead:'🐟',whiting:'🐟',barramundi:'🐟',mackerel:'🐟',mulloway:'🐟',tailor:'🐟',
-  yellowfin:'🐟',kingfish:'🐟',jewfish:'🐟',cod:'🐟',bass:'🎣',redfin:'🐟',luderick:'🐟'};
-const getFishEmoji = n => FISH_EMOJI[(n||'').toLowerCase().split(' ')[0]] || '🐟';
+// ═══════════════════════════════════════════════════════
+//  SPECIES DATABASE — 35 Australian Species
+// ═══════════════════════════════════════════════════════
+const SPECIES_DB = [
+  // ── SALTWATER ──
+  {
+    key:'snapper', common:'Snapper', aka:'Red Snapper, Squire (juvenile)',
+    scientific:'Chrysophrys auratus', emoji:'🐟', type:'saltwater',
+    desc:'One of Australia\'s most prized table and sport fish. Pink-red body with blue spots on each scale. Adults develop a pronounced forehead hump. Juveniles (Squire) are more silver.',
+    id_tips:'Look for the steep forehead profile on adults, blue-edged scales, and a pale pink to deep red colour. Juveniles lack the hump and are silvery-pink with faint spots.',
+    weight:'0.5–8 kg typical · trophy fish 10+ kg',
+    length:'30–90 cm',
+    habitat:'Rocky reefs, sandy bottoms near structure, wrecks. Found from the shallows to 200 m depth.',
+    distribution:'All states. Most abundant in WA, SA, NSW and QLD inshore reefs.',
+    eating:{rating:5,label:'World-class',notes:'Firm, moist white flesh. Superb pan-fried, baked whole, or as sashimi.'},
+    legal:[{s:'NSW',min:'27 cm',bag:'10'},{s:'VIC',min:'27 cm',bag:'10'},{s:'QLD',min:'35 cm',bag:'30'},{s:'SA',min:'30 cm',bag:'10'},{s:'WA',min:'41 cm',bag:'8'}],
+    bait:['Live prawn','Squid','Pilchards','Cut fish','Soft plastics'],
+    season:'Year-round. Peaks spring–summer on reefs.'
+  },
+  {
+    key:'flathead', common:'Dusky Flathead', aka:'Lizard, Flatty',
+    scientific:'Platycephalus fuscus', emoji:'🐟', type:'estuary',
+    desc:'Australia\'s largest flathead species and a favourite for estuary anglers. Flattened, elongated body with a broad spiny head. Mottled brown and grey camouflage colouring.',
+    id_tips:'Unmistakable flattened head with eyes on top. Dark mottled brown-grey body. Large mouth. Black spots on the tail fin distinguish dusky from tiger flathead.',
+    weight:'0.5–4 kg typical · females can reach 8+ kg',
+    length:'35–100 cm',
+    habitat:'Estuaries, tidal creeks, sandy flats, seagrass beds. Ambush predator that buries itself in sand.',
+    distribution:'Eastern Australia from QLD to VIC. Most common in NSW estuaries.',
+    eating:{rating:4,label:'Excellent',notes:'Clean, sweet white flesh. Best lightly floured and pan-fried or in fish tacos.'},
+    legal:[{s:'NSW',min:'36 cm',bag:'10'},{s:'VIC',min:'30 cm',bag:'10 (5 over 60 cm)'},{s:'QLD',min:'40 cm (sand flathead)',bag:'10'},{s:'SA',min:'33 cm',bag:'20'},{s:'WA',min:'30 cm',bag:'20'}],
+    bait:['Soft plastics','Live poddy mullet','Live prawn','Hardbody lures','Fresh strip bait'],
+    season:'Year-round. Best in warmer months Oct–Apr.'
+  },
+  {
+    key:'bream', common:'Yellowfin Bream', aka:'Sea Bream, Silver Bream',
+    scientific:'Acanthopagrus australis', emoji:'🐠', type:'estuary',
+    desc:'A highly adaptable and cunning estuary fish prized by light-tackle anglers. Silver-grey body with a yellowish tinge on fins and belly. One of Australia\'s most popular sport fish.',
+    id_tips:'Silver body, yellow tinge to pelvic and anal fins. Black margin on dorsal fin. Blunter snout than black bream. Distinguished from Tarwhine by lack of golden stripes.',
+    weight:'0.3–2 kg typical · 3+ kg is a trophy',
+    length:'20–50 cm',
+    habitat:'Estuaries, harbours, mangrove creeks, rocky headlands, surf gutters. Highly adaptable.',
+    distribution:'Eastern Australia, particularly QLD and NSW coasts and estuaries.',
+    eating:{rating:3,label:'Good',notes:'Reasonable eating but can taste muddy from dirty estuaries. Best when bled immediately.'},
+    legal:[{s:'NSW',min:'25 cm',bag:'20'},{s:'VIC',min:'28 cm',bag:'20'},{s:'QLD',min:'25 cm',bag:'20'},{s:'SA',min:'25 cm',bag:'20'},{s:'WA',min:'25 cm',bag:'12'}],
+    bait:['Bloodworms','Prawns','Nippers (yabbies)','Soft plastics','Bread/dough'],
+    season:'Year-round. Most active autumn and winter.'
+  },
+  {
+    key:'barramundi', common:'Barramundi', aka:'Barra, Giant Perch, Palmer',
+    scientific:'Lates calcarifer', emoji:'🐟', type:'estuary',
+    desc:'The iconic Australian sport fish. Silver body with large scales, concave head profile, and a powerful tail. All barramundi are born male and become female as they grow larger.',
+    id_tips:'Large silver scales with an orange-red eye. Concave head profile, large upturned mouth. The dorsal fin has a distinctive notch. Juveniles may show a bronze tinge.',
+    weight:'1–10 kg typical · trophy fish 20+ kg',
+    length:'50–150 cm',
+    habitat:'Estuaries, rivers, billabongs, tidal creeks, coastal waters. Loves structure — logs, rocks, jetty pylons.',
+    distribution:'Northern and north-eastern Australia. QLD, NT, WA north coast. Farmed widely.',
+    eating:{rating:5,label:'World-class',notes:'Premium, moist white flesh with large flakes. Excellent pan-fried, BBQ, or steamed.'},
+    legal:[{s:'NSW',min:'58 cm (slot 58–80 cm)',bag:'5'},{s:'QLD',min:'58 cm',bag:'5'},{s:'NT',min:'55 cm',bag:'5'},{s:'WA',min:'55 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Surface lures','Jerkbaits','Hardbodies','Live mullet','Live prawn','Spinnerbaits'],
+    season:'Wet season (Nov–Apr) in the north. Year-round in impoundments.'
+  },
+  {
+    key:'whiting', common:'King George Whiting', aka:'KGW, Spotted Whiting',
+    scientific:'Sillaginodes punctatus', emoji:'🐟', type:'saltwater',
+    desc:'The most prized whiting species in Australia. Slender silver body with distinctive yellow-brown spots. Renowned for exceptional eating quality.',
+    id_tips:'Slender silver body. Rows of yellow-brown spots along the side. Noticeably longer and more robust than Sand Whiting. Two separate dorsal fins.',
+    weight:'0.3–2 kg typical',
+    length:'25–65 cm',
+    habitat:'Sandy bays, seagrass beds, shallow coastal waters, estuaries. Loves a sandy bottom.',
+    distribution:'South Australian and Victorian waters, WA. SA\'s Spencer Gulf is legendary KGW territory.',
+    eating:{rating:5,label:'World-class',notes:'Among the finest eating fish in Australia. Delicate, sweet white flesh. Pan-fry simply in butter.'},
+    legal:[{s:'NSW',min:'27 cm (Sand Whiting)',bag:'20'},{s:'VIC',min:'27 cm',bag:'20'},{s:'QLD',min:'23 cm',bag:'30'},{s:'SA',min:'27 cm',bag:'20 (combined whiting)'},{s:'WA',min:'28 cm',bag:'12'}],
+    bait:['Yabbies (nippers)','Worms','Prawns','Pippis','Small soft plastics'],
+    season:'Peaks summer in VIC/SA. Year-round in warmer states.'
+  },
+  {
+    key:'tailor', common:'Tailor', aka:'Bluefish, Chopper',
+    scientific:'Pomatomus saltatrix', emoji:'🐟', type:'saltwater',
+    desc:'A fast, aggressive schooling predator loved by beach and rock fishers. Blue-green back, silver sides, sharp teeth and a forked tail. Known for vicious strikes on surface lures.',
+    id_tips:'Blue-green to olive back, silver belly. Very sharp, uniform teeth — handle carefully. Forked tail, two dorsal fins. Often found with visible baitfish schools being busted up on the surface.',
+    weight:'0.5–3 kg typical',
+    length:'30–70 cm',
+    habitat:'Open beaches, rock platforms, headlands, coastal bays. Follows bait schools.',
+    distribution:'Eastern and southern Australia. Highly migratory — moves up the NSW/QLD coast seasonally.',
+    eating:{rating:3,label:'Good when fresh',notes:'Best eaten very fresh — the oily flesh deteriorates quickly. Fillet, skin off, and cook within hours.'},
+    legal:[{s:'NSW',min:'30 cm',bag:'20'},{s:'VIC',min:'30 cm',bag:'20'},{s:'QLD',min:'30 cm',bag:'20'},{s:'SA',min:'30 cm',bag:'20'},{s:'WA',min:'30 cm',bag:'12'}],
+    bait:['Metal slugs','Poppers','Pilchards','Garfish','Whitebait'],
+    season:'NSW coast peaks autumn (Mar–Jun) as schools move north.'
+  },
+  {
+    key:'mulloway', common:'Mulloway', aka:'Jewfish, Jewie, River Kingfish',
+    scientific:'Argyrosomus japonicus', emoji:'🐟', type:'estuary',
+    desc:'One of Australia\'s most sought-after sport fish. Silver body with a golden sheen, row of white spots along the lateral line. Known for nocturnal feeding and powerful runs.',
+    id_tips:'Silver-gold body with a row of pearl-white spots above the lateral line. Large mouth, soft lower jaw. Distinctive "thumping" sound when caught. Similar to Teraglin — check spot pattern.',
+    weight:'1–15 kg typical · trophy 30+ kg',
+    length:'50–200 cm',
+    habitat:'Estuaries, river mouths, surf beaches, harbour entrances, offshore reefs. Nocturnal feeder.',
+    distribution:'All Australian states. Highly migratory along the east and south coasts.',
+    eating:{rating:4,label:'Excellent',notes:'Large flaky white flesh, mild flavour. Excellent baked, smoked, or pan-fried. Bleed immediately.'},
+    legal:[{s:'NSW',min:'70 cm',bag:'5'},{s:'VIC',min:'50 cm',bag:'5'},{s:'QLD',min:'75 cm',bag:'5'},{s:'SA',min:'50 cm',bag:'5'},{s:'WA',min:'50 cm',bag:'3'}],
+    bait:['Live mullet','Live yellowtail','Large pilchards','Squid','Soft plastics (big)'],
+    season:'Year-round. Best after dark, especially around new and full moon.'
+  },
+  {
+    key:'kingfish', common:'Yellowtail Kingfish', aka:'Kingie, YTK, Hiramasa',
+    scientific:'Seriola lalandi', emoji:'🐟', type:'saltwater',
+    desc:'One of Australia\'s premier sport fish — a powerful, fast ambush predator. Blue-green back, silver sides, yellow tail and a distinctive yellow lateral stripe from eye to tail.',
+    id_tips:'Yellow lateral stripe from eye to tail. Forked yellow tail. Blue-green metallic back, silver-white belly. Streamlined, torpedo-shaped body. Often found at foul water lines and reefs.',
+    weight:'2–15 kg typical · trophy 40+ kg',
+    length:'60–200 cm',
+    habitat:'Offshore reefs, inshore rocky headlands, FADs, wrecks, kelp beds. Loves structure.',
+    distribution:'Eastern and southern Australia, WA. NSW mid-north coast is famous for big kingfish.',
+    eating:{rating:4,label:'Excellent',notes:'Rich, firm flesh similar to amberjack. Outstanding sashimi, smoked, or grilled. Best bled immediately.'},
+    legal:[{s:'NSW',min:'65 cm',bag:'5'},{s:'VIC',min:'60 cm',bag:'5'},{s:'QLD',min:'60 cm',bag:'5'},{s:'SA',min:'60 cm',bag:'5'},{s:'WA',min:'No min',bag:'3'}],
+    bait:['Live squid','Live yellowtail/slimy mackerel','Stickbaits','Poppers','Jigs'],
+    season:'Year-round. Peaks summer–autumn on the NSW coast.'
+  },
+  {
+    key:'salmon', common:'Australian Salmon', aka:'Kahawai, Bay Trout, Cocky Salmon',
+    scientific:'Arripis trutta', emoji:'🐟', type:'saltwater',
+    desc:'A hard-fighting schooling fish found along the southern Australian coast. Green-grey back with rows of golden-yellow spots. Not actually related to Atlantic salmon.',
+    id_tips:'Green-grey back, silver sides, rows of golden spots. Forked tail, streamlined shape. Often seen busting bait on the surface in large schools. Smaller and more slender than Tailor.',
+    weight:'0.5–4 kg typical',
+    length:'30–70 cm',
+    habitat:'Open beaches, rocky headlands, inshore reefs, estuaries. Follows bait schools.',
+    distribution:'South-eastern and south-western Australia. Major runs along the NSW and SA coasts.',
+    eating:{rating:2,label:'Acquired taste',notes:'Very oily, strong flavour. Best used as bait or smoked. Must be bled and iced immediately to be edible.'},
+    legal:[{s:'NSW',min:'30 cm',bag:'20'},{s:'VIC',min:'30 cm',bag:'20'},{s:'QLD',min:'No min',bag:'No limit'},{s:'SA',min:'30 cm',bag:'20'},{s:'WA',min:'30 cm',bag:'16'}],
+    bait:['Metal slugs','Whitebait','Poppers','Soft plastics'],
+    season:'Autumn–winter migrations along the NSW coast (Apr–Jul).'
+  },
+  {
+    key:'spanishmackerel', common:'Spanish Mackerel', aka:'Spaniard, Narrow-barred Mackerel',
+    scientific:'Scomberomorus commerson', emoji:'🐟', type:'saltwater',
+    desc:'A fast, powerful pelagic predator. Iridescent blue-green back with distinctive wavy vertical bars on the sides. One of the most exciting sport fish in northern Australian waters.',
+    id_tips:'Blue-green back, silver sides with narrow dark wavy bars. Very long, streamlined body. Long pointed snout. Closely related to School Mackerel — Spanish Mackerel is much larger with irregular bars.',
+    weight:'2–20 kg typical · trophy 40+ kg',
+    length:'50–240 cm',
+    habitat:'Offshore reefs, FADs, current lines, near baitfish schools. Highly pelagic.',
+    distribution:'Northern Australia, QLD coast, NSW north coast. Migratory.',
+    eating:{rating:5,label:'World-class',notes:'Premium oily white flesh. Exceptional raw (ceviche/sashimi), smoked, or lightly grilled. Bleed immediately.'},
+    legal:[{s:'NSW',min:'75 cm',bag:'5'},{s:'QLD',min:'75 cm',bag:'5'},{s:'NT',min:'75 cm',bag:'5'},{s:'WA',min:'75 cm',bag:'3'},{s:'SA',min:'75 cm',bag:'3'}],
+    bait:['Trolled lures','Livebait (yakkas, slimy mackerel)','Pilchards','Skirts'],
+    season:'QLD peaks winter (Jun–Sep). NT peaks dry season (Apr–Sep).'
+  },
+  {
+    key:'mangrovejack', common:'Mangrove Jack', aka:'Jack, Red Bass, Purple Sea Perch',
+    scientific:'Lutjanus argentimaculatus', emoji:'🐟', type:'estuary',
+    desc:'A hard-fighting, structure-hugging estuary predator. Deep body, large scales, reddish colouring. Famous for running straight for snags when hooked — a real test of gear.',
+    id_tips:'Deep reddish to bronze body, large scales. Juveniles have vertical white bars. Large mouth with sharp teeth. Found deep in snag-filled waterways. Red/orange fins.',
+    weight:'0.5–5 kg typical · 10+ kg possible',
+    length:'30–90 cm',
+    habitat:'Mangrove creeks, tidal rivers, rocky estuary structure, coastal reefs. Loves heavy timber.',
+    distribution:'Northern QLD, NT, WA north coast. Juveniles venture further south in summer.',
+    eating:{rating:4,label:'Excellent',notes:'Firm, sweet white flesh. Excellent table fish. Smaller fish (under 2 kg) are better eating.'},
+    legal:[{s:'NSW',min:'35 cm',bag:'5'},{s:'QLD',min:'35 cm',bag:'5'},{s:'NT',min:'35 cm',bag:'5'},{s:'WA',min:'35 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Hardbody lures','Soft plastics','Live mullet','Live prawn','Metal vibes'],
+    season:'Year-round in tropics. Juveniles move south Oct–Mar.'
+  },
+  {
+    key:'coraltrout', common:'Coral Trout', aka:'Common Coral Trout, Leopard Trout',
+    scientific:'Plectropomus leopardus', emoji:'🐟', type:'saltwater',
+    desc:'The most prized reef fish of the Great Barrier Reef. Vibrant red-orange body covered in small blue spots. A powerful and fast ambush predator.',
+    id_tips:'Red-orange to brown body covered densely with small blue ringed spots. Large mouth. Rounded tail. Colour can vary — look for the distinctive blue-ringed spots as the key identifier.',
+    weight:'0.5–8 kg typical',
+    length:'30–90 cm',
+    habitat:'Coral reefs, rock piles, reef edges. Found 1–100 m depth in tropical and subtropical waters.',
+    distribution:'Great Barrier Reef, Coral Sea, northern WA coast.',
+    eating:{rating:5,label:'World-class',notes:'Regarded as one of the finest eating fish in the world. Delicate, moist white flesh. Any cooking method.'},
+    legal:[{s:'QLD',min:'38 cm',bag:'7 (combined coral trout)'},{s:'NSW',min:'38 cm',bag:'5'},{s:'WA',min:'38 cm',bag:'5'},{s:'NT',min:'38 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Live bait','Vibes','Soft plastics','Hardbodies','Jigs'],
+    season:'Year-round on the reef. Aggregation peaks around spawning (Oct–Dec).'
+  },
+  {
+    key:'trevally', common:'Giant Trevally', aka:'GT, Ulua',
+    scientific:'Caranx ignobilis', emoji:'🐟', type:'saltwater',
+    desc:'The apex predator of the flats and reefs. Distinctive steep head profile, forked tail, silver to dark grey body. Renowned for aggressive surface strikes on large poppers.',
+    id_tips:'Very steep, almost vertical forehead. Forked tail with yellow/black lobes. Silver to dark grey or almost black body with irregular black spots. Significantly larger than other trevally species.',
+    weight:'2–20 kg typical · trophy 60+ kg',
+    length:'50–170 cm',
+    habitat:'Coral flats, reef edges, lagoon mouths, offshore atolls. Hunts in the shallows.',
+    distribution:'Northern QLD, NT, WA north coast, Coral Sea islands.',
+    eating:{rating:2,label:'Moderate',notes:'Edible but coarse and sometimes wormy in larger fish. Most anglers practise catch and release.'},
+    legal:[{s:'QLD',min:'60 cm',bag:'10 (combined trevally)'},{s:'NT',min:'No min',bag:'10'},{s:'WA',min:'25 cm',bag:'5'},{s:'NSW',min:'No min',bag:'10'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Large poppers','Stickbaits','Jigs','Live mullet','Crab'],
+    season:'Year-round in tropics. Spawning aggregations Oct–Feb.'
+  },
+  {
+    key:'luderick', common:'Luderick', aka:'Blackfish, Black Bream, Nigger',
+    scientific:'Girella tricuspidata', emoji:'🐟', type:'estuary',
+    desc:'A unique vegetarian fish targeted with green weed (cabbage/sea lettuce). Dark brown-grey body with faint vertical bars. A cult following among specialist anglers.',
+    id_tips:'Dark grey-brown body, faint vertical dusky bars. Small mouth with incisor-like teeth. Found feeding on green weed growth on rocks and pylons in tidal areas.',
+    weight:'0.3–2 kg typical',
+    length:'20–45 cm',
+    habitat:'Rocky headlands, harbour foreshores, estuary pylons, weed beds. Highly site-specific.',
+    distribution:'Eastern Australia from QLD to SA. Common in Sydney Harbour and estuaries.',
+    eating:{rating:3,label:'Good',notes:'Firm, sweet flesh. Excellent smoked or pan-fried. Remove the dark bloodline for milder flavour.'},
+    legal:[{s:'NSW',min:'27 cm',bag:'20'},{s:'VIC',min:'25 cm',bag:'20'},{s:'QLD',min:'25 cm',bag:'30'},{s:'SA',min:'23 cm',bag:'20'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Green weed (cabbage)','Sea lettuce','Cunjevoi','Bread'],
+    season:'Autumn–winter fishing best. Weed most productive May–Aug.'
+  },
+  {
+    key:'yellowfintuna', common:'Yellowfin Tuna', aka:'YFT, Allison Tuna',
+    scientific:'Thunnus albacares', emoji:'🐟', type:'saltwater',
+    desc:'A powerful, high-speed pelagic fish. Metallic blue-black back, golden-yellow stripe on sides, bright yellow fins and finlets. One of the most thrilling sport fish in the ocean.',
+    id_tips:'Metallic blue-black back, golden-yellow lateral stripe. Bright yellow second dorsal, anal fin and finlets. Sickle-shaped yellow pectoral fins. Larger fish have elongated second dorsal and anal fins.',
+    weight:'5–80 kg typical',
+    length:'50–200 cm',
+    habitat:'Open ocean, FADs, current lines, temperature breaks. Highly migratory.',
+    distribution:'Offshore eastern and western Australia. Common in the Coral Sea, Tasman Sea.',
+    eating:{rating:5,label:'World-class',notes:'Premium grade sashimi. Firm, deep red flesh. Exceptional raw, seared, or grilled. Bleed immediately.'},
+    legal:[{s:'QLD',min:'No min',bag:'2 per person or 15 per vessel'},{s:'NSW',min:'No min',bag:'2 per person or 15 per vessel'},{s:'WA',min:'No min',bag:'2 per person'},{s:'SA',min:'–',bag:'–'},{s:'VIC',min:'–',bag:'–'}],
+    bait:['Trolled skirted lures','Stick baits','Livebait','Popper','Jigs'],
+    season:'Year-round offshore. QLD/NSW coast peaks summer (Dec–Mar).'
+  },
+  {
+    key:'mahimahi', common:'Mahi Mahi', aka:'Dolphinfish, Dorado',
+    scientific:'Coryphaena hippurus', emoji:'🐟', type:'saltwater',
+    desc:'One of the most spectacularly coloured fish in the ocean. Vivid greens, blues and yellows on a blunt-headed, compressed body. Highly aggressive surface feeder, often found near floating debris.',
+    id_tips:'Brilliant green, blue and yellow colouring. Males have a very pronounced square forehead. Long dorsal fin running almost the entire length. Loses colour rapidly when removed from water.',
+    weight:'1–15 kg typical · 40+ kg possible',
+    length:'40–180 cm',
+    habitat:'Open ocean, FADs, floating debris (weeds, logs), current lines. Truly pelagic.',
+    distribution:'Warm offshore waters all around Australia. Common QLD to NSW in summer.',
+    eating:{rating:4,label:'Excellent',notes:'Mild, firm white flesh with a slight sweetness. Outstanding grilled, blackened or in tacos.'},
+    legal:[{s:'QLD',min:'No min',bag:'No limit (open water)'},{s:'NSW',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'},{s:'SA',min:'–',bag:'–'},{s:'VIC',min:'–',bag:'–'}],
+    bait:['Trolled skirts','Floating pilchards','Poppers','Live bait','Jigs'],
+    season:'Summer offshore (Dec–Apr). Follows warm currents south.'
+  },
+  {
+    key:'nannygai', common:'Nannygai', aka:'Redfish, Red Snapper (WA), Bight Redfish',
+    scientific:'Centroberyx affinis', emoji:'🐟', type:'saltwater',
+    desc:'A deep-water reef fish with striking red colouring and large eyes adapted for low light. Highly regarded eating fish found on offshore reefs and the continental shelf.',
+    id_tips:'Uniformly deep red-orange body. Very large eyes. Single continuous dorsal fin. Smaller and deeper-bodied than snapper. Found in deeper water (50–300 m) on offshore reefs.',
+    weight:'0.5–3 kg typical',
+    length:'25–55 cm',
+    habitat:'Offshore reef edges, rocky bottom, continental shelf. Typically 50–300 m depth.',
+    distribution:'Southern and eastern Australia — SA, VIC, NSW and WA.',
+    eating:{rating:5,label:'World-class',notes:'Outstanding eating. Moist, sweet, firm white flesh. Pan-fry, bake or steam. Popular in the restaurant trade.'},
+    legal:[{s:'NSW',min:'25 cm',bag:'20 (combined reef fish)'},{s:'VIC',min:'25 cm',bag:'20'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'25 cm',bag:'10'},{s:'QLD',min:'25 cm',bag:'Various'}],
+    bait:['Whole pilchard','Cut squid','Knife jigs','Deep-drop rigs'],
+    season:'Year-round. Deep-water species, not season dependent.'
+  },
+  {
+    key:'flounder', common:'Greenback Flounder', aka:'Flounder, Turbot',
+    scientific:'Rhombosolea tapirina', emoji:'🐟', type:'estuary',
+    desc:'A bizarre and fascinating flatfish — both eyes migrate to one side as a juvenile. Perfectly camouflaged against sandy or muddy estuarine bottoms.',
+    id_tips:'Completely flat, oval body. Both eyes on the upper surface. Mottled green-brown to sandy upper side with varying spots. White on the underside. Often spotted while wading on sandy flats at night.',
+    weight:'0.1–0.8 kg typical',
+    length:'15–40 cm',
+    habitat:'Sandy and muddy estuaries, tidal flats, harbour shallows. Often speared at night by torchlight.',
+    distribution:'Southern Australia — SA, VIC, TAS, southern NSW, WA.',
+    eating:{rating:5,label:'World-class',notes:'Exceptional, delicate white flesh. Pan-fry whole with butter and lemon. One of the finest eating fish.'},
+    legal:[{s:'NSW',min:'20 cm',bag:'20'},{s:'VIC',min:'20 cm',bag:'20'},{s:'SA',min:'20 cm',bag:'20'},{s:'WA',min:'20 cm',bag:'20'},{s:'QLD',min:'25 cm',bag:'10'}],
+    bait:['Worms','Small soft plastics','Spearing at night'],
+    season:'Year-round. Spearing best on warm still nights at low tide.'
+  },
+  // ── ESTUARY / MIXED ──
+  {
+    key:'estuaryperch', common:'Estuary Perch', aka:'EP, Bass',
+    scientific:'Macquaria colonorum', emoji:'🐟', type:'estuary',
+    desc:'A stealthy, structure-hugging predator of southern estuaries. Closely related to Australian Bass but favours tidal saltwater reaches. Dark grey-green to bronze colouring.',
+    id_tips:'Similar to Australian Bass but usually darker overall. Concave head profile. Found in tidal estuaries year-round, unlike Australian Bass which migrates to spawn in saltwater. Overlapping range in south-eastern rivers.',
+    weight:'0.3–3 kg typical',
+    length:'25–55 cm',
+    habitat:'Deep tidal pools, snag-filled estuaries, harbour walls, undercut banks. Non-migratory.',
+    distribution:'South-eastern Australia — southern NSW, VIC, TAS.',
+    eating:{rating:3,label:'Good',notes:'Sweet, firm flesh. Most anglers practise catch and release of this prized sport fish.'},
+    legal:[{s:'NSW',min:'27 cm',bag:'5'},{s:'VIC',min:'30 cm',bag:'5'},{s:'TAS',min:'25 cm',bag:'5'},{s:'SA',min:'–',bag:'–'},{s:'QLD',min:'–',bag:'–'}],
+    bait:['Hard-body lures','Soft plastics','Blades','Live shrimp'],
+    season:'Year-round. Most active autumn–winter.'
+  },
+  // ── FRESHWATER ──
+  {
+    key:'murraycod', common:'Murray Cod', aka:'Cod, Goodoo, Murray Perch',
+    scientific:'Maccullochella peelii', emoji:'🐟', type:'freshwater',
+    desc:'Australia\'s largest freshwater fish and a living icon of the Murray-Darling basin. Green-grey blotched body, large rounded tail, enormous mouth. Can live over 100 years.',
+    id_tips:'Large, heavy-bodied fish with a rounded mottled green-grey to yellow-brown pattern. Enormous bucket mouth. Rounded tail distinguishes it from Trout Cod (which has a forked tail). Very distinctive look — unmistakeable.',
+    weight:'1–20 kg typical · record 113 kg',
+    length:'40–150 cm',
+    habitat:'Deep river pools, snag-filled billabongs, dam walls, rocky gorges. Sits tight to structure.',
+    distribution:'Murray-Darling basin (NSW, VIC, QLD, SA). Stocked in many impoundments.',
+    eating:{rating:4,label:'Excellent',notes:'Large, white, firm flakes. An outstanding table fish, though many anglers release large specimens for conservation.'},
+    legal:[{s:'NSW',min:'55 cm (slot 55–75 cm)',bag:'1'},{s:'VIC',min:'55 cm (slot 55–75 cm)',bag:'1'},{s:'QLD',min:'60 cm',bag:'1'},{s:'SA',min:'60 cm',bag:'2'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Large spinnerbaits','Hardbodies','Trolled minnows','Live shrimp','Yabbies','Surface lures at night'],
+    season:'Year-round. Spring (Oct–Nov) fishing peak after spawning. Closed season varies by state.'
+  },
+  {
+    key:'goldenperch', common:'Golden Perch', aka:'Yellowbelly, Callop, White Perch',
+    scientific:'Macquaria ambigua', emoji:'🐟', type:'freshwater',
+    desc:'The Murray-Darling\'s other iconic native. Deep-bodied, golden-yellow to olive-bronze colouring depending on water clarity. The most widely distributed native fish in the inland river system.',
+    id_tips:'Deep body, noticeably rounded belly. Golden yellow to olive-green colour — clearer water makes them more golden. Lighter belly. Small hump behind head. Confused with Bream in some areas — note the freshwater location.',
+    weight:'0.5–8 kg typical',
+    length:'30–75 cm',
+    habitat:'River bends, billabongs, impoundments, dam walls. Prefers slower, deeper water near structure.',
+    distribution:'Murray-Darling basin throughout NSW, VIC, QLD, SA. Widely stocked.',
+    eating:{rating:3,label:'Good',notes:'Sweet, firm white flesh. Can be muddy in turbid water. Best from clearer impoundments.'},
+    legal:[{s:'NSW',min:'30 cm',bag:'10'},{s:'VIC',min:'30 cm',bag:'10'},{s:'QLD',min:'30 cm',bag:'10'},{s:'SA',min:'30 cm',bag:'10'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Worms','Yabbies','Soft plastics','Blades','Trolled lures'],
+    season:'Year-round. Post-flood conditions often trigger feeding frenzies.'
+  },
+  {
+    key:'australianbass', common:'Australian Bass', aka:'Bass, Freshwater Bass',
+    scientific:'Macquaria novemaculeata', emoji:'🐟', type:'freshwater',
+    desc:'Australia\'s premier freshwater sport fish. Bronze to olive-green body, lighter belly, concave head profile. A feisty, structure-loving predator of coastal rivers and impoundments.',
+    id_tips:'Bronze-olive colouring, concave head profile. Similar to Estuary Perch but found higher in coastal river systems. Migrates downstream to spawn in estuaries in winter. Smaller overall than EP.',
+    weight:'0.3–3 kg typical · 4+ kg trophy',
+    length:'25–50 cm',
+    habitat:'Coastal river pools, rocky gorges, tidal reaches, impoundments with structure.',
+    distribution:'Eastern Australian coastal rivers — QLD to VIC. Very popular in SE QLD and northern NSW rivers.',
+    eating:{rating:3,label:'Good',notes:'Sweet, firm flesh. Most serious bass anglers practise catch and release. Protected in some waters.'},
+    legal:[{s:'NSW',min:'25 cm (no-take in some rivers)',bag:'5'},{s:'QLD',min:'25 cm',bag:'5'},{s:'VIC',min:'25 cm',bag:'5'},{s:'SA',min:'–',bag:'–'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Surface lures','Hardbodies','Soft plastics','Spinners','Live shrimp'],
+    season:'Best autumn–winter when migrating. Surface fishing peaks summer evenings.'
+  },
+  {
+    key:'rainbowtrout', common:'Rainbow Trout', aka:'Rainbows, Bows',
+    scientific:'Oncorhynchus mykiss', emoji:'🐟', type:'freshwater',
+    desc:'The most popular freshwater sport fish in Australia. Silver body with a distinctive pink-red lateral stripe and black spots. Native to North America, widely stocked in Australian cool-water rivers, streams and lakes.',
+    id_tips:'Silver body with a vivid pink-red stripe along the lateral line. Black spots on body, dorsal fin and tail. Forked tail. Breeding males turn much more colourful. Distinguished from Brown Trout by the pink stripe and rounded (not square) tail spots.',
+    weight:'0.3–4 kg typical · lake fish to 10+ kg',
+    length:'25–75 cm',
+    habitat:'Cold, clear streams, rivers and alpine lakes. Requires cool, well-oxygenated water.',
+    distribution:'Stocked extensively in TAS, VIC (Alpine region, Great Dividing Range streams), ACT, NSW highlands, SA and WA.',
+    eating:{rating:5,label:'World-class',notes:'Delicate, pink-white flesh. Exceptional pan-fried, smoked, or poached. Among the best eating freshwater fish.'},
+    legal:[{s:'NSW',min:'25 cm (varies by water)',bag:'5 (varies by water)'},{s:'VIC',min:'25 cm (varies)',bag:'5 (varies)'},{s:'TAS',min:'25 cm',bag:'12 (varies)'},{s:'SA',min:'25 cm',bag:'5'},{s:'ACT',min:'25 cm',bag:'4'}],
+    bait:['Powerbait','Worms','Spinners','Fly (dry/nymph/streamer)','Small lures'],
+    season:'Season dates vary by state. Generally Sept–May in NSW/VIC. Year-round in TAS.'
+  },
+  {
+    key:'browntrout', common:'Brown Trout', aka:'Brownies, German Brown',
+    scientific:'Salmo trutta', emoji:'🐟', type:'freshwater',
+    desc:'The most cunning and difficult trout species to catch. Golden-brown body with distinctive black and red spots, each surrounded by a pale halo. Native to Europe, introduced to Australia in the 1860s.',
+    id_tips:'Golden-brown body with black spots AND red/orange spots, each ringed with a pale halo. No pink lateral stripe (unlike Rainbow Trout). Tail nearly square. Larger fish often become very dark.',
+    weight:'0.3–5 kg typical · trophy fish 10+ kg',
+    length:'25–80 cm',
+    habitat:'Cool, clear rivers and streams, particularly those with good cover. More tolerant of slightly warmer water than Rainbow Trout.',
+    distribution:'TAS (prolific), VIC Alpine streams, NSW Southern Highlands and Snowy Mountains, ACT, SA.',
+    eating:{rating:4,label:'Excellent',notes:'Rich, nutty flesh — pink when wild-caught. Pan-fry, smoke or cook in foil with butter and herbs.'},
+    legal:[{s:'NSW',min:'25–30 cm (varies)',bag:'5 (varies)'},{s:'VIC',min:'25 cm (varies)',bag:'5 (varies)'},{s:'TAS',min:'25 cm',bag:'12 (varies)'},{s:'SA',min:'25 cm',bag:'5'},{s:'ACT',min:'25 cm',bag:'4'}],
+    bait:['Fly fishing (preferred)','Spinners','Yabbies','Worms','Nightcrawlers'],
+    season:'As per Rainbow Trout — check state regulations for specific waters.'
+  },
+  {
+    key:'redfin', common:'Redfin Perch', aka:'English Perch, European Perch',
+    scientific:'Perca fluviatilis', emoji:'🐟', type:'freshwater',
+    desc:'A striking freshwater perch introduced from Europe. Dark green body with 5–9 dark vertical bars, brilliant red-orange fins. Considered a pest in many Australian waterways but highly valued by anglers.',
+    id_tips:'Dark green body with distinctive dark vertical bars and brilliant red-orange lower fins and tail. Spiny first dorsal fin. Often found in large schools. A declared noxious species in several states.',
+    weight:'0.1–2 kg typical',
+    length:'15–45 cm',
+    habitat:'Lakes, impoundments, slower rivers and streams. Tolerates a wide range of conditions.',
+    distribution:'VIC, NSW (southern), ACT, TAS, SA, WA. Spreading — check regulations before moving fish.',
+    eating:{rating:4,label:'Excellent',notes:'Sweet, firm white flesh. Excellent eating — one of the best-tasting freshwater fish. Skin off before cooking.'},
+    legal:[{s:'NSW',min:'No min (noxious)',bag:'No limit (kill immediately)'},{s:'VIC',min:'No min (noxious)',bag:'No limit (kill immediately)'},{s:'TAS',min:'No min',bag:'No limit'},{s:'SA',min:'No min (noxious)',bag:'No limit'},{s:'WA',min:'No min (noxious)',bag:'No limit'}],
+    bait:['Worms','Soft plastics','Small spinners','Blade lures','Minnow lures'],
+    season:'Year-round. Best spring and autumn.'
+  },
+  {
+    key:'carp', common:'Common Carp', aka:'European Carp, Koi Carp',
+    scientific:'Cyprinus carpio', emoji:'🐡', type:'freshwater',
+    desc:'Australia\'s most destructive invasive freshwater fish. Heavily scaled, bronze-yellow body, large rubbery lips, two barbels on the upper jaw. A declared pest in every mainland state.',
+    id_tips:'Large bronze-yellow scales, distinctive large rubbery mouth with two small barbels. Single long dorsal fin with a serrated first ray. Often seen mudding in shallows or rolling at the surface.',
+    weight:'0.5–10 kg typical · 20+ kg possible',
+    length:'30–100 cm',
+    habitat:'Rivers, lakes, billabongs, farm dams — tolerates poor water quality. Widespread pest.',
+    distribution:'Throughout the Murray-Darling basin and coastal rivers. One of the most widespread pest species in Australia.',
+    eating:{rating:1,label:'Rarely eaten',notes:'Edible but strong-flavoured and bony. Must not be returned to water — it is illegal to do so in most states.'},
+    legal:[{s:'NSW',min:'Must be killed',bag:'No limit'},{s:'VIC',min:'Must be killed',bag:'No limit'},{s:'QLD',min:'Must be killed (noxious)',bag:'No limit'},{s:'SA',min:'Must be killed',bag:'No limit'},{s:'WA',min:'Must be killed',bag:'No limit'}],
+    bait:['Bread','Corn','Boilies','Worms','Dough'],
+    season:'Year-round. Do NOT return to water — kill and remove.'
+  },
+  {
+    key:'saratoga', common:'Saratoga', aka:'Toga, Gulf Saratoga, Northern Spotted Barramundi',
+    scientific:'Scleropages jardinii', emoji:'🐟', type:'freshwater',
+    desc:'A living dinosaur — one of Australia\'s most ancient fish. Large, elongated body covered in distinctive pink-edged scales. A surface predator and mouthbrooder.',
+    id_tips:'Large metallic scales with a pinkish-orange spot on each scale. Large upturned mouth adapted for surface feeding. Long body, small barbels on lower jaw. Distinguished from Gulf Saratoga by scale pattern.',
+    weight:'0.5–5 kg typical',
+    length:'40–90 cm',
+    habitat:'Clear, vegetated freshwater rivers, lagoons and billabongs. Territorial and surface-oriented.',
+    distribution:'Gulf of Carpentaria river systems (QLD, NT). The southern Saratoga is found in east QLD coastal rivers.',
+    eating:{rating:3,label:'Good',notes:'Reasonable eating but most anglers release this iconic and protected species.'},
+    legal:[{s:'QLD',min:'50 cm',bag:'2'},{s:'NT',min:'50 cm',bag:'2'},{s:'NSW',min:'–',bag:'–'},{s:'WA',min:'–',bag:'–'},{s:'VIC',min:'–',bag:'–'}],
+    bait:['Surface lures','Hardbodies','Live insects','Frogs','Soft plastics'],
+    season:'Year-round in tropics. Wet season (Nov–Apr) sees most activity.'
+  },
+  {
+    key:'silverperch', common:'Silver Perch', aka:'Bidyan, Grunter',
+    scientific:'Bidyanus bidyanus', emoji:'🐟', type:'freshwater',
+    desc:'A slender, silvery native perch of the Murray-Darling basin. Once abundant, now a threatened species. Deep silver body, small mouth, and a characteristic grunting sound when caught.',
+    id_tips:'Slender, deep silver body. Much smaller mouth than Golden Perch. Slightly forked tail. Very silvery overall colour. Threatened species — handle carefully and return to water.',
+    weight:'0.2–2 kg typical',
+    length:'20–45 cm',
+    habitat:'Slower-flowing rivers, impoundments, deeper pools. Schooling fish.',
+    distribution:'Murray-Darling basin throughout NSW, VIC, QLD, SA. Numbers much reduced from historical levels.',
+    eating:{rating:3,label:'Good',notes:'Sweet, firm white flesh. Threatened species — strongly encourage catch and release.'},
+    legal:[{s:'NSW',min:'25 cm',bag:'5 (threatened — consider C&R)'},{s:'VIC',min:'25 cm',bag:'5 (threatened)'},{s:'QLD',min:'25 cm',bag:'5'},{s:'SA',min:'25 cm',bag:'5'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Worms','Small soft plastics','Small spinners','Dough baits'],
+    season:'Year-round. Most active in warmer months.'
+  }
+];
 
-const DEFAULT = {
-  profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},
-  catches:[],sessions:[],nextId:1
-};
+// Build lookup map
+const SPECIES_MAP = {};
+SPECIES_DB.forEach(s => {
+  SPECIES_MAP[s.key] = s;
+  // also map common name variants
+  SPECIES_MAP[s.common.toLowerCase()] = s;
+  (s.aka||'').split(',').forEach(a => { if(a.trim()) SPECIES_MAP[a.trim().toLowerCase()] = s; });
+});
 
-// seed demo data
+function lookupByName(name) {
+  if(!name) return null;
+  const n = name.trim().toLowerCase();
+  if(SPECIES_MAP[n]) return SPECIES_MAP[n];
+  // partial match
+  return SPECIES_DB.find(s =>
+    s.common.toLowerCase().includes(n) ||
+    s.key.includes(n) ||
+    (s.aka||'').toLowerCase().includes(n)
+  ) || null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
 const DEMO = {
   profile:{name:'Mick',waters:'Lake Macquarie, NSW',sinceYear:'2015',favSpecies:'Snapper',avatar:''},
   catches:[
-    {id:1,fish:'Snapper',weight:3.6,length:56,location:'Sydney Harbour',bait:'Squid',method:'Bait fishing',date:'2025-03-15',time:'06:30',notes:'PB! Perfect morning session.',photos:[]},
-    {id:2,fish:'Flathead',weight:1.8,length:62,location:'Lake Macquarie',bait:'Soft plastic',method:'Spinning',date:'2025-03-28',time:'07:00',notes:'Shallow flat at low tide.',photos:[]},
-    {id:3,fish:'Barramundi',weight:5.2,length:82,location:'Port Stephens',bait:'Lure',method:'Spinning',date:'2025-04-05',time:'17:00',notes:'Massive fish! Best ever Barra.',photos:[]},
+    {id:1,fish:'Snapper',weight:3.6,length:56,location:'Sydney Harbour',bait:'Squid',method:'Bait fishing',date:'2025-03-15',time:'06:30',notes:'PB! Perfect morning.',photos:[]},
+    {id:2,fish:'Flathead',weight:1.8,length:62,location:'Lake Macquarie',bait:'Soft plastic',method:'Spinning',date:'2025-03-28',time:'07:00',notes:'',photos:[]},
+    {id:3,fish:'Barramundi',weight:5.2,length:82,location:'Port Stephens',bait:'Lure',method:'Spinning',date:'2025-04-05',time:'17:00',notes:'Best ever Barra.',photos:[]},
     {id:4,fish:'Bream',weight:0.85,length:32,location:'Lake Macquarie',bait:'Worm',method:'Bait fishing',date:'2025-04-12',time:'08:15',notes:'',photos:[]},
     {id:5,fish:'Whiting',weight:0.55,length:30,location:'Pittwater',bait:'Yabby',method:'Bait fishing',date:'2025-04-18',time:'09:00',notes:'',photos:[]},
-    {id:6,fish:'Snapper',weight:2.8,length:48,location:'Lake Macquarie',bait:'Live prawn',method:'Bait fishing',date:'2025-04-18',time:'10:30',notes:'',photos:[]},
-    {id:7,fish:'Tailor',weight:1.1,length:40,location:'Newcastle Beach',bait:'Pilchard',method:'Surfcasting',date:'2025-04-22',time:'19:00',notes:'Evening session.',photos:[]},
+    {id:6,fish:'Tailor',weight:1.1,length:40,location:'Newcastle Beach',bait:'Pilchard',method:'Surfcasting',date:'2025-04-22',time:'19:00',notes:'Evening session.',photos:[]},
   ],
   sessions:[
-    {id:1,date:'2025-04-18',location:'Lake Macquarie',conditions:'Overcast, light wind',duration:'Full day',notes:'Snapper well on the bite. Great day out.'},
-    {id:2,date:'2025-04-05',location:'Port Stephens',conditions:'Glassy, sunny',duration:'Half day',notes:'Got a monster Barra. Unforgettable.'},
+    {id:1,date:'2025-04-18',location:'Lake Macquarie',conditions:'Overcast, light wind',duration:'Full day',notes:'Snapper well on the bite.'},
+    {id:2,date:'2025-04-05',location:'Port Stephens',conditions:'Glassy, sunny',duration:'Half day',notes:'Monster Barra.'},
     {id:3,date:'2025-03-15',location:'Sydney Harbour',conditions:'Light SE, clear',duration:'Half day',notes:'Snapper PB day!'}
   ],
-  nextId:8
+  nextId:7
 };
 
-let data = JSON.parse(localStorage.getItem('fishingJournal') || 'null') || DEMO;
-let pendingPhotos = []; // base64 strings for current log form
+let data = JSON.parse(localStorage.getItem('fishingJournal')||'null') || DEMO;
+let pendingPhotos = [];
+let activeFilter = 'all';
 
-function save(){try{localStorage.setItem('fishingJournal',JSON.stringify(data));}catch(e){toast('Storage full — photos may not save',true);}}
+function save(){try{localStorage.setItem('fishingJournal',JSON.stringify(data));}catch(e){toast('Storage full',true);}}
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────
+// ── HELPERS ──
 function formatDate(d){
   if(!d) return '';
-  const dt = new Date(d+'T12:00:00');
-  return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+  return new Date(d+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
 }
 function isPB(c){
-  const same = data.catches.filter(x=>x.fish.toLowerCase()===c.fish.toLowerCase());
-  const best = Math.max(...same.map(x=>x.weight));
-  return c.weight===best;
+  const best = Math.max(...data.catches.filter(x=>x.fish.toLowerCase()===c.fish.toLowerCase()).map(x=>x.weight));
+  return c.weight === best;
 }
 function getSpeciesPB(species){
-  const matches = data.catches.filter(x=>x.fish.toLowerCase()===species.toLowerCase());
-  if(!matches.length) return null;
-  return matches.reduce((a,b)=>b.weight>a.weight?b:a);
+  const m = data.catches.filter(x=>x.fish.toLowerCase()===species.toLowerCase());
+  return m.length ? m.reduce((a,b)=>b.weight>a.weight?b:a) : null;
 }
 function allSpeciesPBs(){
-  const species = [...new Set(data.catches.map(c=>c.fish.toLowerCase()))];
-  return species.map(s=>getSpeciesPB(s)).filter(Boolean);
+  return [...new Set(data.catches.map(c=>c.fish.toLowerCase()))].map(s=>getSpeciesPB(s)).filter(Boolean);
 }
 function totalWeight(){return data.catches.reduce((s,c)=>s+c.weight,0);}
+function getFishEmoji(n){return lookupByName(n)?.emoji || '🐟';}
+function eatStars(r){return '★'.repeat(r)+'☆'.repeat(5-r);}
 
-function toast(msg, err=false){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.background = err ? '#7a1a1a' : 'var(--teal)';
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
+function toast(msg,err=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.style.background=err?'#7a1a1a':'var(--teal)';
+  el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800);
 }
-
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open');}));
@@ -598,117 +923,86 @@ function switchView(name,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(name).classList.add('active');
   if(btn) btn.classList.add('active');
-  if(name==='dashboard') renderDashboard();
-  if(name==='myPBs') renderPBs();
-  if(name==='sessions') renderSessions();
-  if(name==='profile') renderProfile();
-  if(name==='logCatch') initLogForm();
+  const renders = {dashboard:renderDashboard,myPBs:renderPBs,sessions:renderSessions,profile:renderProfile,speciesGuide:renderSpeciesGuide,logCatch:initLogForm};
+  if(renders[name]) renders[name]();
 }
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────
+// ── DASHBOARD ──
 function renderDashboard(){
-  const name = data.profile.name || 'Angler';
-  const total = data.catches.length;
-  const tw = totalWeight();
-  const species = new Set(data.catches.map(c=>c.fish.toLowerCase())).size;
-
+  const name = data.profile.name||'Angler';
   document.getElementById('heroGreeting').textContent = name+"'s Total Catches";
-  document.getElementById('heroVal').textContent = total;
-  document.getElementById('heroLabel').textContent = total===1?'fish in your journal':'fish recorded in your journal';
+  document.getElementById('heroVal').textContent = data.catches.length;
+  document.getElementById('heroLabel').textContent = data.catches.length===1?'fish in your journal':'fish in your journal';
+  const tw = totalWeight();
   document.getElementById('statTotalKg').innerHTML = tw.toFixed(1)+'<span style="font-size:12px;color:var(--muted)"> kg</span>';
-  document.getElementById('statSpecies').textContent = species;
+  document.getElementById('statSpecies').textContent = new Set(data.catches.map(c=>c.fish.toLowerCase())).size;
   document.getElementById('statSessions').textContent = data.sessions.length;
-
-  // update header
   document.getElementById('hdrTitle').textContent = name ? name+"'s Journal" : 'My Fishing Journal';
-  document.getElementById('hdrSub').textContent = data.profile.waters || 'Personal catch log';
-  const av = document.getElementById('profileAvatar');
-  if(data.profile.avatar){av.innerHTML=`<img src="${data.profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
-  else{av.textContent='😊';}
+  document.getElementById('hdrSub').textContent = data.profile.waters||'Personal catch log';
+  const pb=document.getElementById('profileBtn');
+  pb.innerHTML=data.profile.avatar?`<img src="${data.profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:'😊';
 
-  // recent
-  const el = document.getElementById('recentList');
-  const recent = [...data.catches].sort((a,b)=>new Date(b.date+' '+(b.time||'00:00'))-new Date(a.date+' '+(a.time||'00:00'))).slice(0,6);
-  if(!recent.length){el.innerHTML='<div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish to get started</div></div>';return;}
-  el.innerHTML = recent.map(c=>{
-    const pb=isPB(c);
-    const hasPhoto = c.photos&&c.photos.length;
-    return `<div class="catch-item" onclick="showCatchDetail(${c.id})" style="cursor:pointer;">
-      <div class="catch-thumb">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+  const recent=[...data.catches].sort((a,b)=>new Date(b.date+' '+(b.time||'00:00'))-new Date(a.date+' '+(a.time||'00:00'))).slice(0,6);
+  const el=document.getElementById('recentList');
+  if(!recent.length){el.innerHTML='<div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish!</div></div>';return;}
+  el.innerHTML=recent.map(c=>{
+    const pb=isPB(c);const hp=c.photos&&c.photos.length;
+    return `<div class="catch-item" onclick="showCatchDetail(${c.id})">
+      <div class="catch-thumb">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
       <div class="catch-info">
         <div class="catch-species">${c.fish}${pb?'<span class="pb-badge">PB</span>':''}</div>
-        <div class="catch-meta">${c.location||'Unknown spot'} · ${formatDate(c.date)}</div>
+        <div class="catch-meta">${c.location||'Unknown'} · ${formatDate(c.date)}</div>
       </div>
-      <div class="catch-right">
-        <div class="catch-weight">${c.weight.toFixed(2)}</div>
-        <div class="catch-weight-unit">kg${c.length?' · '+c.length+'cm':''}</div>
-      </div>
+      <div class="catch-right"><div class="catch-weight">${c.weight.toFixed(2)}</div><div class="catch-weight-unit">kg${c.length?' · '+c.length+'cm':''}</div></div>
     </div>`;
   }).join('');
 
-  // top PBs
-  const pbs = allSpeciesPBs().sort((a,b)=>b.weight-a.weight).slice(0,4);
-  const pbEl = document.getElementById('dashPBs');
-  if(!pbs.length){pbEl.innerHTML='';return;}
-  pbEl.innerHTML = `<div class="pb-grid">${pbs.map(c=>{
-    const hasPhoto = c.photos&&c.photos.length;
+  const pbs=allSpeciesPBs().sort((a,b)=>b.weight-a.weight).slice(0,4);
+  const pe=document.getElementById('dashPBs');
+  if(!pbs.length){pe.innerHTML='';return;}
+  pe.innerHTML=`<div class="pb-grid">${pbs.map(c=>{
+    const hp=c.photos&&c.photos.length;
     return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
-      <div class="pb-card-img">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+      <div class="pb-card-img">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
       <div class="pb-crown">PB</div>
-      <div class="pb-card-body">
-        <div class="pb-species">${c.fish}</div>
-        <div style="margin-top:2px;"><span class="pb-weight">${c.weight.toFixed(2)}</span> <span class="pb-weight-unit">kg</span></div>
-        <div class="pb-date">${formatDate(c.date)}</div>
-      </div>
+      <div class="pb-card-body"><div class="pb-species">${c.fish}</div>
+      <div><span class="pb-weight">${c.weight.toFixed(2)}</span> <span style="font-size:10px;color:var(--muted);">kg</span></div>
+      <div class="pb-date">${formatDate(c.date)}</div></div>
     </div>`;
   }).join('')}</div>`;
 }
 
-// ─── LOG CATCH ─────────────────────────────────────────────────────────────
+// ── LOG CATCH ──
 function initLogForm(){
   if(!document.getElementById('catchDate').value)
-    document.getElementById('catchDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('catchDate').value=new Date().toISOString().slice(0,10);
   if(!document.getElementById('catchTime').value)
-    document.getElementById('catchTime').value = new Date().toTimeString().slice(0,5);
-  // populate species datalist
-  const dl = document.getElementById('speciesList');
-  const sp = [...new Set(data.catches.map(c=>c.fish))].sort();
-  dl.innerHTML = sp.map(s=>`<option value="${s}">`).join('');
-  pendingPhotos = [];
+    document.getElementById('catchTime').value=new Date().toTimeString().slice(0,5);
+  const dl=document.getElementById('speciesList');
+  dl.innerHTML=[...new Set(data.catches.map(c=>c.fish)),...SPECIES_DB.map(s=>s.common)].filter((v,i,a)=>a.indexOf(v)===i).sort().map(s=>`<option value="${s}">`).join('');
+  pendingPhotos=[];
   document.getElementById('photoPreview').innerHTML='';
-  document.getElementById('aiResult').style.display='none';
 }
 
 function handlePhotos(files){
   Array.from(files).forEach(f=>{
-    if(!f.type.startsWith('image/')) return;
-    const r=new FileReader();
-    r.onload=e=>{
-      pendingPhotos.push(e.target.result);
-      renderPhotoPreview();
-    };
-    r.readAsDataURL(f);
+    if(!f.type.startsWith('image/'))return;
+    const r=new FileReader();r.onload=e=>{pendingPhotos.push(e.target.result);renderPhotoPreview();};r.readAsDataURL(f);
   });
 }
-
 function renderPhotoPreview(){
-  const el = document.getElementById('photoPreview');
-  el.innerHTML = pendingPhotos.map((src,i)=>`<div class="photo-thumb">
-    <img src="${src}" alt="">
-    <button class="del-btn" onclick="removePhoto(${i})">×</button>
-  </div>`).join('');
+  document.getElementById('photoPreview').innerHTML=pendingPhotos.map((src,i)=>
+    `<div class="photo-thumb"><img src="${src}"><button class="del-btn" onclick="removePhoto(${i})">×</button></div>`).join('');
 }
-
 function removePhoto(i){pendingPhotos.splice(i,1);renderPhotoPreview();}
 
 function logCatch(){
-  const fish = document.getElementById('catchFish').value.trim();
-  const weight = parseFloat(document.getElementById('catchWeight').value);
-  const date = document.getElementById('catchDate').value;
-  if(!fish||!weight||!date){toast('Species, weight & date are required',true);return;}
-  
-  const wasSpeciesPB = getSpeciesPB(fish);
-  const catch_ = {
+  const fish=document.getElementById('catchFish').value.trim();
+  const weight=parseFloat(document.getElementById('catchWeight').value);
+  const date=document.getElementById('catchDate').value;
+  if(!fish||!weight||!date){toast('Species, weight & date required',true);return;}
+  const wasPB=getSpeciesPB(fish);
+  data.catches.unshift({
     id:data.nextId++,fish,weight,
     length:parseFloat(document.getElementById('catchLength').value)||0,
     location:document.getElementById('catchLocation').value.trim(),
@@ -717,259 +1011,281 @@ function logCatch(){
     date,time:document.getElementById('catchTime').value,
     notes:document.getElementById('catchNotes').value.trim(),
     photos:[...pendingPhotos]
-  };
-  data.catches.unshift(catch_);
+  });
   save();
-
-  const isNewPB = !wasSpeciesPB || weight > wasSpeciesPB.weight;
-  toast(isNewPB ? '🏆 New PB! Catch saved!' : '🎣 Catch saved!');
-  
-  // reset form
+  toast(!wasPB||weight>wasPB.weight?'🏆 New PB! Catch saved!':'🎣 Catch saved!');
   ['catchFish','catchWeight','catchLength','catchLocation','catchBait','catchNotes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('catchMethod').value='';
-  document.getElementById('aiResult').style.display='none';
-  pendingPhotos=[];
-  renderPhotoPreview();
-  initLogForm();
+  pendingPhotos=[];renderPhotoPreview();initLogForm();
 }
 
-// ─── AI IDENTIFY ───────────────────────────────────────────────────────────
-async function identifyFish(){
-  const fish = document.getElementById('catchFish').value.trim();
-  const weight = document.getElementById('catchWeight').value;
-  const length = document.getElementById('catchLength').value;
-  const location = document.getElementById('catchLocation').value.trim();
-  if(!fish&&!pendingPhotos.length){toast('Enter a species name or add a photo first',true);return;}
-
-  const box = document.getElementById('aiResult');
-  const txt = document.getElementById('aiText');
-  const sp = document.getElementById('aiSpinner');
-  box.style.display='block';
-  txt.textContent='Identifying…';
-  sp.style.display='inline-block';
-
-  const prompt = `You are an expert Australian fishing guide. ${fish?`The angler says this is: "${fish}".`:'Identify the fish from context.'} 
-${weight?`Weight: ${weight}kg.`:''}${length?` Length: ${length}cm.`:''}${location?` Caught at: ${location}.`:''}
-Respond with:
-**Common name** (and scientific name in italics)
-**Description:** 2 sentences about appearance/identification.
-**Typical size:** weight & length range.
-**Australian habitat:** where commonly found.
-**Eating quality:** one sentence.
-**Regulations:** any key size/bag limits (general AU, note they vary by state).
-**Fun fact:** one interesting fact.
-Keep it friendly and practical for an angler. Use markdown bold for headers.`;
-
-  const messages = [{role:'user',content:fish&&pendingPhotos.length?[
-    {type:'image',source:{type:'base64',media_type:'image/jpeg',data:pendingPhotos[0].split(',')[1]}},
-    {type:'text',text:prompt}
-  ]:[{type:'text',text:prompt}]}];
-
-  try{
-    const res = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages})
-    });
-    const d = await res.json();
-    const text = d.content?.find(c=>c.type==='text')?.text||'Could not identify fish.';
-    sp.style.display='none';
-    txt.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  }catch(e){
-    sp.style.display='none';
-    txt.innerHTML='Could not reach AI. Check your connection.';
-  }
+// ── SPECIES LOOKUP from log form ──
+function lookupSpecies(){
+  const name=document.getElementById('catchFish').value.trim();
+  const sp=lookupByName(name);
+  if(sp){ showSpeciesDetail(sp.key); return; }
+  if(name) toast('Not in database — try browsing the Species Guide',true);
+  else { switchView('speciesGuide',document.querySelectorAll('.nav-btn')[4]); }
 }
 
-// ─── PBs ───────────────────────────────────────────────────────────────────
+// ── PBs ──
 function renderPBs(){
-  const pbs = allSpeciesPBs();
-  const sort = document.getElementById('pbSort').value;
+  const pbs=allSpeciesPBs();
+  const sort=document.getElementById('pbSort').value;
   if(sort==='weight') pbs.sort((a,b)=>b.weight-a.weight);
   else if(sort==='species') pbs.sort((a,b)=>a.fish.localeCompare(b.fish));
   else pbs.sort((a,b)=>new Date(b.date)-new Date(a.date));
-
-  const grid = document.getElementById('pbGrid');
-  const empty = document.getElementById('pbEmpty');
+  const grid=document.getElementById('pbGrid'),empty=document.getElementById('pbEmpty');
   if(!pbs.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  grid.innerHTML = pbs.map(c=>{
-    const hasPhoto = c.photos&&c.photos.length;
+  grid.innerHTML=pbs.map(c=>{
+    const hp=c.photos&&c.photos.length;
     return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
-      <div class="pb-card-img">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+      <div class="pb-card-img">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
       <div class="pb-crown">PB</div>
-      <div class="pb-card-body">
-        <div class="pb-species">${c.fish}</div>
-        <div style="margin-top:2px;"><span class="pb-weight">${c.weight.toFixed(2)}</span> <span class="pb-weight-unit">kg</span></div>
-        <div class="pb-date">${formatDate(c.date)}${c.location?' · '+c.location:''}</div>
-      </div>
+      <div class="pb-card-body"><div class="pb-species">${c.fish}</div>
+      <div><span class="pb-weight">${c.weight.toFixed(2)}</span> <span style="font-size:10px;color:var(--muted);">kg</span></div>
+      <div class="pb-date">${formatDate(c.date)}${c.location?' · '+c.location:''}</div></div>
     </div>`;
   }).join('');
 }
 
-// ─── CATCH DETAIL ──────────────────────────────────────────────────────────
+// ── CATCH DETAIL ──
 function showCatchDetail(id){
-  const c = data.catches.find(x=>x.id===id);
-  if(!c) return;
+  const c=data.catches.find(x=>x.id===id);if(!c)return;
   const pb=isPB(c);
-  const hasPhotos = c.photos&&c.photos.length;
-  const imgHtml = hasPhotos
-    ? `<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;">${c.photos.map(p=>`<img src="${p}" style="height:180px;border-radius:12px;flex-shrink:0;object-fit:cover;">`).join('')}</div>`
-    : `<div class="detail-fish-img"><span>${getFishEmoji(c.fish)}</span></div>`;
-
-  document.getElementById('catchDetailContent').innerHTML = `
+  const hp=c.photos&&c.photos.length;
+  const sp=lookupByName(c.fish);
+  const imgHtml=hp?`<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;">${c.photos.map(p=>`<img src="${p}" style="height:180px;border-radius:12px;flex-shrink:0;object-fit:cover;">`).join('')}</div>`
+    :`<div style="font-size:60px;text-align:center;padding:20px 0;background:var(--surface2);border-radius:12px;margin-bottom:16px;">${getFishEmoji(c.fish)}</div>`;
+  document.getElementById('catchDetailContent').innerHTML=`
     <div class="modal-drag"></div>
     ${imgHtml}
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px;">
-      <div class="detail-species">${c.fish}${pb?'<span class="pb-badge" style="font-size:11px;">PB</span>':''}</div>
+      <div class="detail-species">${c.fish}${pb?'<span class="pb-badge">PB</span>':''}</div>
       <button class="btn btn-danger btn-sm" onclick="deleteCatch(${c.id})">Delete</button>
     </div>
     <div class="detail-grid">
       <div class="detail-tile"><div class="detail-tile-lbl">Weight</div><div class="detail-tile-val" style="color:var(--teal-bright)">${c.weight.toFixed(2)} kg</div></div>
-      <div class="detail-tile"><div class="detail-tile-lbl">Length</div><div class="detail-tile-val">${c.length||'—'} ${c.length?'cm':''}</div></div>
-      <div class="detail-tile"><div class="detail-tile-lbl">Date</div><div class="detail-tile-val" style="font-size:13px;">${formatDate(c.date)}${c.time?' '+c.time:''}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Length</div><div class="detail-tile-val">${c.length||'—'}${c.length?' cm':''}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Date & Time</div><div class="detail-tile-val" style="font-size:13px;">${formatDate(c.date)}${c.time?' '+c.time:''}</div></div>
       <div class="detail-tile"><div class="detail-tile-lbl">Method</div><div class="detail-tile-val" style="font-size:13px;">${c.method||'—'}</div></div>
     </div>
     ${c.location?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">📍 ${c.location}</div>`:''}
     ${c.bait?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">🪱 ${c.bait}</div>`:''}
-    ${c.notes?`<div style="font-size:13.5px;font-style:italic;color:var(--muted);margin-top:6px;">"${c.notes}"</div>`:''}
-    <button class="btn btn-ghost btn-full" style="margin-top:16px;" onclick="closeModal('catchDetailModal')">Close</button>
-  `;
+    ${c.notes?`<div style="font-size:13px;font-style:italic;color:var(--muted);margin-top:6px;">"${c.notes}"</div>`:''}
+    ${sp?`<button class="btn btn-species btn-full" style="margin-top:14px;" onclick="closeModal('catchDetailModal');showSpeciesDetail('${sp.key}')">🐟 View Species Info</button>`:''}
+    <button class="btn btn-ghost btn-full" style="margin-top:8px;" onclick="closeModal('catchDetailModal')">Close</button>`;
   openModal('catchDetailModal');
 }
 
 function deleteCatch(id){
-  if(!confirm('Delete this catch?')) return;
-  data.catches = data.catches.filter(c=>c.id!==id);
-  save();
-  closeModal('catchDetailModal');
-  toast('Catch deleted');
-  renderDashboard();
-  renderPBs();
+  if(!confirm('Delete this catch?'))return;
+  data.catches=data.catches.filter(c=>c.id!==id);
+  save();closeModal('catchDetailModal');toast('Catch deleted');renderDashboard();renderPBs();
 }
 
-// ─── SESSIONS ─────────────────────────────────────────────────────────────
+// ── SESSIONS ──
 function renderSessions(){
-  const el = document.getElementById('sessionList');
-  if(!data.sessions.length){
-    el.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No sessions logged</div><div class="empty-sub">Track your fishing trips here</div></div>';return;
-  }
-  const sorted = [...data.sessions].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  el.innerHTML = sorted.map(s=>{
-    const fishOnDay = data.catches.filter(c=>c.date===s.date);
-    const chips = [...new Set(fishOnDay.map(c=>c.fish))].map(f=>`<div class="fish-chip">${getFishEmoji(f)} ${f}</div>`).join('');
+  const el=document.getElementById('sessionList');
+  if(!data.sessions.length){el.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No sessions logged</div><div class="empty-sub">Track your fishing trips here</div></div>';return;}
+  el.innerHTML=[...data.sessions].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>{
+    const fish=data.catches.filter(c=>c.date===s.date);
+    const chips=[...new Set(fish.map(c=>c.fish))].map(f=>`<div class="fish-chip">${getFishEmoji(f)} ${f}</div>`).join('');
     return `<div class="session-item">
       <div class="session-hd">
-        <div>
-          <div class="session-date">${formatDate(s.date)}</div>
-          <div class="session-loc">📍 ${s.location}${s.duration?' · '+s.duration:''}</div>
-        </div>
+        <div><div class="session-date">${formatDate(s.date)}</div><div class="session-loc">📍 ${s.location}${s.duration?' · '+s.duration:''}</div></div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-          <div class="session-badge">${fishOnDay.length} catch${fishOnDay.length!==1?'es':''}</div>
+          <div class="session-badge">${fish.length} catch${fish.length!==1?'es':''}</div>
           <button class="btn btn-danger btn-sm" onclick="deleteSession(${s.id},event)">✕</button>
         </div>
       </div>
       ${s.conditions?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">🌤 ${s.conditions}</div>`:''}
-      ${s.notes?`<div class="session-notes">"${s.notes}"</div>`:''}
+      ${s.notes?`<div style="font-size:13px;font-style:italic;color:var(--muted);margin-top:6px;">"${s.notes}"</div>`:''}
       ${chips?`<div class="session-chips">${chips}</div>`:''}
     </div>`;
   }).join('');
 }
 
 function addSession(){
-  const date = document.getElementById('sessionDate').value;
-  const loc = document.getElementById('sessionLoc').value.trim();
+  const date=document.getElementById('sessionDate').value;
+  const loc=document.getElementById('sessionLoc').value.trim();
   if(!date||!loc){toast('Date and location required',true);return;}
-  data.sessions.unshift({
-    id:Date.now(),date,location:loc,
+  data.sessions.unshift({id:Date.now(),date,location:loc,
     duration:document.getElementById('sessionDuration').value,
     conditions:document.getElementById('sessionConditions').value.trim(),
-    notes:document.getElementById('sessionNotes').value.trim()
-  });
-  save();
-  closeModal('addSessionModal');
+    notes:document.getElementById('sessionNotes').value.trim()});
+  save();closeModal('addSessionModal');
   ['sessionDate','sessionLoc','sessionConditions','sessionNotes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('sessionDuration').value='';
-  renderSessions();
-  toast('Session logged 📅');
+  renderSessions();toast('Session logged 📅');
 }
 
 function deleteSession(id,e){
-  e.stopPropagation();
-  if(!confirm('Delete this session?')) return;
-  data.sessions=data.sessions.filter(s=>s.id!==id);
-  save();renderSessions();toast('Session deleted');
+  e.stopPropagation();if(!confirm('Delete this session?'))return;
+  data.sessions=data.sessions.filter(s=>s.id!==id);save();renderSessions();toast('Session deleted');
 }
 
-// ─── PROFILE ──────────────────────────────────────────────────────────────
+// ── SPECIES GUIDE ──
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSpeciesGuide();
+}
+
+function renderSpeciesGuide(){
+  const query=(document.getElementById('speciesSearch').value||'').toLowerCase().trim();
+  let list=SPECIES_DB;
+  if(activeFilter!=='all') list=list.filter(s=>s.type===activeFilter);
+  if(query) list=list.filter(s=>
+    s.common.toLowerCase().includes(query)||
+    s.key.includes(query)||
+    (s.aka||'').toLowerCase().includes(query)||
+    s.scientific.toLowerCase().includes(query)
+  );
+  const grid=document.getElementById('speciesGridEl');
+  const empty=document.getElementById('speciesEmpty');
+  if(!list.length){grid.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const typeTag={saltwater:'tag-salt',freshwater:'tag-fresh',estuary:'tag-estuary'};
+  const typeLabel={saltwater:'Saltwater',freshwater:'Freshwater',estuary:'Estuary'};
+  grid.innerHTML=list.map(s=>`
+    <div class="species-card" onclick="showSpeciesDetail('${s.key}')">
+      <div class="species-card-top">
+        <div class="species-emoji">${s.emoji}</div>
+        <div><div class="species-card-name">${s.common}</div><div class="species-card-sci">${s.scientific}</div></div>
+      </div>
+      <div class="species-eat-row">
+        <span class="eat-stars">${eatStars(s.eating.rating)}</span>
+        <span class="species-type-tag ${typeTag[s.type]}">${typeLabel[s.type]}</span>
+      </div>
+    </div>`).join('');
+}
+
+function showSpeciesDetail(key){
+  const s=SPECIES_MAP[key]||SPECIES_DB.find(x=>x.key===key);
+  if(!s)return;
+  const typeTag={saltwater:'tag-salt',freshwater:'tag-fresh',estuary:'tag-estuary'};
+  const typeLabel={saltwater:'🌊 Saltwater',freshwater:'🏞 Freshwater',estuary:'🌿 Estuary'};
+  const eatLabels=['','Poor','Below average','Good','Excellent','World-class'];
+
+  // Check if angler has caught this species
+  const myCatches=data.catches.filter(c=>c.fish.toLowerCase()===s.common.toLowerCase()||lookupByName(c.fish)?.key===s.key);
+  const myPB=myCatches.length?myCatches.reduce((a,b)=>b.weight>a.weight?b:a):null;
+
+  document.getElementById('speciesDetailContent').innerHTML=`
+    <div class="modal-drag"></div>
+    <div class="spp-hero">
+      <span class="spp-emoji">${s.emoji}</span>
+      <div class="spp-name">${s.common}</div>
+      ${s.aka?`<div class="spp-aka">Also: ${s.aka}</div>`:''}
+      <div class="spp-sci">${s.scientific}</div>
+      <span class="spp-type-badge species-type-tag ${typeTag[s.type]}">${typeLabel[s.type]}</span>
+      ${myPB?`<div style="margin-top:10px;background:var(--amber-light);border:1px solid rgba(232,146,42,0.3);border-radius:8px;padding:8px 10px;font-size:12.5px;">🏆 Your PB: <strong>${myPB.weight.toFixed(2)} kg</strong>${myPB.length?' · '+myPB.length+' cm':''} — ${formatDate(myPB.date)}</div>`:''}
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Description</div>
+      <div class="spp-desc">${s.desc}</div>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">How to Identify</div>
+      <div class="id-box"><div class="id-box-text">${s.id_tips}</div></div>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Size & Habitat</div>
+      <div class="spp-stats">
+        <div class="spp-stat"><div class="spp-stat-lbl">Typical Weight</div><div class="spp-stat-val">${s.weight}</div></div>
+        <div class="spp-stat"><div class="spp-stat-lbl">Typical Length</div><div class="spp-stat-val">${s.length}</div></div>
+        <div class="spp-stat" style="grid-column:1/-1;"><div class="spp-stat-lbl">Habitat</div><div class="spp-stat-val" style="font-size:13px;font-weight:400;line-height:1.5;">${s.habitat}</div></div>
+        <div class="spp-stat" style="grid-column:1/-1;"><div class="spp-stat-lbl">Distribution</div><div class="spp-stat-val" style="font-size:13px;font-weight:400;line-height:1.5;">${s.distribution}</div></div>
+      </div>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Eating Quality</div>
+      <div class="eating-row"><span class="eat-stars-lg">${eatStars(s.eating.rating)}</span><span class="eat-rating-lbl">${eatLabels[s.eating.rating]}</span></div>
+      <div class="eat-notes">${s.eating.notes}</div>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Legal Size & Bag Limits <span style="font-size:9px;font-weight:400;letter-spacing:0;">(verify with your state authority — rules change)</span></div>
+      <table class="legal-table">
+        <tr><th>State</th><th>Min Size</th><th>Bag Limit</th></tr>
+        ${s.legal.map(r=>`<tr><td><strong>${r.s}</strong></td><td class="legal-min">${r.min}</td><td class="legal-bag">${r.bag}</td></tr>`).join('')}
+      </table>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Best Bait & Lures</div>
+      <div class="bait-pills">${s.bait.map(b=>`<div class="bait-pill">${b}</div>`).join('')}</div>
+    </div>
+
+    <div class="spp-section">
+      <div class="spp-section-title">Season</div>
+      <div style="font-size:13.5px;color:var(--text);">${s.season}</div>
+    </div>
+
+    <button class="btn btn-ghost btn-full" style="margin-top:6px;" onclick="closeModal('speciesDetailModal')">Close</button>`;
+  openModal('speciesDetailModal');
+}
+
+// ── PROFILE ──
 function renderProfile(){
-  const p = data.profile;
-  document.getElementById('profileName').value = p.name||'';
-  document.getElementById('profileWaters').value = p.waters||'';
-  document.getElementById('profileSinceYear').value = p.sinceYear||'';
-  document.getElementById('profileFavSpecies').value = p.favSpecies||'';
-  document.getElementById('profileNameDisplay').textContent = p.name||'Angler';
-  document.getElementById('profileHandle').textContent = p.waters||'Set up your profile below';
-  document.getElementById('profileSince').textContent = p.sinceYear?'Fishing since '+p.sinceYear+(p.favSpecies?' · Loves '+p.favSpecies:''):'';
-  if(p.avatar){
-    document.getElementById('profileAvatarImg').src=p.avatar;
-    document.getElementById('profileAvatarImg').style.display='block';
-  }
+  const p=data.profile;
+  document.getElementById('profileName').value=p.name||'';
+  document.getElementById('profileWaters').value=p.waters||'';
+  document.getElementById('profileSinceYear').value=p.sinceYear||'';
+  document.getElementById('profileFavSpecies').value=p.favSpecies||'';
+  document.getElementById('profileNameDisplay').textContent=p.name||'Angler';
+  document.getElementById('profileHandleDisplay').textContent=p.waters||(p.sinceYear?'Fishing since '+p.sinceYear:'');
+  if(p.avatar){document.getElementById('profileAvatarImg').src=p.avatar;document.getElementById('profileAvatarImg').style.display='block';}
   document.getElementById('psCatches').textContent=data.catches.length;
   document.getElementById('psSpecies').textContent=new Set(data.catches.map(c=>c.fish.toLowerCase())).size;
   document.getElementById('psKg').textContent=totalWeight().toFixed(1);
 }
 
 function saveProfile(){
-  data.profile.name = document.getElementById('profileName').value.trim();
-  data.profile.waters = document.getElementById('profileWaters').value.trim();
-  data.profile.sinceYear = document.getElementById('profileSinceYear').value;
-  data.profile.favSpecies = document.getElementById('profileFavSpecies').value.trim();
-  save();renderProfile();toast('Profile saved ✓');
+  data.profile.name=document.getElementById('profileName').value.trim();
+  data.profile.waters=document.getElementById('profileWaters').value.trim();
+  data.profile.sinceYear=document.getElementById('profileSinceYear').value;
+  data.profile.favSpecies=document.getElementById('profileFavSpecies').value.trim();
+  save();renderProfile();renderDashboard();toast('Profile saved ✓');
 }
 
-function handleAvatarPhoto(files){
-  if(!files[0]) return;
+function handleAvatar(files){
+  if(!files[0])return;
   const r=new FileReader();
-  r.onload=e=>{
-    data.profile.avatar=e.target.result;
-    save();renderProfile();
-    const av=document.getElementById('profileAvatar');
-    av.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-  };
-  r.readAsDataURL(files[0]);
+  r.onload=e=>{data.profile.avatar=e.target.result;save();renderProfile();
+    document.getElementById('profileBtn').innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  };r.readAsDataURL(files[0]);
 }
 
-// ─── DATA MANAGEMENT ───────────────────────────────────────────────────────
 function exportData(){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
-  toast('Journal exported ⬇');
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported ⬇');
 }
 
 function importData(files){
   const f=files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{
-    try{
-      const imported=JSON.parse(e.target.result);
-      if(!imported.catches||!imported.sessions){throw new Error();}
-      data={...DEFAULT,...imported};
-      save();renderDashboard();toast('Journal imported ✓');
-    }catch{toast('Invalid file',true);}
-  };
-  r.readAsText(f);
+  const r=new FileReader();r.onload=e=>{
+    try{const d=JSON.parse(e.target.result);if(!d.catches||!d.sessions)throw 0;
+      data={catches:[],sessions:[],nextId:1,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},...d};
+      save();renderDashboard();toast('Imported ✓');}
+    catch{toast('Invalid file',true);}};r.readAsText(f);
 }
 
 function confirmClear(){
-  if(!confirm('Delete ALL catches, sessions and profile data? This cannot be undone.')) return;
-  data={...DEFAULT,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},catches:[],sessions:[],nextId:1};
+  if(!confirm('Delete ALL data? This cannot be undone.'))return;
+  data={catches:[],sessions:[],nextId:1,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''}};
   save();renderDashboard();toast('All data cleared');
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────
+// ── INIT ──
 initLogForm();
 renderDashboard();
 </script>
