@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Fishing Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --deep: #0b1e2d;
+  --water: #0e3348;
+  --teal: #1a6b5a;
+  --teal-bright: #22957a;
+  --teal-light: rgba(34,149,122,0.15);
+  --amber: #e8922a;
+  --amber-light: rgba(232,146,42,0.15);
+  --amber-pale: rgba(232,146,42,0.08);
+  --gold: #f5c842;
+  --cream: #f5f0e8;
+  --text: #e8e4dc;
+  --muted: rgba(232,228,220,0.55);
+  --border: rgba(232,228,220,0.1);
+  --border-strong: rgba(232,228,220,0.18);
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --surface3: rgba(255,255,255,0.11);
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --ff-display: 'Fraunces', Georgia, serif;
+  --ff-body: 'DM Sans', sans-serif;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --glow: 0 0 24px rgba(34,149,122,0.2);
+}
+
+html,body{height:100%;background:var(--deep);}
+body{font-family:var(--ff-body);color:var(--text);font-size:15px;line-height:1.5;overflow-x:hidden;}
+
+/* — BG texture — */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 0%,rgba(14,51,72,0.9) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 100%,rgba(26,107,90,0.25) 0%,transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%,var(--deep) 0%,#061218 100%);
+  z-index:-2;pointer-events:none;
+}
+
+/* — LAYOUT — */
+#app{max-width:440px;margin:0 auto;min-height:100vh;position:relative;display:flex;flex-direction:column;}
+
+/* — HEADER — */
+.header{padding:1.5rem 1.25rem 1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.header-brand{display:flex;align-items:center;gap:10px;}
+.header-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-bright));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow);}
+.header-text{}
+.header-title{font-family:var(--ff-display);font-size:21px;font-weight:600;letter-spacing:-0.4px;line-height:1.15;}
+.header-sub{font-size:12px;color:var(--muted);margin-top:1px;}
+.profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--teal-bright);flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;transition:border-color 0.2s;}
+.profile-avatar:hover{border-color:var(--amber);}
+
+/* — NAV — */
+.nav{display:flex;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex:1;min-width:70px;background:none;border:none;border-bottom:2px solid transparent;padding:11px 8px 10px;font-family:var(--ff-body);font-size:11.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.18s;white-space:nowrap;letter-spacing:0.2px;}
+.nav-btn svg{display:block;margin:0 auto 4px;opacity:0.6;}
+.nav-btn.active{color:var(--teal-bright);border-bottom-color:var(--teal-bright);}
+.nav-btn.active svg{opacity:1;}
+.nav-btn:hover:not(.active){color:var(--text);}
+
+/* — VIEWS — */
+.view{display:none;padding:1rem 1.25rem 5rem;flex:1;animation:fadeIn 0.2s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* — SECTION HEADER — */
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.section-title{font-family:var(--ff-display);font-size:20px;font-weight:600;letter-spacing:-0.3px;}
+
+/* — CARDS — */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:12px;}
+.card-glass{background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03));border:1px solid var(--border-strong);border-radius:var(--radius);backdrop-filter:blur(8px);}
+
+/* — STATS DASHBOARD — */
+.stats-hero{background:linear-gradient(135deg,rgba(14,51,72,0.8),rgba(26,107,90,0.3));border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:14px;position:relative;overflow:hidden;}
+.stats-hero::before{content:'🎣';position:absolute;right:-10px;bottom:-15px;font-size:80px;opacity:0.06;pointer-events:none;}
+.stats-hero-name{font-family:var(--ff-display);font-size:14px;font-weight:300;font-style:italic;color:var(--muted);margin-bottom:2px;}
+.stats-hero-val{font-family:var(--ff-display);font-size:42px;font-weight:700;line-height:1;color:var(--teal-bright);letter-spacing:-2px;}
+.stats-hero-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;}
+.stat-tile{background:rgba(255,255,255,0.05);border-radius:10px;padding:10px 8px;text-align:center;}
+.stat-tile-val{font-family:var(--ff-display);font-size:22px;font-weight:600;color:var(--text);line-height:1;}
+.stat-tile-lbl{font-size:10.5px;color:var(--muted);margin-top:3px;letter-spacing:0.3px;}
+
+/* — RECENT CATCHES — */
+.catch-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.catch-item:last-child{border-bottom:none;}
+.catch-thumb{width:46px;height:46px;border-radius:10px;background:var(--surface2);object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;}
+.catch-thumb img{width:100%;height:100%;object-fit:cover;}
+.catch-info{flex:1;min-width:0;}
+.catch-species{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.catch-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.catch-right{text-align:right;flex-shrink:0;}
+.catch-weight{font-family:var(--ff-display);font-size:18px;font-weight:600;color:var(--teal-bright);white-space:nowrap;}
+.catch-weight-unit{font-size:11px;color:var(--muted);}
+.pb-badge{display:inline-block;background:linear-gradient(135deg,var(--amber),#c9720e);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.5px;margin-left:5px;vertical-align:middle;}
+
+/* — FORMS — */
+.form-section{margin-bottom:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.form-row.triple{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;}
+.form-input{background:var(--surface2);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:9px 12px;font-family:var(--ff-body);font-size:14px;color:var(--text);width:100%;transition:border-color 0.15s,box-shadow 0.15s;-webkit-appearance:none;}
+.form-input::placeholder{color:rgba(232,228,220,0.3);}
+.form-input:focus{outline:none;border-color:var(--teal-bright);box-shadow:0 0 0 3px rgba(34,149,122,0.12);}
+.form-input option{background:var(--water);color:var(--text);}
+textarea.form-input{resize:vertical;min-height:70px;}
+
+/* — PHOTO UPLOAD — */
+.photo-upload-zone{border:2px dashed var(--border-strong);border-radius:var(--radius);padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--surface);}
+.photo-upload-zone:hover,.photo-upload-zone.drag{border-color:var(--teal-bright);background:var(--teal-light);}
+.photo-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.photo-thumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--surface2);}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;}
+.photo-thumb .del-btn{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+
+/* — BUTTONS — */
+.btn{padding:10px 18px;border-radius:var(--radius-sm);font-family:var(--ff-body);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all 0.16s;letter-spacing:0.1px;}
+.btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal-bright));color:white;box-shadow:0 4px 14px rgba(34,149,122,0.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(34,149,122,0.4);}
+.btn-primary:active{transform:none;}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border-strong);}
+.btn-ghost:hover{background:var(--surface3);}
+.btn-amber{background:linear-gradient(135deg,#c9720e,var(--amber));color:white;box-shadow:0 4px 14px rgba(232,146,42,0.25);}
+.btn-amber:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,146,42,0.35);}
+.btn-danger{background:rgba(180,40,40,0.15);color:#f08080;border:1px solid rgba(180,40,40,0.25);}
+.btn-sm{padding:6px 12px;font-size:12.5px;}
+.btn-full{width:100%;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* — AI BOX — */
+.ai-box{background:linear-gradient(135deg,var(--amber-pale),rgba(245,200,66,0.05));border:1px solid rgba(232,146,42,0.25);border-radius:var(--radius);padding:1rem 1.15rem;margin-top:10px;}
+.ai-label{font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.ai-result{font-size:13.5px;color:var(--text);line-height:1.65;}
+.ai-result strong{color:var(--amber);}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(232,146,42,0.3);border-top-color:var(--amber);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* — PB WALL — */
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
+.pb-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+.pb-card-img{width:100%;height:110px;object-fit:cover;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:42px;}
+.pb-card-img img{width:100%;height:100%;object-fit:cover;}
+.pb-card-body{padding:8px 10px 10px;}
+.pb-species{font-family:var(--ff-display);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pb-weight{font-size:18px;font-weight:700;color:var(--amber);font-family:var(--ff-display);}
+.pb-weight-unit{font-size:10px;color:var(--muted);font-family:var(--ff-body);}
+.pb-date{font-size:11px;color:var(--muted);}
+.pb-crown{position:absolute;top:8px;right:8px;background:linear-gradient(135deg,var(--amber),var(--gold));border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:#5c3800;letter-spacing:0.4px;}
+
+/* — SESSIONS — */
+.session-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s;}
+.session-item:hover{border-color:var(--border-strong);}
+.session-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.session-date{font-family:var(--ff-display);font-size:16px;font-weight:600;}
+.session-loc{font-size:12.5px;color:var(--muted);margin-top:2px;}
+.session-badge{background:var(--teal-light);color:var(--teal-bright);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap;}
+.session-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.fish-chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;}
+.session-notes{font-size:12.5px;color:var(--muted);margin-top:8px;font-style:italic;}
+
+/* — PROFILE — */
+.profile-hero{text-align:center;padding:1.5rem 1rem;background:linear-gradient(135deg,rgba(14,51,72,0.8),rgba(26,107,90,0.2));border:1px solid var(--border-strong);border-radius:var(--radius-lg);margin-bottom:16px;position:relative;overflow:hidden;}
+.profile-avatar-big{width:80px;height:80px;border-radius:50%;border:3px solid var(--teal-bright);margin:0 auto 12px;font-size:40px;background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color 0.2s;overflow:hidden;}
+.profile-avatar-big img{width:100%;height:100%;object-fit:cover;}
+.profile-avatar-big:hover{border-color:var(--amber);}
+.profile-name-big{font-family:var(--ff-display);font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+.profile-handle{font-size:13px;color:var(--muted);margin-top:2px;}
+.profile-since{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic;}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-top:16px;}
+.ps-tile{background:var(--surface);padding:12px 8px;text-align:center;}
+.ps-val{font-family:var(--ff-display);font-size:20px;font-weight:600;color:var(--teal-bright);}
+.ps-lbl{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:0.3px;}
+
+/* — MODAL — */
+.modal-backdrop{position:fixed;inset:0;background:rgba(6,18,24,0.8);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px);}
+.modal-backdrop.open{display:flex;}
+.modal{background:#112130;border:1px solid var(--border-strong);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s cubic-bezier(0.16,1,0.3,1);}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.modal-drag{width:40px;height:4px;border-radius:2px;background:var(--border-strong);margin:0 auto 1.25rem;}
+.modal-title{font-family:var(--ff-display);font-size:20px;font-weight:600;margin-bottom:1.25rem;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;}
+
+/* — CATCH DETAIL MODAL — */
+.detail-fish-img{width:100%;height:200px;border-radius:12px;object-fit:cover;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:70px;margin-bottom:16px;overflow:hidden;}
+.detail-fish-img img{width:100%;height:100%;object-fit:cover;}
+.detail-species{font-family:var(--ff-display);font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.detail-tile{background:var(--surface2);border-radius:10px;padding:10px 12px;}
+.detail-tile-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.detail-tile-val{font-size:16px;font-weight:600;font-family:var(--ff-display);}
+
+/* — EMPTY — */
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:12px;opacity:0.6;}
+.empty-title{font-family:var(--ff-display);font-size:18px;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:13px;}
+
+/* — MISC — */
+.divider{height:1px;background:var(--border);margin:12px 0;}
+.tag{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--muted);}
+.text-amber{color:var(--amber);}
+.text-teal{color:var(--teal-bright);}
+.flex-center{display:flex;align-items:center;gap:8px;}
+.ml-auto{margin-left:auto;}
+select.form-input{cursor:pointer;}
+
+/* — TOAST — */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a6b5a;color:white;padding:10px 20px;border-radius:30px;font-size:13.5px;font-weight:500;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);z-index:999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* — SCROLL — */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:2px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="header-icon">🎣</div>
+      <div class="header-text">
+        <div class="header-title" id="hdrTitle">My Fishing Journal</div>
+        <div class="header-sub" id="hdrSub">Personal catch log</div>
+      </div>
+    </div>
+    <div class="profile-avatar" onclick="switchView('profile',document.querySelectorAll('.nav-btn')[4])" id="profileAvatar">😊</div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-btn active" onclick="switchView('dashboard',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" onclick="switchView('logCatch',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Log Catch
+    </button>
+    <button class="nav-btn" onclick="switchView('myPBs',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      My PBs
+    </button>
+    <button class="nav-btn" onclick="switchView('sessions',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Sessions
+    </button>
+    <button class="nav-btn" onclick="switchView('profile',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="view active">
+    <div class="stats-hero card-glass" style="margin-bottom:14px;">
+      <div class="stats-hero-name" id="heroGreeting">Total Catches</div>
+      <div class="stats-hero-val" id="heroVal">0</div>
+      <div class="stats-hero-label" id="heroLabel">fish recorded in your journal</div>
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <div class="stat-tile-val" id="statTotalKg">0.0<span style="font-size:12px;color:var(--muted)"> kg</span></div>
+          <div class="stat-tile-lbl">Total Weight</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-val" id="statSpecies">0</div>
+          <div class="stat-tile-lbl">Species</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-val" id="statSessions">0</div>
+          <div class="stat-tile-lbl">Sessions</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-hd">
+      <div class="section-title">Recent Catches</div>
+      <button class="btn btn-ghost btn-sm" onclick="switchView('logCatch',document.querySelectorAll('.nav-btn')[1])">+ Add</button>
+    </div>
+    <div class="card" id="recentList">
+      <div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish to get started</div></div>
+    </div>
+
+    <div class="section-hd" style="margin-top:6px;">
+      <div class="section-title">Top PBs</div>
+      <button class="btn btn-ghost btn-sm" onclick="switchView('myPBs',document.querySelectorAll('.nav-btn')[2])">See all</button>
+    </div>
+    <div id="dashPBs"></div>
+  </div>
+
+  <!-- LOG CATCH -->
+  <div id="logCatch" class="view">
+    <div class="section-title" style="margin-bottom:1rem;">Log a Catch</div>
+
+    <div class="card">
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-input" id="catchDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <input type="time" class="form-input" id="catchTime">
+        </div>
+      </div>
+
+      <div class="form-row triple" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Species</label>
+          <input type="text" class="form-input" id="catchFish" placeholder="e.g. Snapper" list="speciesList">
+          <datalist id="speciesList"></datalist>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Weight (kg)</label>
+          <input type="number" class="form-input" id="catchWeight" placeholder="2.4" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Length (cm)</label>
+          <input type="number" class="form-input" id="catchLength" placeholder="45" step="1" min="0">
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-input" id="catchLocation" placeholder="e.g. Lake Macquarie">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bait / Lure</label>
+          <input type="text" class="form-input" id="catchBait" placeholder="e.g. Live prawn">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Method</label>
+        <select class="form-input" id="catchMethod">
+          <option value="">Select method…</option>
+          <option>Spinning</option><option>Bait fishing</option><option>Trolling</option>
+          <option>Fly fishing</option><option>Jigging</option><option>Surfcasting</option>
+          <option>Rock fishing</option><option>Kayak fishing</option><option>Boat fishing</option><option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input" id="catchNotes" placeholder="Conditions, tackle, anything worth remembering…"></textarea>
+      </div>
+
+      <!-- Photo upload -->
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Photos</label>
+        <div class="photo-upload-zone" id="uploadZone">
+          <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
+          <div style="font-size:28px;margin-bottom:6px;">📷</div>
+          <div style="font-size:13px;font-weight:500;">Tap to add photos</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;">JPG, PNG · multiple allowed</div>
+        </div>
+        <div class="photo-preview-grid" id="photoPreview"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" style="flex:1;" onclick="logCatch()">💾 Save Catch</button>
+        <button class="btn btn-amber" onclick="identifyFish()">✦ AI Identify</button>
+      </div>
+
+      <div id="aiResult" style="display:none;" class="ai-box">
+        <div class="ai-label"><span class="spinner" id="aiSpinner" style="display:none;"></span>✦ AI Fish ID</div>
+        <div id="aiText" class="ai-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY PBs -->
+  <div id="myPBs" class="view">
+    <div class="section-hd">
+      <div class="section-title">Personal Bests</div>
+      <select class="form-input" id="pbSort" onchange="renderPBs()" style="width:auto;font-size:12px;padding:6px 10px;background:var(--surface2);">
+        <option value="weight">By Weight</option>
+        <option value="species">A–Z Species</option>
+        <option value="date">Most Recent</option>
+      </select>
+    </div>
+    <div id="pbGrid" class="pb-grid"></div>
+    <div id="pbEmpty" class="empty" style="display:none;">
+      <div class="empty-icon">⭐</div>
+      <div class="empty-title">No PBs yet</div>
+      <div class="empty-sub">Log your first catch to start your PB wall</div>
+    </div>
+  </div>
+
+  <!-- SESSIONS -->
+  <div id="sessions" class="view">
+    <div class="section-hd">
+      <div class="section-title">Fishing Sessions</div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('addSessionModal')">+ New</button>
+    </div>
+    <div id="sessionList">
+      <div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No sessions logged</div><div class="empty-sub">Track your fishing trips here</div></div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="view">
+    <div class="profile-hero card-glass">
+      <div class="profile-avatar-big" id="profileAvatarBig" onclick="document.getElementById('avatarPhotoInput').click()">😊
+        <img id="profileAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+        <input type="file" id="avatarPhotoInput" accept="image/*" style="display:none;" onchange="handleAvatarPhoto(this.files)">
+      </div>
+      <div class="profile-name-big" id="profileNameDisplay">Angler</div>
+      <div class="profile-handle" id="profileHandle">Tap to set up your profile</div>
+      <div class="profile-since" id="profileSince"></div>
+      <div class="profile-stats">
+        <div class="ps-tile"><div class="ps-val" id="psCatches">0</div><div class="ps-lbl">Catches</div></div>
+        <div class="ps-tile"><div class="ps-val" id="psSpecies">0</div><div class="ps-lbl">Species</div></div>
+        <div class="ps-tile"><div class="ps-val" id="psKg">0</div><div class="ps-lbl">kg Total</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Profile Settings</div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" id="profileName" placeholder="e.g. Mick">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Home Waters</label>
+        <input type="text" class="form-input" id="profileWaters" placeholder="e.g. Lake Macquarie, NSW">
+      </div>
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Fishing Since</label>
+          <input type="number" class="form-input" id="profileSinceYear" placeholder="e.g. 2010" min="1900" max="2099">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Favourite Species</label>
+          <input type="text" class="form-input" id="profileFavSpecies" placeholder="e.g. Snapper">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
+    </div>
+
+    <div class="card" style="margin-top:4px;">
+      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Data</div>
+      <div class="btn-row">
+        <button class="btn btn-ghost btn-sm" onclick="exportData()">⬇ Export JSON</button>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importInput').click()">⬆ Import JSON</button>
+        <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importData(this.files)">
+      </div>
+      <div style="margin-top:14px;">
+        <button class="btn btn-danger btn-sm" onclick="confirmClear()">🗑 Clear All Data</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SESSION MODAL -->
+<div class="modal-backdrop" id="addSessionModal">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-title">New Session</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="sessionDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration</label>
+        <select class="form-input" id="sessionDuration">
+          <option value="">–</option>
+          <option>1 hour</option><option>2 hours</option><option>3 hours</option>
+          <option>Half day</option><option>Full day</option><option>Overnight</option><option>Weekend</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Location</label>
+      <input type="text" class="form-input" id="sessionLoc" placeholder="e.g. Lake Macquarie">
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Conditions</label>
+      <input type="text" class="form-input" id="sessionConditions" placeholder="e.g. Light NE breeze, overcast">
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="sessionNotes" placeholder="What worked, what didn't, anything memorable…" style="min-height:80px;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addSessionModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addSession()">Save Session</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATCH DETAIL MODAL -->
+<div class="modal-backdrop" id="catchDetailModal">
+  <div class="modal" id="catchDetailContent"></div>
+</div>
+
+<!-- PB DETAIL MODAL -->
+<div class="modal-backdrop" id="pbDetailModal">
+  <div class="modal" id="pbDetailContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+const FISH_EMOJI = {snapper:'🐟',bass:'🎣',trout:'🐟',salmon:'🐟',bream:'🐠',carp:'🐡',perch:'🐟',
+  tuna:'🐟',flathead:'🐟',whiting:'🐟',barramundi:'🐟',mackerel:'🐟',mulloway:'🐟',tailor:'🐟',
+  yellowfin:'🐟',kingfish:'🐟',jewfish:'🐟',cod:'🐟',bass:'🎣',redfin:'🐟',luderick:'🐟'};
+const getFishEmoji = n => FISH_EMOJI[(n||'').toLowerCase().split(' ')[0]] || '🐟';
+
+const DEFAULT = {
+  profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},
+  catches:[],sessions:[],nextId:1
+};
+
+// seed demo data
+const DEMO = {
+  profile:{name:'Mick',waters:'Lake Macquarie, NSW',sinceYear:'2015',favSpecies:'Snapper',avatar:''},
+  catches:[
+    {id:1,fish:'Snapper',weight:3.6,length:56,location:'Sydney Harbour',bait:'Squid',method:'Bait fishing',date:'2025-03-15',time:'06:30',notes:'PB! Perfect morning session.',photos:[]},
+    {id:2,fish:'Flathead',weight:1.8,length:62,location:'Lake Macquarie',bait:'Soft plastic',method:'Spinning',date:'2025-03-28',time:'07:00',notes:'Shallow flat at low tide.',photos:[]},
+    {id:3,fish:'Barramundi',weight:5.2,length:82,location:'Port Stephens',bait:'Lure',method:'Spinning',date:'2025-04-05',time:'17:00',notes:'Massive fish! Best ever Barra.',photos:[]},
+    {id:4,fish:'Bream',weight:0.85,length:32,location:'Lake Macquarie',bait:'Worm',method:'Bait fishing',date:'2025-04-12',time:'08:15',notes:'',photos:[]},
+    {id:5,fish:'Whiting',weight:0.55,length:30,location:'Pittwater',bait:'Yabby',method:'Bait fishing',date:'2025-04-18',time:'09:00',notes:'',photos:[]},
+    {id:6,fish:'Snapper',weight:2.8,length:48,location:'Lake Macquarie',bait:'Live prawn',method:'Bait fishing',date:'2025-04-18',time:'10:30',notes:'',photos:[]},
+    {id:7,fish:'Tailor',weight:1.1,length:40,location:'Newcastle Beach',bait:'Pilchard',method:'Surfcasting',date:'2025-04-22',time:'19:00',notes:'Evening session.',photos:[]},
+  ],
+  sessions:[
+    {id:1,date:'2025-04-18',location:'Lake Macquarie',conditions:'Overcast, light wind',duration:'Full day',notes:'Snapper well on the bite. Great day out.'},
+    {id:2,date:'2025-04-05',location:'Port Stephens',conditions:'Glassy, sunny',duration:'Half day',notes:'Got a monster Barra. Unforgettable.'},
+    {id:3,date:'2025-03-15',location:'Sydney Harbour',conditions:'Light SE, clear',duration:'Half day',notes:'Snapper PB day!'}
+  ],
+  nextId:8
+};
+
+let data = JSON.parse(localStorage.getItem('fishingJournal') || 'null') || DEMO;
+let pendingPhotos = []; // base64 strings for current log form
+
+function save(){try{localStorage.setItem('fishingJournal',JSON.stringify(data));}catch(e){toast('Storage full — photos may not save',true);}}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────
+function formatDate(d){
+  if(!d) return '';
+  const dt = new Date(d+'T12:00:00');
+  return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+}
+function isPB(c){
+  const same = data.catches.filter(x=>x.fish.toLowerCase()===c.fish.toLowerCase());
+  const best = Math.max(...same.map(x=>x.weight));
+  return c.weight===best;
+}
+function getSpeciesPB(species){
+  const matches = data.catches.filter(x=>x.fish.toLowerCase()===species.toLowerCase());
+  if(!matches.length) return null;
+  return matches.reduce((a,b)=>b.weight>a.weight?b:a);
+}
+function allSpeciesPBs(){
+  const species = [...new Set(data.catches.map(c=>c.fish.toLowerCase()))];
+  return species.map(s=>getSpeciesPB(s)).filter(Boolean);
+}
+function totalWeight(){return data.catches.reduce((s,c)=>s+c.weight,0);}
+
+function toast(msg, err=false){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.background = err ? '#7a1a1a' : 'var(--teal)';
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)b.classList.remove('open');}));
+
+function switchView(name,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(name==='dashboard') renderDashboard();
+  if(name==='myPBs') renderPBs();
+  if(name==='sessions') renderSessions();
+  if(name==='profile') renderProfile();
+  if(name==='logCatch') initLogForm();
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────────────────
+function renderDashboard(){
+  const name = data.profile.name || 'Angler';
+  const total = data.catches.length;
+  const tw = totalWeight();
+  const species = new Set(data.catches.map(c=>c.fish.toLowerCase())).size;
+
+  document.getElementById('heroGreeting').textContent = name+"'s Total Catches";
+  document.getElementById('heroVal').textContent = total;
+  document.getElementById('heroLabel').textContent = total===1?'fish in your journal':'fish recorded in your journal';
+  document.getElementById('statTotalKg').innerHTML = tw.toFixed(1)+'<span style="font-size:12px;color:var(--muted)"> kg</span>';
+  document.getElementById('statSpecies').textContent = species;
+  document.getElementById('statSessions').textContent = data.sessions.length;
+
+  // update header
+  document.getElementById('hdrTitle').textContent = name ? name+"'s Journal" : 'My Fishing Journal';
+  document.getElementById('hdrSub').textContent = data.profile.waters || 'Personal catch log';
+  const av = document.getElementById('profileAvatar');
+  if(data.profile.avatar){av.innerHTML=`<img src="${data.profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;}
+  else{av.textContent='😊';}
+
+  // recent
+  const el = document.getElementById('recentList');
+  const recent = [...data.catches].sort((a,b)=>new Date(b.date+' '+(b.time||'00:00'))-new Date(a.date+' '+(a.time||'00:00'))).slice(0,6);
+  if(!recent.length){el.innerHTML='<div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish to get started</div></div>';return;}
+  el.innerHTML = recent.map(c=>{
+    const pb=isPB(c);
+    const hasPhoto = c.photos&&c.photos.length;
+    return `<div class="catch-item" onclick="showCatchDetail(${c.id})" style="cursor:pointer;">
+      <div class="catch-thumb">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+      <div class="catch-info">
+        <div class="catch-species">${c.fish}${pb?'<span class="pb-badge">PB</span>':''}</div>
+        <div class="catch-meta">${c.location||'Unknown spot'} · ${formatDate(c.date)}</div>
+      </div>
+      <div class="catch-right">
+        <div class="catch-weight">${c.weight.toFixed(2)}</div>
+        <div class="catch-weight-unit">kg${c.length?' · '+c.length+'cm':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // top PBs
+  const pbs = allSpeciesPBs().sort((a,b)=>b.weight-a.weight).slice(0,4);
+  const pbEl = document.getElementById('dashPBs');
+  if(!pbs.length){pbEl.innerHTML='';return;}
+  pbEl.innerHTML = `<div class="pb-grid">${pbs.map(c=>{
+    const hasPhoto = c.photos&&c.photos.length;
+    return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
+      <div class="pb-card-img">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+      <div class="pb-crown">PB</div>
+      <div class="pb-card-body">
+        <div class="pb-species">${c.fish}</div>
+        <div style="margin-top:2px;"><span class="pb-weight">${c.weight.toFixed(2)}</span> <span class="pb-weight-unit">kg</span></div>
+        <div class="pb-date">${formatDate(c.date)}</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ─── LOG CATCH ─────────────────────────────────────────────────────────────
+function initLogForm(){
+  if(!document.getElementById('catchDate').value)
+    document.getElementById('catchDate').value = new Date().toISOString().slice(0,10);
+  if(!document.getElementById('catchTime').value)
+    document.getElementById('catchTime').value = new Date().toTimeString().slice(0,5);
+  // populate species datalist
+  const dl = document.getElementById('speciesList');
+  const sp = [...new Set(data.catches.map(c=>c.fish))].sort();
+  dl.innerHTML = sp.map(s=>`<option value="${s}">`).join('');
+  pendingPhotos = [];
+  document.getElementById('photoPreview').innerHTML='';
+  document.getElementById('aiResult').style.display='none';
+}
+
+function handlePhotos(files){
+  Array.from(files).forEach(f=>{
+    if(!f.type.startsWith('image/')) return;
+    const r=new FileReader();
+    r.onload=e=>{
+      pendingPhotos.push(e.target.result);
+      renderPhotoPreview();
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function renderPhotoPreview(){
+  const el = document.getElementById('photoPreview');
+  el.innerHTML = pendingPhotos.map((src,i)=>`<div class="photo-thumb">
+    <img src="${src}" alt="">
+    <button class="del-btn" onclick="removePhoto(${i})">×</button>
+  </div>`).join('');
+}
+
+function removePhoto(i){pendingPhotos.splice(i,1);renderPhotoPreview();}
+
+function logCatch(){
+  const fish = document.getElementById('catchFish').value.trim();
+  const weight = parseFloat(document.getElementById('catchWeight').value);
+  const date = document.getElementById('catchDate').value;
+  if(!fish||!weight||!date){toast('Species, weight & date are required',true);return;}
+  
+  const wasSpeciesPB = getSpeciesPB(fish);
+  const catch_ = {
+    id:data.nextId++,fish,weight,
+    length:parseFloat(document.getElementById('catchLength').value)||0,
+    location:document.getElementById('catchLocation').value.trim(),
+    bait:document.getElementById('catchBait').value.trim(),
+    method:document.getElementById('catchMethod').value,
+    date,time:document.getElementById('catchTime').value,
+    notes:document.getElementById('catchNotes').value.trim(),
+    photos:[...pendingPhotos]
+  };
+  data.catches.unshift(catch_);
+  save();
+
+  const isNewPB = !wasSpeciesPB || weight > wasSpeciesPB.weight;
+  toast(isNewPB ? '🏆 New PB! Catch saved!' : '🎣 Catch saved!');
+  
+  // reset form
+  ['catchFish','catchWeight','catchLength','catchLocation','catchBait','catchNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('catchMethod').value='';
+  document.getElementById('aiResult').style.display='none';
+  pendingPhotos=[];
+  renderPhotoPreview();
+  initLogForm();
+}
+
+// ─── AI IDENTIFY ───────────────────────────────────────────────────────────
+async function identifyFish(){
+  const fish = document.getElementById('catchFish').value.trim();
+  const weight = document.getElementById('catchWeight').value;
+  const length = document.getElementById('catchLength').value;
+  const location = document.getElementById('catchLocation').value.trim();
+  if(!fish&&!pendingPhotos.length){toast('Enter a species name or add a photo first',true);return;}
+
+  const box = document.getElementById('aiResult');
+  const txt = document.getElementById('aiText');
+  const sp = document.getElementById('aiSpinner');
+  box.style.display='block';
+  txt.textContent='Identifying…';
+  sp.style.display='inline-block';
+
+  const prompt = `You are an expert Australian fishing guide. ${fish?`The angler says this is: "${fish}".`:'Identify the fish from context.'} 
+${weight?`Weight: ${weight}kg.`:''}${length?` Length: ${length}cm.`:''}${location?` Caught at: ${location}.`:''}
+Respond with:
+**Common name** (and scientific name in italics)
+**Description:** 2 sentences about appearance/identification.
+**Typical size:** weight & length range.
+**Australian habitat:** where commonly found.
+**Eating quality:** one sentence.
+**Regulations:** any key size/bag limits (general AU, note they vary by state).
+**Fun fact:** one interesting fact.
+Keep it friendly and practical for an angler. Use markdown bold for headers.`;
+
+  const messages = [{role:'user',content:fish&&pendingPhotos.length?[
+    {type:'image',source:{type:'base64',media_type:'image/jpeg',data:pendingPhotos[0].split(',')[1]}},
+    {type:'text',text:prompt}
+  ]:[{type:'text',text:prompt}]}];
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages})
+    });
+    const d = await res.json();
+    const text = d.content?.find(c=>c.type==='text')?.text||'Could not identify fish.';
+    sp.style.display='none';
+    txt.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  }catch(e){
+    sp.style.display='none';
+    txt.innerHTML='Could not reach AI. Check your connection.';
+  }
+}
+
+// ─── PBs ───────────────────────────────────────────────────────────────────
+function renderPBs(){
+  const pbs = allSpeciesPBs();
+  const sort = document.getElementById('pbSort').value;
+  if(sort==='weight') pbs.sort((a,b)=>b.weight-a.weight);
+  else if(sort==='species') pbs.sort((a,b)=>a.fish.localeCompare(b.fish));
+  else pbs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  const grid = document.getElementById('pbGrid');
+  const empty = document.getElementById('pbEmpty');
+  if(!pbs.length){grid.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  grid.innerHTML = pbs.map(c=>{
+    const hasPhoto = c.photos&&c.photos.length;
+    return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
+      <div class="pb-card-img">${hasPhoto?`<img src="${c.photos[0]}" alt="">`:'<span>'+getFishEmoji(c.fish)+'</span>'}</div>
+      <div class="pb-crown">PB</div>
+      <div class="pb-card-body">
+        <div class="pb-species">${c.fish}</div>
+        <div style="margin-top:2px;"><span class="pb-weight">${c.weight.toFixed(2)}</span> <span class="pb-weight-unit">kg</span></div>
+        <div class="pb-date">${formatDate(c.date)}${c.location?' · '+c.location:''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── CATCH DETAIL ──────────────────────────────────────────────────────────
+function showCatchDetail(id){
+  const c = data.catches.find(x=>x.id===id);
+  if(!c) return;
+  const pb=isPB(c);
+  const hasPhotos = c.photos&&c.photos.length;
+  const imgHtml = hasPhotos
+    ? `<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;">${c.photos.map(p=>`<img src="${p}" style="height:180px;border-radius:12px;flex-shrink:0;object-fit:cover;">`).join('')}</div>`
+    : `<div class="detail-fish-img"><span>${getFishEmoji(c.fish)}</span></div>`;
+
+  document.getElementById('catchDetailContent').innerHTML = `
+    <div class="modal-drag"></div>
+    ${imgHtml}
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px;">
+      <div class="detail-species">${c.fish}${pb?'<span class="pb-badge" style="font-size:11px;">PB</span>':''}</div>
+      <button class="btn btn-danger btn-sm" onclick="deleteCatch(${c.id})">Delete</button>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-tile"><div class="detail-tile-lbl">Weight</div><div class="detail-tile-val" style="color:var(--teal-bright)">${c.weight.toFixed(2)} kg</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Length</div><div class="detail-tile-val">${c.length||'—'} ${c.length?'cm':''}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Date</div><div class="detail-tile-val" style="font-size:13px;">${formatDate(c.date)}${c.time?' '+c.time:''}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Method</div><div class="detail-tile-val" style="font-size:13px;">${c.method||'—'}</div></div>
+    </div>
+    ${c.location?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">📍 ${c.location}</div>`:''}
+    ${c.bait?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">🪱 ${c.bait}</div>`:''}
+    ${c.notes?`<div style="font-size:13.5px;font-style:italic;color:var(--muted);margin-top:6px;">"${c.notes}"</div>`:''}
+    <button class="btn btn-ghost btn-full" style="margin-top:16px;" onclick="closeModal('catchDetailModal')">Close</button>
+  `;
+  openModal('catchDetailModal');
+}
+
+function deleteCatch(id){
+  if(!confirm('Delete this catch?')) return;
+  data.catches = data.catches.filter(c=>c.id!==id);
+  save();
+  closeModal('catchDetailModal');
+  toast('Catch deleted');
+  renderDashboard();
+  renderPBs();
+}
+
+// ─── SESSIONS ─────────────────────────────────────────────────────────────
+function renderSessions(){
+  const el = document.getElementById('sessionList');
+  if(!data.sessions.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No sessions logged</div><div class="empty-sub">Track your fishing trips here</div></div>';return;
+  }
+  const sorted = [...data.sessions].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  el.innerHTML = sorted.map(s=>{
+    const fishOnDay = data.catches.filter(c=>c.date===s.date);
+    const chips = [...new Set(fishOnDay.map(c=>c.fish))].map(f=>`<div class="fish-chip">${getFishEmoji(f)} ${f}</div>`).join('');
+    return `<div class="session-item">
+      <div class="session-hd">
+        <div>
+          <div class="session-date">${formatDate(s.date)}</div>
+          <div class="session-loc">📍 ${s.location}${s.duration?' · '+s.duration:''}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div class="session-badge">${fishOnDay.length} catch${fishOnDay.length!==1?'es':''}</div>
+          <button class="btn btn-danger btn-sm" onclick="deleteSession(${s.id},event)">✕</button>
+        </div>
+      </div>
+      ${s.conditions?`<div style="font-size:12px;color:var(--muted);margin-top:6px;">🌤 ${s.conditions}</div>`:''}
+      ${s.notes?`<div class="session-notes">"${s.notes}"</div>`:''}
+      ${chips?`<div class="session-chips">${chips}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function addSession(){
+  const date = document.getElementById('sessionDate').value;
+  const loc = document.getElementById('sessionLoc').value.trim();
+  if(!date||!loc){toast('Date and location required',true);return;}
+  data.sessions.unshift({
+    id:Date.now(),date,location:loc,
+    duration:document.getElementById('sessionDuration').value,
+    conditions:document.getElementById('sessionConditions').value.trim(),
+    notes:document.getElementById('sessionNotes').value.trim()
+  });
+  save();
+  closeModal('addSessionModal');
+  ['sessionDate','sessionLoc','sessionConditions','sessionNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sessionDuration').value='';
+  renderSessions();
+  toast('Session logged 📅');
+}
+
+function deleteSession(id,e){
+  e.stopPropagation();
+  if(!confirm('Delete this session?')) return;
+  data.sessions=data.sessions.filter(s=>s.id!==id);
+  save();renderSessions();toast('Session deleted');
+}
+
+// ─── PROFILE ──────────────────────────────────────────────────────────────
+function renderProfile(){
+  const p = data.profile;
+  document.getElementById('profileName').value = p.name||'';
+  document.getElementById('profileWaters').value = p.waters||'';
+  document.getElementById('profileSinceYear').value = p.sinceYear||'';
+  document.getElementById('profileFavSpecies').value = p.favSpecies||'';
+  document.getElementById('profileNameDisplay').textContent = p.name||'Angler';
+  document.getElementById('profileHandle').textContent = p.waters||'Set up your profile below';
+  document.getElementById('profileSince').textContent = p.sinceYear?'Fishing since '+p.sinceYear+(p.favSpecies?' · Loves '+p.favSpecies:''):'';
+  if(p.avatar){
+    document.getElementById('profileAvatarImg').src=p.avatar;
+    document.getElementById('profileAvatarImg').style.display='block';
+  }
+  document.getElementById('psCatches').textContent=data.catches.length;
+  document.getElementById('psSpecies').textContent=new Set(data.catches.map(c=>c.fish.toLowerCase())).size;
+  document.getElementById('psKg').textContent=totalWeight().toFixed(1);
+}
+
+function saveProfile(){
+  data.profile.name = document.getElementById('profileName').value.trim();
+  data.profile.waters = document.getElementById('profileWaters').value.trim();
+  data.profile.sinceYear = document.getElementById('profileSinceYear').value;
+  data.profile.favSpecies = document.getElementById('profileFavSpecies').value.trim();
+  save();renderProfile();toast('Profile saved ✓');
+}
+
+function handleAvatarPhoto(files){
+  if(!files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    data.profile.avatar=e.target.result;
+    save();renderProfile();
+    const av=document.getElementById('profileAvatar');
+    av.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  };
+  r.readAsDataURL(files[0]);
+}
+
+// ─── DATA MANAGEMENT ───────────────────────────────────────────────────────
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  toast('Journal exported ⬇');
+}
+
+function importData(files){
+  const f=files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!imported.catches||!imported.sessions){throw new Error();}
+      data={...DEFAULT,...imported};
+      save();renderDashboard();toast('Journal imported ✓');
+    }catch{toast('Invalid file',true);}
+  };
+  r.readAsText(f);
+}
+
+function confirmClear(){
+  if(!confirm('Delete ALL catches, sessions and profile data? This cannot be undone.')) return;
+  data={...DEFAULT,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},catches:[],sessions:[],nextId:1};
+  save();renderDashboard();toast('All data cleared');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+initLogForm();
+renderDashboard();
+</script>
+</body>
+</html>
