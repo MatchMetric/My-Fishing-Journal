@@ -146,12 +146,15 @@ textarea.form-input{resize:vertical;min-height:70px;}
 .filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.15s;}
 .filter-btn.active{background:var(--teal-light);border-color:var(--teal-bright);color:var(--teal-bright);}
 .species-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.species-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;gap:6px;}
-.species-card:hover{border-color:var(--teal-bright);transform:translateY(-1px);}
-.species-card-top{display:flex;align-items:center;gap:8px;}
-.species-emoji{font-size:26px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px;flex-shrink:0;}
-.species-card-name{font-family:var(--ff-display);font-size:14px;font-weight:600;line-height:1.2;}
-.species-card-sci{font-size:10px;color:var(--muted);font-style:italic;margin-top:1px;}
+.species-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;overflow:hidden;display:flex;flex-direction:column;}
+.species-card:hover{border-color:var(--teal-bright);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+.species-card-img-wrap{width:100%;height:105px;background:var(--surface2);position:relative;overflow:hidden;flex-shrink:0;}
+.species-card-photo{width:100%;height:100%;object-fit:cover;display:block;}
+.species-card-emoji-fb{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:38px;}
+.species-card-img-wrap:not(:has(img)) .species-card-emoji-fb,
+.species-card-img-wrap .species-card-emoji-fb:only-child{display:flex;}
+.species-card-name{font-family:var(--ff-display);font-size:13px;font-weight:600;line-height:1.2;}
+.species-card-sci{font-size:10px;color:var(--muted);font-style:italic;margin-top:2px;}
 .species-eat-row{display:flex;align-items:center;justify-content:space-between;}
 .eat-stars{color:var(--amber);font-size:11px;letter-spacing:1px;}
 .species-type-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:2px 7px;border-radius:20px;}
@@ -357,7 +360,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
     <input type="text" class="form-input species-search" id="speciesSearch" placeholder="Search species…" oninput="renderSpeciesGuide()">
   </div>
   <div class="species-filters">
-    <button class="filter-btn active" onclick="setFilter('all',this)">All (35)</button>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All (47)</button>
     <button class="filter-btn" onclick="setFilter('saltwater',this)">🌊 Saltwater</button>
     <button class="filter-btn" onclick="setFilter('freshwater',this)">🏞 Freshwater</button>
     <button class="filter-btn" onclick="setFilter('estuary',this)">🌿 Estuary</button>
@@ -446,7 +449,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
 const SPECIES_DB = [
   // ── SALTWATER ──
   {
-    key:'snapper', common:'Snapper', aka:'Red Snapper, Squire (juvenile)',
+    key:'snapper',img:'https://en.wikipedia.org/wiki/Special:FilePath/Chrysophrys_auratus_Kasuga_Maru.jpg', common:'Snapper', aka:'Red Snapper, Squire (juvenile)',
     scientific:'Chrysophrys auratus', emoji:'🐟', type:'saltwater',
     desc:'One of Australia\'s most prized table and sport fish. Pink-red body with blue spots on each scale. Adults develop a pronounced forehead hump. Juveniles (Squire) are more silver.',
     id_tips:'Look for the steep forehead profile on adults, blue-edged scales, and a pale pink to deep red colour. Juveniles lack the hump and are silvery-pink with faint spots.',
@@ -460,7 +463,7 @@ const SPECIES_DB = [
     season:'Year-round. Peaks spring–summer on reefs.'
   },
   {
-    key:'flathead', common:'Dusky Flathead', aka:'Lizard, Flatty',
+    key:'flathead',img:'https://en.wikipedia.org/wiki/Special:FilePath/Platycephalus_fuscus.jpg', common:'Dusky Flathead', aka:'Lizard, Flatty',
     scientific:'Platycephalus fuscus', emoji:'🐟', type:'estuary',
     desc:'Australia\'s largest flathead species and a favourite for estuary anglers. Flattened, elongated body with a broad spiny head. Mottled brown and grey camouflage colouring.',
     id_tips:'Unmistakable flattened head with eyes on top. Dark mottled brown-grey body. Large mouth. Black spots on the tail fin distinguish dusky from tiger flathead.',
@@ -474,7 +477,7 @@ const SPECIES_DB = [
     season:'Year-round. Best in warmer months Oct–Apr.'
   },
   {
-    key:'bream', common:'Yellowfin Bream', aka:'Sea Bream, Silver Bream',
+    key:'bream',img:'https://en.wikipedia.org/wiki/Special:FilePath/Acanthopagrus_australis.jpg', common:'Yellowfin Bream', aka:'Sea Bream, Silver Bream',
     scientific:'Acanthopagrus australis', emoji:'🐠', type:'estuary',
     desc:'A highly adaptable and cunning estuary fish prized by light-tackle anglers. Silver-grey body with a yellowish tinge on fins and belly. One of Australia\'s most popular sport fish.',
     id_tips:'Silver body, yellow tinge to pelvic and anal fins. Black margin on dorsal fin. Blunter snout than black bream. Distinguished from Tarwhine by lack of golden stripes.',
@@ -488,7 +491,7 @@ const SPECIES_DB = [
     season:'Year-round. Most active autumn and winter.'
   },
   {
-    key:'barramundi', common:'Barramundi', aka:'Barra, Giant Perch, Palmer',
+    key:'barramundi',img:'https://en.wikipedia.org/wiki/Special:FilePath/Barramundi.jpg', common:'Barramundi', aka:'Barra, Giant Perch, Palmer',
     scientific:'Lates calcarifer', emoji:'🐟', type:'estuary',
     desc:'The iconic Australian sport fish. Silver body with large scales, concave head profile, and a powerful tail. All barramundi are born male and become female as they grow larger.',
     id_tips:'Large silver scales with an orange-red eye. Concave head profile, large upturned mouth. The dorsal fin has a distinctive notch. Juveniles may show a bronze tinge.',
@@ -502,7 +505,7 @@ const SPECIES_DB = [
     season:'Wet season (Nov–Apr) in the north. Year-round in impoundments.'
   },
   {
-    key:'whiting', common:'King George Whiting', aka:'KGW, Spotted Whiting',
+    key:'whiting',img:'https://en.wikipedia.org/wiki/Special:FilePath/Sillaginodes_punctatus.jpg', common:'King George Whiting', aka:'KGW, Spotted Whiting',
     scientific:'Sillaginodes punctatus', emoji:'🐟', type:'saltwater',
     desc:'The most prized whiting species in Australia. Slender silver body with distinctive yellow-brown spots. Renowned for exceptional eating quality.',
     id_tips:'Slender silver body. Rows of yellow-brown spots along the side. Noticeably longer and more robust than Sand Whiting. Two separate dorsal fins.',
@@ -516,7 +519,7 @@ const SPECIES_DB = [
     season:'Peaks summer in VIC/SA. Year-round in warmer states.'
   },
   {
-    key:'tailor', common:'Tailor', aka:'Bluefish, Chopper',
+    key:'tailor',img:'https://en.wikipedia.org/wiki/Special:FilePath/Pomatomus_saltatrix_1.jpg', common:'Tailor', aka:'Bluefish, Chopper',
     scientific:'Pomatomus saltatrix', emoji:'🐟', type:'saltwater',
     desc:'A fast, aggressive schooling predator loved by beach and rock fishers. Blue-green back, silver sides, sharp teeth and a forked tail. Known for vicious strikes on surface lures.',
     id_tips:'Blue-green to olive back, silver belly. Very sharp, uniform teeth — handle carefully. Forked tail, two dorsal fins. Often found with visible baitfish schools being busted up on the surface.',
@@ -530,7 +533,7 @@ const SPECIES_DB = [
     season:'NSW coast peaks autumn (Mar–Jun) as schools move north.'
   },
   {
-    key:'mulloway', common:'Mulloway', aka:'Jewfish, Jewie, River Kingfish',
+    key:'mulloway',img:'https://en.wikipedia.org/wiki/Special:FilePath/Argyrosomus_japonicus.jpg', common:'Mulloway', aka:'Jewfish, Jewie, River Kingfish',
     scientific:'Argyrosomus japonicus', emoji:'🐟', type:'estuary',
     desc:'One of Australia\'s most sought-after sport fish. Silver body with a golden sheen, row of white spots along the lateral line. Known for nocturnal feeding and powerful runs.',
     id_tips:'Silver-gold body with a row of pearl-white spots above the lateral line. Large mouth, soft lower jaw. Distinctive "thumping" sound when caught. Similar to Teraglin — check spot pattern.',
@@ -544,7 +547,7 @@ const SPECIES_DB = [
     season:'Year-round. Best after dark, especially around new and full moon.'
   },
   {
-    key:'kingfish', common:'Yellowtail Kingfish', aka:'Kingie, YTK, Hiramasa',
+    key:'kingfish',img:'https://en.wikipedia.org/wiki/Special:FilePath/Seriola_lalandi.jpg', common:'Yellowtail Kingfish', aka:'Kingie, YTK, Hiramasa',
     scientific:'Seriola lalandi', emoji:'🐟', type:'saltwater',
     desc:'One of Australia\'s premier sport fish — a powerful, fast ambush predator. Blue-green back, silver sides, yellow tail and a distinctive yellow lateral stripe from eye to tail.',
     id_tips:'Yellow lateral stripe from eye to tail. Forked yellow tail. Blue-green metallic back, silver-white belly. Streamlined, torpedo-shaped body. Often found at foul water lines and reefs.',
@@ -558,7 +561,7 @@ const SPECIES_DB = [
     season:'Year-round. Peaks summer–autumn on the NSW coast.'
   },
   {
-    key:'salmon', common:'Australian Salmon', aka:'Kahawai, Bay Trout, Cocky Salmon',
+    key:'salmon',img:'https://en.wikipedia.org/wiki/Special:FilePath/Arripis_trutta.jpg', common:'Australian Salmon', aka:'Kahawai, Bay Trout, Cocky Salmon',
     scientific:'Arripis trutta', emoji:'🐟', type:'saltwater',
     desc:'A hard-fighting schooling fish found along the southern Australian coast. Green-grey back with rows of golden-yellow spots. Not actually related to Atlantic salmon.',
     id_tips:'Green-grey back, silver sides, rows of golden spots. Forked tail, streamlined shape. Often seen busting bait on the surface in large schools. Smaller and more slender than Tailor.',
@@ -572,7 +575,7 @@ const SPECIES_DB = [
     season:'Autumn–winter migrations along the NSW coast (Apr–Jul).'
   },
   {
-    key:'spanishmackerel', common:'Spanish Mackerel', aka:'Spaniard, Narrow-barred Mackerel',
+    key:'spanishmackerel',img:'https://en.wikipedia.org/wiki/Special:FilePath/Scomberomorus_commerson.jpg', common:'Spanish Mackerel', aka:'Spaniard, Narrow-barred Mackerel',
     scientific:'Scomberomorus commerson', emoji:'🐟', type:'saltwater',
     desc:'A fast, powerful pelagic predator. Iridescent blue-green back with distinctive wavy vertical bars on the sides. One of the most exciting sport fish in northern Australian waters.',
     id_tips:'Blue-green back, silver sides with narrow dark wavy bars. Very long, streamlined body. Long pointed snout. Closely related to School Mackerel — Spanish Mackerel is much larger with irregular bars.',
@@ -586,7 +589,7 @@ const SPECIES_DB = [
     season:'QLD peaks winter (Jun–Sep). NT peaks dry season (Apr–Sep).'
   },
   {
-    key:'mangrovejack', common:'Mangrove Jack', aka:'Jack, Red Bass, Purple Sea Perch',
+    key:'mangrovejack',img:'https://en.wikipedia.org/wiki/Special:FilePath/Lutjanus_argentimaculatus.jpg', common:'Mangrove Jack', aka:'Jack, Red Bass, Purple Sea Perch',
     scientific:'Lutjanus argentimaculatus', emoji:'🐟', type:'estuary',
     desc:'A hard-fighting, structure-hugging estuary predator. Deep body, large scales, reddish colouring. Famous for running straight for snags when hooked — a real test of gear.',
     id_tips:'Deep reddish to bronze body, large scales. Juveniles have vertical white bars. Large mouth with sharp teeth. Found deep in snag-filled waterways. Red/orange fins.',
@@ -600,7 +603,7 @@ const SPECIES_DB = [
     season:'Year-round in tropics. Juveniles move south Oct–Mar.'
   },
   {
-    key:'coraltrout', common:'Coral Trout', aka:'Common Coral Trout, Leopard Trout',
+    key:'coraltrout',img:'https://en.wikipedia.org/wiki/Special:FilePath/Plectropomus_leopardus.jpg', common:'Coral Trout', aka:'Common Coral Trout, Leopard Trout',
     scientific:'Plectropomus leopardus', emoji:'🐟', type:'saltwater',
     desc:'The most prized reef fish of the Great Barrier Reef. Vibrant red-orange body covered in small blue spots. A powerful and fast ambush predator.',
     id_tips:'Red-orange to brown body covered densely with small blue ringed spots. Large mouth. Rounded tail. Colour can vary — look for the distinctive blue-ringed spots as the key identifier.',
@@ -614,7 +617,7 @@ const SPECIES_DB = [
     season:'Year-round on the reef. Aggregation peaks around spawning (Oct–Dec).'
   },
   {
-    key:'trevally', common:'Giant Trevally', aka:'GT, Ulua',
+    key:'trevally',img:'https://en.wikipedia.org/wiki/Special:FilePath/Caranx_ignobilis.jpg', common:'Giant Trevally', aka:'GT, Ulua',
     scientific:'Caranx ignobilis', emoji:'🐟', type:'saltwater',
     desc:'The apex predator of the flats and reefs. Distinctive steep head profile, forked tail, silver to dark grey body. Renowned for aggressive surface strikes on large poppers.',
     id_tips:'Very steep, almost vertical forehead. Forked tail with yellow/black lobes. Silver to dark grey or almost black body with irregular black spots. Significantly larger than other trevally species.',
@@ -628,7 +631,7 @@ const SPECIES_DB = [
     season:'Year-round in tropics. Spawning aggregations Oct–Feb.'
   },
   {
-    key:'luderick', common:'Luderick', aka:'Blackfish, Black Bream, Nigger',
+    key:'luderick',img:'https://en.wikipedia.org/wiki/Special:FilePath/Girella_tricuspidata.jpg', common:'Luderick', aka:'Blackfish, Black Bream, Nigger',
     scientific:'Girella tricuspidata', emoji:'🐟', type:'estuary',
     desc:'A unique vegetarian fish targeted with green weed (cabbage/sea lettuce). Dark brown-grey body with faint vertical bars. A cult following among specialist anglers.',
     id_tips:'Dark grey-brown body, faint vertical dusky bars. Small mouth with incisor-like teeth. Found feeding on green weed growth on rocks and pylons in tidal areas.',
@@ -642,7 +645,7 @@ const SPECIES_DB = [
     season:'Autumn–winter fishing best. Weed most productive May–Aug.'
   },
   {
-    key:'yellowfintuna', common:'Yellowfin Tuna', aka:'YFT, Allison Tuna',
+    key:'yellowfintuna',img:'https://en.wikipedia.org/wiki/Special:FilePath/Yellowfin_tuna_nurp.jpg', common:'Yellowfin Tuna', aka:'YFT, Allison Tuna',
     scientific:'Thunnus albacares', emoji:'🐟', type:'saltwater',
     desc:'A powerful, high-speed pelagic fish. Metallic blue-black back, golden-yellow stripe on sides, bright yellow fins and finlets. One of the most thrilling sport fish in the ocean.',
     id_tips:'Metallic blue-black back, golden-yellow lateral stripe. Bright yellow second dorsal, anal fin and finlets. Sickle-shaped yellow pectoral fins. Larger fish have elongated second dorsal and anal fins.',
@@ -656,7 +659,7 @@ const SPECIES_DB = [
     season:'Year-round offshore. QLD/NSW coast peaks summer (Dec–Mar).'
   },
   {
-    key:'mahimahi', common:'Mahi Mahi', aka:'Dolphinfish, Dorado',
+    key:'mahimahi',img:'https://en.wikipedia.org/wiki/Special:FilePath/Mahi-mahi_or_Dorado.jpg', common:'Mahi Mahi', aka:'Dolphinfish, Dorado',
     scientific:'Coryphaena hippurus', emoji:'🐟', type:'saltwater',
     desc:'One of the most spectacularly coloured fish in the ocean. Vivid greens, blues and yellows on a blunt-headed, compressed body. Highly aggressive surface feeder, often found near floating debris.',
     id_tips:'Brilliant green, blue and yellow colouring. Males have a very pronounced square forehead. Long dorsal fin running almost the entire length. Loses colour rapidly when removed from water.',
@@ -670,7 +673,7 @@ const SPECIES_DB = [
     season:'Summer offshore (Dec–Apr). Follows warm currents south.'
   },
   {
-    key:'nannygai', common:'Nannygai', aka:'Redfish, Red Snapper (WA), Bight Redfish',
+    key:'nannygai',img:'https://en.wikipedia.org/wiki/Special:FilePath/Centroberyx_affinis.jpg', common:'Nannygai', aka:'Redfish, Red Snapper (WA), Bight Redfish',
     scientific:'Centroberyx affinis', emoji:'🐟', type:'saltwater',
     desc:'A deep-water reef fish with striking red colouring and large eyes adapted for low light. Highly regarded eating fish found on offshore reefs and the continental shelf.',
     id_tips:'Uniformly deep red-orange body. Very large eyes. Single continuous dorsal fin. Smaller and deeper-bodied than snapper. Found in deeper water (50–300 m) on offshore reefs.',
@@ -684,7 +687,7 @@ const SPECIES_DB = [
     season:'Year-round. Deep-water species, not season dependent.'
   },
   {
-    key:'flounder', common:'Greenback Flounder', aka:'Flounder, Turbot',
+    key:'flounder',img:'https://en.wikipedia.org/wiki/Special:FilePath/Rhombosolea_tapirina.jpg', common:'Greenback Flounder', aka:'Flounder, Turbot',
     scientific:'Rhombosolea tapirina', emoji:'🐟', type:'estuary',
     desc:'A bizarre and fascinating flatfish — both eyes migrate to one side as a juvenile. Perfectly camouflaged against sandy or muddy estuarine bottoms.',
     id_tips:'Completely flat, oval body. Both eyes on the upper surface. Mottled green-brown to sandy upper side with varying spots. White on the underside. Often spotted while wading on sandy flats at night.',
@@ -699,7 +702,7 @@ const SPECIES_DB = [
   },
   // ── ESTUARY / MIXED ──
   {
-    key:'estuaryperch', common:'Estuary Perch', aka:'EP, Bass',
+    key:'estuaryperch',img:'https://en.wikipedia.org/wiki/Special:FilePath/Macquaria_colonorum.jpg', common:'Estuary Perch', aka:'EP, Bass',
     scientific:'Macquaria colonorum', emoji:'🐟', type:'estuary',
     desc:'A stealthy, structure-hugging predator of southern estuaries. Closely related to Australian Bass but favours tidal saltwater reaches. Dark grey-green to bronze colouring.',
     id_tips:'Similar to Australian Bass but usually darker overall. Concave head profile. Found in tidal estuaries year-round, unlike Australian Bass which migrates to spawn in saltwater. Overlapping range in south-eastern rivers.',
@@ -714,7 +717,7 @@ const SPECIES_DB = [
   },
   // ── FRESHWATER ──
   {
-    key:'murraycod', common:'Murray Cod', aka:'Cod, Goodoo, Murray Perch',
+    key:'murraycod',img:'https://en.wikipedia.org/wiki/Special:FilePath/Maccullochella_peelii.jpg', common:'Murray Cod', aka:'Cod, Goodoo, Murray Perch',
     scientific:'Maccullochella peelii', emoji:'🐟', type:'freshwater',
     desc:'Australia\'s largest freshwater fish and a living icon of the Murray-Darling basin. Green-grey blotched body, large rounded tail, enormous mouth. Can live over 100 years.',
     id_tips:'Large, heavy-bodied fish with a rounded mottled green-grey to yellow-brown pattern. Enormous bucket mouth. Rounded tail distinguishes it from Trout Cod (which has a forked tail). Very distinctive look — unmistakeable.',
@@ -728,7 +731,7 @@ const SPECIES_DB = [
     season:'Year-round. Spring (Oct–Nov) fishing peak after spawning. Closed season varies by state.'
   },
   {
-    key:'goldenperch', common:'Golden Perch', aka:'Yellowbelly, Callop, White Perch',
+    key:'goldenperch',img:'https://en.wikipedia.org/wiki/Special:FilePath/Macquaria_ambigua.jpg', common:'Golden Perch', aka:'Yellowbelly, Callop, White Perch',
     scientific:'Macquaria ambigua', emoji:'🐟', type:'freshwater',
     desc:'The Murray-Darling\'s other iconic native. Deep-bodied, golden-yellow to olive-bronze colouring depending on water clarity. The most widely distributed native fish in the inland river system.',
     id_tips:'Deep body, noticeably rounded belly. Golden yellow to olive-green colour — clearer water makes them more golden. Lighter belly. Small hump behind head. Confused with Bream in some areas — note the freshwater location.',
@@ -742,7 +745,7 @@ const SPECIES_DB = [
     season:'Year-round. Post-flood conditions often trigger feeding frenzies.'
   },
   {
-    key:'australianbass', common:'Australian Bass', aka:'Bass, Freshwater Bass',
+    key:'australianbass',img:'https://en.wikipedia.org/wiki/Special:FilePath/Macquaria_novemaculeata.jpg', common:'Australian Bass', aka:'Bass, Freshwater Bass',
     scientific:'Macquaria novemaculeata', emoji:'🐟', type:'freshwater',
     desc:'Australia\'s premier freshwater sport fish. Bronze to olive-green body, lighter belly, concave head profile. A feisty, structure-loving predator of coastal rivers and impoundments.',
     id_tips:'Bronze-olive colouring, concave head profile. Similar to Estuary Perch but found higher in coastal river systems. Migrates downstream to spawn in estuaries in winter. Smaller overall than EP.',
@@ -756,7 +759,7 @@ const SPECIES_DB = [
     season:'Best autumn–winter when migrating. Surface fishing peaks summer evenings.'
   },
   {
-    key:'rainbowtrout', common:'Rainbow Trout', aka:'Rainbows, Bows',
+    key:'rainbowtrout',img:'https://en.wikipedia.org/wiki/Special:FilePath/Rainbow_trout.jpg', common:'Rainbow Trout', aka:'Rainbows, Bows',
     scientific:'Oncorhynchus mykiss', emoji:'🐟', type:'freshwater',
     desc:'The most popular freshwater sport fish in Australia. Silver body with a distinctive pink-red lateral stripe and black spots. Native to North America, widely stocked in Australian cool-water rivers, streams and lakes.',
     id_tips:'Silver body with a vivid pink-red stripe along the lateral line. Black spots on body, dorsal fin and tail. Forked tail. Breeding males turn much more colourful. Distinguished from Brown Trout by the pink stripe and rounded (not square) tail spots.',
@@ -770,7 +773,7 @@ const SPECIES_DB = [
     season:'Season dates vary by state. Generally Sept–May in NSW/VIC. Year-round in TAS.'
   },
   {
-    key:'browntrout', common:'Brown Trout', aka:'Brownies, German Brown',
+    key:'browntrout',img:'https://en.wikipedia.org/wiki/Special:FilePath/Salmo_trutta.jpg', common:'Brown Trout', aka:'Brownies, German Brown',
     scientific:'Salmo trutta', emoji:'🐟', type:'freshwater',
     desc:'The most cunning and difficult trout species to catch. Golden-brown body with distinctive black and red spots, each surrounded by a pale halo. Native to Europe, introduced to Australia in the 1860s.',
     id_tips:'Golden-brown body with black spots AND red/orange spots, each ringed with a pale halo. No pink lateral stripe (unlike Rainbow Trout). Tail nearly square. Larger fish often become very dark.',
@@ -784,7 +787,7 @@ const SPECIES_DB = [
     season:'As per Rainbow Trout — check state regulations for specific waters.'
   },
   {
-    key:'redfin', common:'Redfin Perch', aka:'English Perch, European Perch',
+    key:'redfin',img:'https://en.wikipedia.org/wiki/Special:FilePath/Perca_fluviatilis.jpg', common:'Redfin Perch', aka:'English Perch, European Perch',
     scientific:'Perca fluviatilis', emoji:'🐟', type:'freshwater',
     desc:'A striking freshwater perch introduced from Europe. Dark green body with 5–9 dark vertical bars, brilliant red-orange fins. Considered a pest in many Australian waterways but highly valued by anglers.',
     id_tips:'Dark green body with distinctive dark vertical bars and brilliant red-orange lower fins and tail. Spiny first dorsal fin. Often found in large schools. A declared noxious species in several states.',
@@ -798,7 +801,7 @@ const SPECIES_DB = [
     season:'Year-round. Best spring and autumn.'
   },
   {
-    key:'carp', common:'Common Carp', aka:'European Carp, Koi Carp',
+    key:'carp',img:'https://en.wikipedia.org/wiki/Special:FilePath/Cyprinus_carpio.jpg', common:'Common Carp', aka:'European Carp, Koi Carp',
     scientific:'Cyprinus carpio', emoji:'🐡', type:'freshwater',
     desc:'Australia\'s most destructive invasive freshwater fish. Heavily scaled, bronze-yellow body, large rubbery lips, two barbels on the upper jaw. A declared pest in every mainland state.',
     id_tips:'Large bronze-yellow scales, distinctive large rubbery mouth with two small barbels. Single long dorsal fin with a serrated first ray. Often seen mudding in shallows or rolling at the surface.',
@@ -812,7 +815,7 @@ const SPECIES_DB = [
     season:'Year-round. Do NOT return to water — kill and remove.'
   },
   {
-    key:'saratoga', common:'Saratoga', aka:'Toga, Gulf Saratoga, Northern Spotted Barramundi',
+    key:'saratoga',img:'https://en.wikipedia.org/wiki/Special:FilePath/Scleropages_jardinii.jpg', common:'Saratoga', aka:'Toga, Gulf Saratoga, Northern Spotted Barramundi',
     scientific:'Scleropages jardinii', emoji:'🐟', type:'freshwater',
     desc:'A living dinosaur — one of Australia\'s most ancient fish. Large, elongated body covered in distinctive pink-edged scales. A surface predator and mouthbrooder.',
     id_tips:'Large metallic scales with a pinkish-orange spot on each scale. Large upturned mouth adapted for surface feeding. Long body, small barbels on lower jaw. Distinguished from Gulf Saratoga by scale pattern.',
@@ -826,7 +829,7 @@ const SPECIES_DB = [
     season:'Year-round in tropics. Wet season (Nov–Apr) sees most activity.'
   },
   {
-    key:'silverperch', common:'Silver Perch', aka:'Bidyan, Grunter',
+    key:'silverperch',img:'https://en.wikipedia.org/wiki/Special:FilePath/Bidyanus_bidyanus.jpg', common:'Silver Perch', aka:'Bidyan, Grunter',
     scientific:'Bidyanus bidyanus', emoji:'🐟', type:'freshwater',
     desc:'A slender, silvery native perch of the Murray-Darling basin. Once abundant, now a threatened species. Deep silver body, small mouth, and a characteristic grunting sound when caught.',
     id_tips:'Slender, deep silver body. Much smaller mouth than Golden Perch. Slightly forked tail. Very silvery overall colour. Threatened species — handle carefully and return to water.',
@@ -838,7 +841,237 @@ const SPECIES_DB = [
     legal:[{s:'NSW',min:'25 cm',bag:'5 (threatened — consider C&R)'},{s:'VIC',min:'25 cm',bag:'5 (threatened)'},{s:'QLD',min:'25 cm',bag:'5'},{s:'SA',min:'25 cm',bag:'5'},{s:'WA',min:'–',bag:'–'}],
     bait:['Worms','Small soft plastics','Small spinners','Dough baits'],
     season:'Year-round. Most active in warmer months.'
+  },
+  // ── NEW SALTWATER SPECIES ──
+  {key:'fingermark',common:'Fingermark Bream',aka:'Golden Snapper, Large-mouthed Nannygai',scientific:'Lutjanus johnii',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lutjanus_johnii.jpg',
+    desc:'A prized tropical estuary fish with golden-bronze colouring and a distinctive black fingerprint-like smudge near the lateral line. Feisty fighter popular across northern Australia.',
+    id_tips:'Golden-yellow to bronze body. Look for the distinctive dark blotch just below the lateral line — the "fingerprint" that names it. Large mouth, reddish fins. Distinguished from Mangrove Jack by the blotch and more golden colour.',
+    weight:'0.5–5 kg typical · 10+ kg possible',length:'30–80 cm',
+    habitat:'Tidal estuaries, mangrove creeks, coastal reefs, rocky structure.',
+    distribution:'Northern Australia — QLD, NT, WA north coast. Very common in tropical estuaries.',
+    eating:{rating:5,label:'World-class',notes:'Outstanding table fish. Firm, sweet white flesh. Excellent pan-fried, steamed, or baked whole.'},
+    legal:[{s:'QLD',min:'35 cm',bag:'10'},{s:'NT',min:'38 cm',bag:'5'},{s:'WA',min:'38 cm',bag:'5'},{s:'NSW',min:'35 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Soft plastics','Live prawn','Hardbodies','Metal vibes','Live mullet'],
+    season:'Year-round in tropics. Wet season (Nov–Apr) most active.'
+  },
+  {key:'leatherjacket',common:'Reef Leatherjacket',aka:'Leatherie, Fan-bellied Leatherjacket, Chinaman Leatherjacket',scientific:'Meuschenia hippocrepis',emoji:'🐠',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Meuschenia_hippocrepis.jpg',
+    desc:'Extremely common around reefs and weed beds. Tough leathery skin with no scales, small beak-like teeth, and a retractable dorsal spine. Often underestimated as an eating fish — one of the best.',
+    id_tips:'Tough scaleless skin. Small mouth with strong beak-like teeth. Retractable spine on top of head. Very laterally compressed. Reef leatherjacket has striking orange-brown markings. Many colour variations exist between the 40+ species in Australia.',
+    weight:'0.1–1 kg typical',length:'15–40 cm',
+    habitat:'Reefs, rocky areas, weed beds, seagrass, jetty pylons. Very common inshore.',
+    distribution:'Southern and eastern Australia — NSW, VIC, SA, TAS, WA.',
+    eating:{rating:5,label:'World-class',notes:'Exceptional eating — surprisingly delicious. No scales, easy to skin. Sweet, delicate white flesh. Fantastic battered or pan-fried.'},
+    legal:[{s:'NSW',min:'20 cm',bag:'20'},{s:'VIC',min:'20 cm',bag:'20'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'20 cm',bag:'No limit'},{s:'QLD',min:'20 cm',bag:'30'}],
+    bait:['Squid','Prawns','Worms','Small soft plastics','Bread'],
+    season:'Year-round. Most active in warmer months.'
+  },
+  {key:'queenfish',common:'Queenfish',aka:'Skinny Fish, Tall-fin Queenfish',scientific:'Scomberoides commersonianus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Scomberoides_commersonianus.jpg',
+    desc:'A fast, acrobatic pelagic fish renowned for spectacular aerial displays when hooked. Silver body with a row of oval dark spots along the lateral line. Prized for its fighting ability on light tackle.',
+    id_tips:'Very slender, elongated silver body. Row of 6–8 dark oval blotches along the lateral line. Small scales, almost scaleless appearance. Long, deeply forked tail. Often confused with Longtom — check for the distinctive lateral spots.',
+    weight:'0.5–8 kg typical · 12+ kg possible',length:'40–120 cm',
+    habitat:'Shallow coastal flats, creek mouths, reef edges, surface waters. Follows bait schools.',
+    distribution:'Northern Australia — QLD, NT, WA north coast. Common in tropical harbours.',
+    eating:{rating:2,label:'Below average',notes:'Coarse, oily flesh. Most anglers practise catch and release. Can be smoked if desired.'},
+    legal:[{s:'QLD',min:'No min',bag:'10'},{s:'NT',min:'No min',bag:'10'},{s:'WA',min:'No min',bag:'10'},{s:'NSW',min:'No min',bag:'No limit'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Surface lures','Poppers','Stickbaits','Livebait','Slugs'],
+    season:'Year-round in tropics. Peaks dry season (Apr–Sep).'
+  },
+  {key:'kingthreadfin',common:'King Threadfin Salmon',aka:'King Salmon, Blue Salmon, Burnett Salmon',scientific:'Polydactylus macrochir',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Polydactylus_macrochir.jpg',
+    desc:'A powerful tropical species with distinctive long thread-like pectoral fin rays used to detect prey. Golden-bronze body, large mouth, and impressive fighting ability in turbid water.',
+    id_tips:'Golden-yellow to bronze body. Key feature: free thread-like rays hanging below the pectoral fin — like whiskers used to feel for prey on the bottom. Large, subterminal mouth. Easily distinguished from other species by these unique fin threads.',
+    weight:'1–10 kg typical · 20+ kg possible',length:'50–150 cm',
+    habitat:'Turbid river mouths, estuaries, tidal creeks, shallow coastal areas. Often found in murky water.',
+    distribution:'Northern QLD, NT, WA north coast. Common in major tropical river systems.',
+    eating:{rating:4,label:'Excellent',notes:'Firm, white, milky flesh with large flakes. Excellent pan-fry, BBQ, or bake.'},
+    legal:[{s:'QLD',min:'60 cm',bag:'5'},{s:'NT',min:'60 cm',bag:'5'},{s:'WA',min:'60 cm',bag:'5'},{s:'NSW',min:'–',bag:'–'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Mullet fillet','Live prawn','Soft plastics','Hardbody lures','Metal lures'],
+    season:'Year-round in tropics. Wet season breeding aggregations Nov–Mar.'
+  },
+  {key:'sootygrunt',common:'Sooty Grunter',aka:'Sooty, Black Bream (NT/QLD)',scientific:'Hephaestus fuliginosus',emoji:'🐟',type:'freshwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Hephaestus_fuliginosus.jpg',
+    desc:'A tough, dark-coloured freshwater fighter of Australia's tropical north. Deep bronze to almost black body, large scales, powerful build. A cult favourite among top-end freshwater anglers.',
+    id_tips:'Dark bronze to almost black or very dark olive body. Large scales with slight golden tinge. Chunky, deep-bodied profile. Large rounded tail. Strong resemblance to bream but much darker and found only in northern freshwater.',
+    weight:'0.3–3 kg typical · 5+ kg possible',length:'25–55 cm',
+    habitat:'Clear rocky streams, waterholes, river pools, billabongs in tropical North Australia.',
+    distribution:'Northern QLD, NT, WA (Kimberley). Found in Gulf of Carpentaria river systems.',
+    eating:{rating:4,label:'Excellent',notes:'Sweet, firm white flesh. Excellent pan-fry or BBQ.'},
+    legal:[{s:'QLD',min:'25 cm',bag:'10'},{s:'NT',min:'25 cm',bag:'10'},{s:'WA',min:'25 cm',bag:'10'},{s:'NSW',min:'–',bag:'–'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Worms','Prawns','Soft plastics','Small hardbodies','Insects'],
+    season:'Year-round. Dry season (Apr–Oct) best when waterholes concentrate fish.'
+  },
+  {key:'redthroatemperor',common:'Redthroat Emperor',aka:'Sweetlip Emperor, Tricky Snapper',scientific:'Lethrinus miniatus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lethrinus_miniatus.jpg',
+    desc:'The most prized emperor in Australian waters. Olive-green to pinkish body and the vivid red-orange inner mouth that gives it its name. Prized for sport and the table.',
+    id_tips:'Olive-green to reddish-pink body. Open the mouth — the vivid orange-red interior is unmistakeable. Large scales, pig-like protruding lips, large eyes. Distinguish from Spangled Emperor by lack of blue spots on scales.',
+    weight:'0.5–5 kg typical',length:'30–70 cm',
+    habitat:'Sandy bottoms near reef edges, seagrass beds, coral bommies. Feeds on invertebrates.',
+    distribution:'QLD coast (GBR), NT, WA north coast.',
+    eating:{rating:5,label:'World-class',notes:'Outstanding eating — one of the finest reef fish. Moist, sweet white flesh. Pan-fry, steam, or bake whole.'},
+    legal:[{s:'QLD',min:'35 cm',bag:'10'},{s:'NT',min:'35 cm',bag:'10'},{s:'WA',min:'35 cm',bag:'10'},{s:'NSW',min:'35 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Prawns','Squid','Worms','Crabs','Small hardbodies'],
+    season:'Year-round. Dry season (Apr–Sep) most productive on northern reefs.'
+  },
+  {key:'spangledemperor',common:'Spangled Emperor',aka:'Sand Bream, Nor-west Snapper, Yellow Sweetlip',scientific:'Lethrinus nebulosus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lethrinus_nebulosus.jpg',
+    desc:'A large, robust emperor with distinctive blue-edged scales and yellow-orange fins. One of the most common reef fish across northern Australia. Strong fighter and excellent eating.',
+    id_tips:'Greenish-grey body with blue spots or centres on each scale — the "spangles". Yellow-orange fins. Protruding lips. Larger and more robust than Redthroat Emperor. Inner mouth may be reddish but not as vivid.',
+    weight:'0.5–6 kg typical · 10+ kg possible',length:'35–80 cm',
+    habitat:'Sandy flats, seagrass beds, reef edges, rubble bottom.',
+    distribution:'Northern QLD, NT, WA coast. Also extends south along both coasts.',
+    eating:{rating:4,label:'Excellent',notes:'Very good eating. Firm, sweet white flesh. Best pan-fried, baked or steamed whole.'},
+    legal:[{s:'QLD',min:'35 cm',bag:'10'},{s:'NT',min:'38 cm',bag:'10'},{s:'WA',min:'38 cm',bag:'10'},{s:'NSW',min:'35 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Prawns','Crab','Squid','Soft plastics','Pilchards'],
+    season:'Year-round. Northern waters peak May–Sep (dry season).'
+  },
+  {key:'cobia',common:'Cobia',aka:'Black Kingfish, Sergeant Fish, Lemonfish',scientific:'Rachycentron canadum',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Rachycentron_canadum.jpg',
+    desc:'A powerful, torpedo-shaped pelagic fish with a distinctive broad flat head. Known for following large rays and turtles to scavenge prey. Dark brown to grey-black back, white belly.',
+    id_tips:'Long torpedo-shaped body. Distinctive broad, flat head with large mouth. Dark brown back, whitish sides with dark lateral stripe from snout to tail. 8–9 short isolated dorsal spines before the main dorsal fin. Often spotted swimming behind rays or turtles.',
+    weight:'2–20 kg typical · 60+ kg possible',length:'60–200 cm',
+    habitat:'Open coastal waters, offshore reefs, harbours, estuaries. Highly pelagic.',
+    distribution:'Northern and eastern Australia — QLD, NSW north coast, NT, WA.',
+    eating:{rating:5,label:'World-class',notes:'Outstanding eating. Firm, white, large-flaked flesh. Sashimi-grade. Excellent smoked, grilled, or baked.'},
+    legal:[{s:'QLD',min:'75 cm',bag:'5'},{s:'NSW',min:'75 cm',bag:'3'},{s:'NT',min:'No min',bag:'5'},{s:'WA',min:'No min',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Live bait','Poppers','Jigs','Soft plastics','Crab'],
+    season:'Year-round in tropics. NSW peaks summer–autumn.'
+  },
+  {key:'wahoo',common:'Wahoo',aka:'Ono, Pacific Kingfish',scientific:'Acanthocybium solandri',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Acanthocybium_solandri.jpg',
+    desc:'One of the fastest fish in the ocean. Streamlined blue-green body with brilliant electric-blue vertical bars. Razor-sharp teeth. The premier bluewater trolling target.',
+    id_tips:'Slender, elongated body with brilliant electric-blue to green bars on metallic blue-silver. Very long pointed snout with razor-sharp teeth. Long continuous dorsal fin. Distinguished from Spanish Mackerel by brilliant blue barring and very pointed snout.',
+    weight:'5–30 kg typical · 80+ kg possible',length:'80–250 cm',
+    habitat:'Open ocean, offshore reefs, FADs, current lines. True bluewater species.',
+    distribution:'Tropical and subtropical Australian waters — northern QLD, NSW offshore, WA.',
+    eating:{rating:5,label:'World-class',notes:'Arguably the finest sashimi fish in the ocean. Firm, white, delicate flesh. Must be bled and iced immediately.'},
+    legal:[{s:'QLD',min:'No min',bag:'No limit'},{s:'NSW',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'},{s:'NT',min:'No min',bag:'No limit'},{s:'SA',min:'–',bag:'–'}],
+    bait:['High-speed trolled lures','Skirts','Livebait','Bibless minnows'],
+    season:'Year-round offshore. Peaks summer and autumn in QLD/NSW waters.'
+  },
+  {key:'samsonfish',common:'Samsonfish',aka:'Samson, WA Amberjack, Purplies',scientific:'Seriola hippos',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Seriola_hippos.jpg',
+    desc:'A powerful deep-water relative of the Yellowtail Kingfish found in southern and WA waters. Olive-brown to purple-bronze back. One of the hardest-fighting fish in Australian waters.',
+    id_tips:'Similar to Yellowtail Kingfish but lacks the distinctive yellow tail and lateral stripe. More brownish-olive to purple back. Less defined lateral stripe. More common in deeper water. WA anglers will recognise this species immediately.',
+    weight:'2–20 kg typical · 40+ kg possible',length:'50–180 cm',
+    habitat:'Rocky offshore reefs, underwater pinnacles, deep-water structure. 20–100+ m depth.',
+    distribution:'South-western Australia (WA) and southern Australia. Common around WA reefs.',
+    eating:{rating:3,label:'Good',notes:'Reasonable eating — can be coarse. Best smoked or in fish cakes. Smaller fish better eating.'},
+    legal:[{s:'WA',min:'50 cm',bag:'3'},{s:'SA',min:'50 cm',bag:'3'},{s:'VIC',min:'50 cm',bag:'5'},{s:'NSW',min:'50 cm',bag:'5'},{s:'QLD',min:'50 cm',bag:'5'}],
+    bait:['Jigs (knife jigs)','Live squid','Livebait','Hardbodies','Trolled lures'],
+    season:'Year-round in WA. Most targeted in summer and autumn.'
+  },
+  {key:'dhufish',common:'West Australian Dhufish',aka:'Dhu, Jewfish (WA)',scientific:'Glaucosoma hebraicum',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Glaucosoma_hebraicum.jpg',
+    desc:'Western Australia's most iconic reef fish. Pink to rosy-red body with a distinctive dark saddle behind the dorsal fin. Highly territorial — known for powerful dives back to the reef when hooked.',
+    id_tips:'Pink to rosy-red body. Key feature: distinctive dark oval saddle/blotch on the upper back just behind the dorsal fin. Large mouth, large eyes, very large distinctive pectoral fins. Unique to WA — no lookalikes in WA waters.',
+    weight:'1–10 kg typical · 25+ kg possible',length:'40–120 cm',
+    habitat:'Offshore rocky reefs and limestone ledges, 20–100 m depth. Highly territorial.',
+    distribution:'Endemic to Western Australia.',
+    eating:{rating:5,label:'World-class',notes:'WA's finest eating fish. Exceptional moist, sweet, white flesh. Pan-fry, bake or steam. A true delicacy.'},
+    legal:[{s:'WA',min:'50 cm',bag:'2'},{s:'NSW',min:'–',bag:'–'},{s:'QLD',min:'–',bag:'–'},{s:'SA',min:'–',bag:'–'},{s:'VIC',min:'–',bag:'–'}],
+    bait:['Octopus','Squid','Livebait','Knife jigs','Whole fish'],
+    season:'Year-round. Peaks winter–spring (Jun–Oct) in WA.'
+  },
+  {key:'bluegroper',common:'Eastern Blue Groper',aka:'Blue Groper, Bluey',scientific:'Achoerodus viridis',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Achoerodus_viridis.jpg',
+    desc:'An iconic, inquisitive fish of eastern Australian rocky reefs. Males are a stunning deep blue-green. PROTECTED in NSW — must not be taken.',
+    id_tips:'Adult males are unmistakeable — brilliant deep turquoise-blue. Females and juveniles are brown to reddish-brown. Thick lips and powerful crushing teeth for eating sea urchins and shellfish. Often very tame at popular dive sites.',
+    weight:'1–10 kg typical',length:'30–100 cm',
+    habitat:'Rocky reefs, boulder fields, kelp beds. Found 1–40 m depth on coastal and offshore reefs.',
+    distribution:'Eastern Australia — NSW to QLD. Most common in NSW.',
+    eating:{rating:3,label:'Good (where legal)',notes:'PROTECTED in NSW — must not be taken. Good eating where legal in other states.'},
+    legal:[{s:'NSW',min:'PROTECTED',bag:'No take'},{s:'QLD',min:'30 cm',bag:'5'},{s:'VIC',min:'30 cm',bag:'5'},{s:'SA',min:'30 cm',bag:'5'},{s:'WA',min:'30 cm',bag:'5'}],
+    bait:['Cunjevoi','Sea urchin','Crabs','Worms','Prawns'],
+    season:'Year-round. More active in warmer months.'
+  },
+  {key:'drummer',common:'Rock Blackfish',aka:'Drummer, Black Drummer, Pig',scientific:'Kyphosus sydneyanus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Kyphosus_sydneyanus.jpg',
+    desc:'A dark, powerful fish of exposed rock platforms. Deep grey to black body, powerful build. A cult species among rock fishers — known for strong runs in the wash.',
+    id_tips:'Deep, compressed body, dark grey to almost black. Small mouth with incisor-like teeth for grazing on weed. Uniform dark colouring. Often found feeding in surge and wash around exposed rock platforms.',
+    weight:'0.5–4 kg typical',length:'25–60 cm',
+    habitat:'Wave-washed rock platforms, headlands, exposed reef. Feeds on green and brown algae.',
+    distribution:'Eastern and southern Australia — NSW, VIC, SA, TAS.',
+    eating:{rating:2,label:'Below average',notes:'Strong, pungent flavour from algae diet. Most anglers release them. Can be OK if bled well and cooked fresh.'},
+    legal:[{s:'NSW',min:'25 cm',bag:'20'},{s:'VIC',min:'25 cm',bag:'20'},{s:'SA',min:'No min',bag:'No limit'},{s:'QLD',min:'25 cm',bag:'20'},{s:'WA',min:'No min',bag:'No limit'}],
+    bait:['Green weed (cabbage)','Cunjevoi','Bread','Dough','Pipis'],
+    season:'Year-round. Autumn–winter best on NSW rock platforms.'
+  },
+  {key:'garfish',common:'Eastern Garfish',aka:'Gar, Needlefish',scientific:'Hyporhamphus australis',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Hyporhamphus_australis.jpg',
+    desc:'A slender, surface-dwelling fish with a distinctive extended lower jaw. Often used as live or dead bait, but also a delicious eating fish in its own right.',
+    id_tips:'Very elongated, slender silver body. Key feature: long beak-like lower jaw extending well beyond the upper jaw. Green back, silver belly. Often seen skipping across the surface in large schools. Much smaller than similar-looking Longtom.',
+    weight:'0.05–0.25 kg typical',length:'20–45 cm',
+    habitat:'Estuaries, coastal bays, seagrass beds, harbour foreshores. Surface dweller.',
+    distribution:'Eastern and southern Australia — QLD, NSW, VIC, SA, WA.',
+    eating:{rating:4,label:'Excellent',notes:'Underrated eating fish. Sweet, delicate flesh. Lightly flour and pan-fry. Excellent butterflied on the BBQ.'},
+    legal:[{s:'NSW',min:'No min',bag:'No limit'},{s:'VIC',min:'No min',bag:'No limit'},{s:'QLD',min:'No min',bag:'No limit'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'}],
+    bait:['Bread','Dough','Maggots','Small float rigs with tiny hooks'],
+    season:'Year-round. Most common spring–summer.'
+  },
+  {key:'seamullet',common:'Sea Mullet',aka:'Mullet, Flatback Mullet, Bully',scientific:'Mugil cephalus',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Mugil_cephalus.jpg',
+    desc:'One of Australia's most abundant coastal fish. Grey-silver torpedo-shaped body with a distinctive adipose eyelid. Important ecologically and commercially. Spectacular autumn spawning runs.',
+    id_tips:'Blue-grey to olive back, silver sides, white belly. Distinctive adipose eyelid partially covering the eye — key ID feature. Blunt snout, small terminal mouth. Thick-scaled body. Often seen in large schools in estuaries and river mouths.',
+    weight:'0.5–4 kg typical',length:'30–75 cm',
+    habitat:'Estuaries, coastal rivers, beaches, tidal flats. Highly adaptable.',
+    distribution:'All Australian states. One of the most widely distributed coastal fish.',
+    eating:{rating:3,label:'Good',notes:'Best smoked or BBQ with herbs. Bleed immediately and ice. Roe is highly prized.'},
+    legal:[{s:'NSW',min:'30 cm',bag:'20'},{s:'VIC',min:'28 cm',bag:'20'},{s:'QLD',min:'30 cm',bag:'20'},{s:'SA',min:'30 cm',bag:'20'},{s:'WA',min:'30 cm',bag:'8'}],
+    bait:['Bread','Dough','Weed','Maggots','Corn'],
+    season:'Year-round. Autumn spawning runs (Mar–Jun) concentrate fish at beach gutters.'
+  },
+  {key:'catfish',common:'Eel-tailed Catfish',aka:'Tandan, Freshwater Catfish, Dewfish',scientific:'Tandanus tandanus',emoji:'🐟',type:'freshwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Tandanus_tandanus.jpg',
+    desc:'A unique native freshwater fish with a long eel-like tail and smooth scaleless body. Handle with care — sharp spines on pectoral and dorsal fins can inflict painful wounds.',
+    id_tips:'Smooth scaleless body tapering to an eel-like tail — no forked tail fin. Mottled olive-brown to grey. Four pairs of barbels around the mouth. WARNING: sharp serrated spines on dorsal and pectoral fins — grip firmly behind the spine or use a cloth.',
+    weight:'0.2–3 kg typical · 6+ kg in large rivers',length:'20–60 cm',
+    habitat:'Rivers, lakes, impoundments with sandy or muddy bottom and aquatic vegetation.',
+    distribution:'Murray-Darling Basin — NSW, VIC, QLD, SA. Also coastal rivers of eastern QLD.',
+    eating:{rating:4,label:'Excellent',notes:'Surprisingly good eating — sweet, firm white flesh. Remove the skin before cooking. Pan-fry, bake, or smoke.'},
+    legal:[{s:'NSW',min:'25 cm',bag:'10'},{s:'VIC',min:'25 cm',bag:'10'},{s:'QLD',min:'25 cm',bag:'10'},{s:'SA',min:'25 cm',bag:'10'},{s:'WA',min:'–',bag:'–'}],
+    bait:['Worms','Yabbies','Prawns','Fresh fish strip','Dough'],
+    season:'Year-round. Nights in warmer months most productive.'
+  },
+  {key:'jungleperch',common:'Jungle Perch',aka:'Perch, Freshwater Rock Bass',scientific:'Kuhlia rupestris',emoji:'🐟',type:'freshwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Kuhlia_rupestris.jpg',
+    desc:'A stunning, hard-fighting freshwater perch found in clear fast-flowing tropical streams. Silver body with distinctive black markings on the tail. A prized light-tackle sport fish.',
+    id_tips:'Bright silver body. Key ID features: distinctive black blotches or bars on the tail fin and caudal peduncle. Two well-separated dorsal fins. Found in fast-flowing clear water near waterfalls and rapids.',
+    weight:'0.2–2 kg typical',length:'20–45 cm',
+    habitat:'Clear, fast-flowing tropical streams, rivers with rocky substrate, near waterfalls and rapids.',
+    distribution:'Coastal QLD (from Cooktown south), NT coastal rivers, WA (Kimberley).',
+    eating:{rating:3,label:'Good',notes:'Sweet, firm flesh. Most anglers practise catch and release.'},
+    legal:[{s:'QLD',min:'25 cm',bag:'5'},{s:'NT',min:'25 cm',bag:'5'},{s:'WA',min:'25 cm',bag:'5'},{s:'NSW',min:'–',bag:'–'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Small hardbodies','Spinners','Soft plastics','Live shrimp','Insects'],
+    season:'Year-round. Dry season (Apr–Oct) best — rivers clearer and lower.'
+  },
+  {key:'sweetlip',common:'Painted Sweetlip',aka:'Sweetlip, Diagonal-banded Sweetlip, Harlequin Sweetlip',scientific:'Plectorhinchus lineatus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Plectorhinchus_lineatus.jpg',
+    desc:'One of the most strikingly coloured reef fish. Adults have vivid yellow and black diagonal stripes. Juveniles are white with large brown spots — completely different appearance.',
+    id_tips:'Adults: bright yellow body with bold black diagonal stripes. Thick, fleshy lips. Juveniles: white body with large rounded brown spots. The thick fleshy "sweet lips" are distinctive across all life stages.',
+    weight:'0.3–5 kg typical',length:'25–70 cm',
+    habitat:'Coral and rocky reefs, reef edges, bommies. Often sheltering in caves and under ledges by day.',
+    distribution:'Northern Australia — QLD (GBR), NT, WA north coast.',
+    eating:{rating:4,label:'Excellent',notes:'Good, sweet, firm white flesh. Excellent pan-fried, steamed, or baked whole. Popular restaurant fish.'},
+    legal:[{s:'QLD',min:'30 cm',bag:'10'},{s:'NT',min:'30 cm',bag:'10'},{s:'WA',min:'30 cm',bag:'10'},{s:'NSW',min:'30 cm',bag:'5'},{s:'SA',min:'–',bag:'–'}],
+    bait:['Prawns','Crab','Worms','Squid','Small hardbodies'],
+    season:'Year-round on tropical reefs. Dry season (Apr–Sep) often best.'
+  },
+  {key:'blackbream',common:'Black Bream',aka:'Southern Black Bream, WA Bream',scientific:'Acanthopagrus butcheri',emoji:'🐠',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Acanthopagrus_butcheri.jpg',
+    desc:'The dominant bream of southern Australia and WA. Darker than Yellowfin Bream — olive-grey to black body without yellow fin colouring. Tolerates very low salinity and even fresh water.',
+    id_tips:'Darker, olive-grey to black body compared to Yellowfin Bream. Fins are dark grey, not yellow. More adaptable to freshwater — found far up estuaries. In WA, this is the primary "bream" species.',
+    weight:'0.3–2.5 kg typical · 3+ kg trophy',length:'20–55 cm',
+    habitat:'Estuaries, coastal lakes, enclosed bays. Extremely adaptable — can survive in near-freshwater.',
+    distribution:'Southern Australia — WA, SA, VIC, TAS, southern NSW.',
+    eating:{rating:3,label:'Good',notes:'Good eating when bled immediately. Firm, white flesh. Mild flavour.'},
+    legal:[{s:'WA',min:'25 cm',bag:'12'},{s:'SA',min:'25 cm',bag:'20'},{s:'VIC',min:'28 cm',bag:'20'},{s:'NSW',min:'25 cm',bag:'20'},{s:'TAS',min:'25 cm',bag:'20'}],
+    bait:['Bloodworms','Prawns','Nippers','Soft plastics','Bread'],
+    season:'Year-round. Cooler months (Apr–Sep) most productive.'
   }
+
 ];
 
 // Build lookup map
@@ -1152,13 +1385,20 @@ function renderSpeciesGuide(){
   const typeLabel={saltwater:'Saltwater',freshwater:'Freshwater',estuary:'Estuary'};
   grid.innerHTML=list.map(s=>`
     <div class="species-card" onclick="showSpeciesDetail('${s.key}')">
-      <div class="species-card-top">
-        <div class="species-emoji">${s.emoji}</div>
-        <div><div class="species-card-name">${s.common}</div><div class="species-card-sci">${s.scientific}</div></div>
+      <div class="species-card-img-wrap">
+        ${s.img
+          ? `<img src="${s.img}" alt="${s.common}" class="species-card-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+             <div class="species-card-emoji-fb">${s.emoji}</div>`
+          : `<div class="species-card-emoji-fb">${s.emoji}</div>`
+        }
       </div>
-      <div class="species-eat-row">
-        <span class="eat-stars">${eatStars(s.eating.rating)}</span>
-        <span class="species-type-tag ${typeTag[s.type]}">${typeLabel[s.type]}</span>
+      <div style="padding:8px 10px 10px;">
+        <div class="species-card-name">${s.common}</div>
+        <div class="species-card-sci">${s.scientific}</div>
+        <div class="species-eat-row" style="margin-top:6px;">
+          <span class="eat-stars">${eatStars(s.eating.rating)}</span>
+          <span class="species-type-tag ${typeTag[s.type]}">${typeLabel[s.type]}</span>
+        </div>
       </div>
     </div>`).join('');
 }
@@ -1177,7 +1417,10 @@ function showSpeciesDetail(key){
   document.getElementById('speciesDetailContent').innerHTML=`
     <div class="modal-drag"></div>
     <div class="spp-hero">
-      <span class="spp-emoji">${s.emoji}</span>
+      ${s.img
+        ? `<img src="${s.img}" alt="${s.common}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="spp-emoji" style="display:none;">${s.emoji}</span>`
+        : `<span class="spp-emoji">${s.emoji}</span>`
+      }
       <div class="spp-name">${s.common}</div>
       ${s.aka?`<div class="spp-aka">Also: ${s.aka}</div>`:''}
       <div class="spp-sci">${s.scientific}</div>
