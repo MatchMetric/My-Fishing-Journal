@@ -1806,7 +1806,11 @@ async function handleSaveBarClick(){
       toast('Now saving to '+handle.name);
     }catch(e){}
   } else if(saveMode==='browser'&&FS_SUPPORTED){
+    // Chrome/Edge in browser mode — offer to switch to file
     openModal('fileSetupModal');
+  } else if(saveMode==='browser'&&!FS_SUPPORTED){
+    // Safari/Firefox — file API not available, just trigger a backup download
+    exportData();
   } else if(!saveMode){
     openModal('fileSetupModal');
   } else if(saveMode==='file'&&!fileHandle){
