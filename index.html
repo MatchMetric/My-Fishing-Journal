@@ -1784,11 +1784,11 @@ function setupBrowserOnly(){
   idbSet('saveMode','browser');
   save();
   if(FS_SUPPORTED){
-    setSaveBar('amber','<strong>Browser storage only</strong> — data lost if cache cleared','Tap to use file');
+    setSaveBar('amber','<strong>Heads up:</strong> your journal lives in the browser — clearing cache will delete it','Switch to file ›');
   } else {
-    setSaveBar('grey','<strong>Browser storage</strong> — export JSON regularly as backup','');
+    setSaveBar('grey','<strong>Your journal is saved in this browser</strong> — save a backup copy regularly','📤 Backup');
   }
-  toast('Using browser storage. Export regularly as backup.');
+  toast('Journal saved in browser — use Profile → Save Backup Copy regularly 💾');
 }
 
 // ── Handle save bar click ──
@@ -1864,7 +1864,7 @@ async function initStorage(){
     if(!FS_SUPPORTED){
       // Browser no longer supports it (unlikely) — fall back
       saveMode='browser';
-      setSaveBar('grey','<strong>Browser storage</strong> — export regularly','');
+      setSaveBar('grey','<strong>Your journal is saved in this browser</strong> — save a backup copy regularly','📤 Backup');
       return;
     }
     // Try to reconnect
@@ -1875,9 +1875,9 @@ async function initStorage(){
   } else {
     // browser mode
     if(FS_SUPPORTED){
-      setSaveBar('amber','<strong>Browser storage only</strong> — clear cache = data lost','Switch to file');
+      setSaveBar('amber','<strong>Heads up:</strong> your journal lives in the browser — clearing cache will delete it','Switch to file ›');
     } else {
-      setSaveBar('grey','<strong>Browser storage</strong> — export JSON regularly','');
+      setSaveBar('grey','<strong>Your journal is saved in this browser</strong> — save a backup copy regularly','📤 Backup');
     }
   }
 }
@@ -2622,7 +2622,7 @@ function exportData(){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-  toast(fileHandle?'Backup exported (file storage active) ⬇':'Exported ⬇');
+  toast(fileHandle?'Backup saved ✓ (file storage also active)':'Backup saved to your device ✓');
 }
 
 function importData(files){
