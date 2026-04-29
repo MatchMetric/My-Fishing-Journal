@@ -555,6 +555,72 @@ textarea.form-input{resize:vertical;min-height:70px;}
 <!-- CATCH DETAIL MODAL -->
 <div class="modal-backdrop" id="catchDetailModal"><div class="modal" id="catchDetailContent"></div></div>
 
+<!-- EDIT CATCH MODAL -->
+<div class="modal-backdrop" id="editCatchModal">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-title">Edit Catch</div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Species</label>
+      <input type="text" class="form-input" id="editFish" list="editSpeciesList">
+      <datalist id="editSpeciesList"></datalist>
+    </div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input type="number" class="form-input" id="editWeight" step="0.01" min="0"></div>
+      <div class="form-group"><label class="form-label">Length (cm)</label><input type="number" class="form-input" id="editLength" step="1" min="0"></div>
+    </div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="editDate"></div>
+      <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input" id="editTime"></div>
+    </div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-input" id="editLocation" list="editLocationList">
+        <datalist id="editLocationList"></datalist>
+      </div>
+      <div class="form-group"><label class="form-label">Bait / Lure</label><input type="text" class="form-input" id="editBait"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Method</label>
+      <select class="form-input" id="editMethod">
+        <option value="">–</option><option>Spinning</option><option>Bait fishing</option>
+        <option>Trolling</option><option>Fly fishing</option><option>Jigging</option>
+        <option>Surfcasting</option><option>Rock fishing</option><option>Kayak</option><option>Boat</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Tide</label>
+      <div class="tide-picker" id="editTidePicker">
+        <button class="tide-btn" onclick="setEditTide('high',this)">⬆ High</button>
+        <button class="tide-btn" onclick="setEditTide('rising',this)">📈 Rising</button>
+        <button class="tide-btn" onclick="setEditTide('falling',this)">📉 Falling</button>
+        <button class="tide-btn" onclick="setEditTide('low',this)">⬇ Low</button>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="editNotes" style="min-height:70px;"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Photos</label>
+      <div class="photo-preview-grid" id="editPhotoPreview"></div>
+      <div class="photo-upload-zone" style="padding:0.8rem;margin-top:8px;">
+        <input type="file" id="editPhotoInput" accept="image/*" multiple onchange="handleEditPhotos(this.files)">
+        <div style="font-size:18px;margin-bottom:2px;">📷</div>
+        <div style="font-size:12px;font-weight:500;">Add more photos</div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button class="btn btn-danger btn-sm" onclick="deleteCatchFromEdit()">🗑 Delete</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="closeModal('editCatchModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditedCatch()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SPECIES DETAIL MODAL -->
 <div class="modal-backdrop" id="speciesDetailModal"><div class="modal" id="speciesDetailContent"></div></div>
 
@@ -1966,7 +2032,10 @@ function showCatchDetail(id){
     ${imgHtml}
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px;">
       <div class="detail-species">${c.fish}${pb?'<span class="pb-badge">PB</span>':''}</div>
-      <button class="btn btn-danger btn-sm" onclick="deleteCatch(${c.id})">Delete</button>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-ghost btn-sm" onclick="editCatch(${c.id})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCatch(${c.id})">Delete</button>
+      </div>
     </div>
     <div class="detail-grid">
       <div class="detail-tile"><div class="detail-tile-lbl">Weight</div><div class="detail-tile-val" style="color:var(--teal-bright)">${c.weight.toFixed(2)} kg</div></div>
@@ -1981,6 +2050,129 @@ function showCatchDetail(id){
     ${sp?`<button class="btn btn-species btn-full" style="margin-top:14px;" onclick="closeModal('catchDetailModal');showSpeciesDetail('${sp.key}')">🐟 View Species Info</button>`:''}
     <button class="btn btn-ghost btn-full" style="margin-top:8px;" onclick="closeModal('catchDetailModal')">Close</button>`;
   openModal('catchDetailModal');
+}
+
+// ── EDIT CATCH ──
+let editingCatchId = null;
+let editPendingPhotos = [];
+
+function editCatch(id){
+  const c = data.catches.find(x=>x.id===id);
+  if(!c) return;
+  editingCatchId = id;
+  editPendingPhotos = [...(c.photos||[])];
+
+  // Populate fields
+  document.getElementById('editFish').value = c.fish||'';
+  document.getElementById('editWeight').value = c.weight||'';
+  document.getElementById('editLength').value = c.length||'';
+  document.getElementById('editDate').value = c.date||'';
+  document.getElementById('editTime').value = c.time||'';
+  document.getElementById('editLocation').value = c.location||'';
+  document.getElementById('editBait').value = c.bait||'';
+  document.getElementById('editMethod').value = c.method||'';
+  document.getElementById('editNotes').value = c.notes||'';
+
+  // Populate datalists
+  const sl=document.getElementById('editSpeciesList');
+  sl.innerHTML=[...new Set(data.catches.map(x=>x.fish)),...SPECIES_DB.map(s=>s.common)].filter((v,i,a)=>a.indexOf(v)===i).sort().map(s=>`<option value="${s}">`).join('');
+  const ll=document.getElementById('editLocationList');
+  ll.innerHTML=[...new Set(data.catches.map(x=>x.location).filter(Boolean))].sort().map(l=>`<option value="${l}">`).join('');
+
+  // Tide buttons
+  document.querySelectorAll('#editTidePicker .tide-btn').forEach(b=>b.classList.remove('active'));
+  if(c.tide){
+    const tideMap={high:0,rising:1,falling:2,low:3};
+    const idx=tideMap[c.tide];
+    const btns=document.querySelectorAll('#editTidePicker .tide-btn');
+    if(btns[idx]) btns[idx].classList.add('active');
+  }
+
+  // Photo preview
+  renderEditPhotoPreview();
+
+  closeModal('catchDetailModal');
+  openModal('editCatchModal');
+}
+
+function setEditTide(val, btn){
+  const currentActive = document.querySelector('#editTidePicker .tide-btn.active');
+  document.querySelectorAll('#editTidePicker .tide-btn').forEach(b=>b.classList.remove('active'));
+  // Toggle off if same button
+  if(currentActive !== btn) btn.classList.add('active');
+}
+
+function getEditTide(){
+  const active = document.querySelector('#editTidePicker .tide-btn.active');
+  if(!active) return '';
+  const map=['high','rising','falling','low'];
+  const idx=[...document.querySelectorAll('#editTidePicker .tide-btn')].indexOf(active);
+  return map[idx]||'';
+}
+
+function handleEditPhotos(files){
+  Array.from(files).forEach(f=>{
+    if(!f.type.startsWith('image/')) return;
+    const r=new FileReader();
+    r.onload=e=>{editPendingPhotos.push(e.target.result);renderEditPhotoPreview();};
+    r.readAsDataURL(f);
+  });
+}
+
+function renderEditPhotoPreview(){
+  const el=document.getElementById('editPhotoPreview');
+  if(!el) return;
+  el.innerHTML=editPendingPhotos.map((src,i)=>
+    `<div class="photo-thumb"><img src="${src}" alt=""><button class="del-btn" onclick="removeEditPhoto(${i})">×</button></div>`
+  ).join('');
+}
+
+function removeEditPhoto(i){
+  editPendingPhotos.splice(i,1);
+  renderEditPhotoPreview();
+}
+
+function saveEditedCatch(){
+  const fish=document.getElementById('editFish').value.trim();
+  const weight=parseFloat(document.getElementById('editWeight').value);
+  const date=document.getElementById('editDate').value;
+  if(!fish||!weight||!date){toast('Species, weight & date required',true);return;}
+
+  const idx=data.catches.findIndex(c=>c.id===editingCatchId);
+  if(idx===-1){toast('Catch not found',true);return;}
+
+  // Preserve the original id, update everything else
+  data.catches[idx]={
+    ...data.catches[idx],
+    fish, weight,
+    length:parseFloat(document.getElementById('editLength').value)||0,
+    date,
+    time:document.getElementById('editTime').value,
+    location:document.getElementById('editLocation').value.trim(),
+    bait:document.getElementById('editBait').value.trim(),
+    method:document.getElementById('editMethod').value,
+    tide:getEditTide(),
+    notes:document.getElementById('editNotes').value.trim(),
+    photos:[...editPendingPhotos]
+  };
+
+  save();
+  closeModal('editCatchModal');
+  toast('Catch updated ✓');
+  renderDashboard();
+  renderPBs();
+  // Re-open the catch detail so they can see the result
+  showCatchDetail(editingCatchId);
+}
+
+function deleteCatchFromEdit(){
+  if(!confirm('Delete this catch?')) return;
+  data.catches=data.catches.filter(c=>c.id!==editingCatchId);
+  save();
+  closeModal('editCatchModal');
+  toast('Catch deleted');
+  renderDashboard();
+  renderPBs();
 }
 
 function deleteCatch(id){
