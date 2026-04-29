@@ -20,6 +20,90 @@
   --shadow:0 8px 32px rgba(0,0,0,0.4);--glow:0 0 24px rgba(34,149,122,0.2);
 }
 html,body{height:100%;background:var(--deep);}
+
+/* ══ LIGHT THEME ══ */
+body.theme-light{
+  --deep:#f0ebe0;--water:#e5dfd3;--teal:#1a6b5a;--teal-bright:#1a7a65;
+  --teal-light:rgba(26,122,101,0.12);--amber:#c06a0a;--amber-light:rgba(192,106,10,0.14);
+  --amber-pale:rgba(192,106,10,0.07);--gold:#b8870c;--text:#18232e;
+  --muted:rgba(24,35,46,0.5);--border:rgba(24,35,46,0.1);--border-strong:rgba(24,35,46,0.2);
+  --surface:rgba(0,0,0,0.03);--surface2:rgba(0,0,0,0.055);--surface3:rgba(0,0,0,0.09);
+  background:var(--deep);
+}
+body.theme-light::before{background:
+  radial-gradient(ellipse 80% 60% at 10% 0%,rgba(180,220,210,0.55) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 90% 100%,rgba(26,107,90,0.1) 0%,transparent 55%),
+  radial-gradient(ellipse 100% 100% at 50% 50%,#f0ebe0 0%,#e8e1d4 100%);}
+body.theme-light .modal{background:#f7f2e9;border-color:rgba(24,35,46,0.15);}
+body.theme-light .form-input{background:rgba(255,255,255,0.85);color:#18232e;border-color:rgba(24,35,46,0.18);}
+body.theme-light .form-input::placeholder{color:rgba(24,35,46,0.3);}
+body.theme-light .form-input option{background:#f7f2e9;color:#18232e;}
+body.theme-light .nav{background:rgba(240,235,224,0.96);}
+body.theme-light .save-bar{background:rgba(240,235,224,0.92);}
+body.theme-light .species-card-img-wrap{background:rgba(0,0,0,0.07);}
+body.theme-light .stats-hero{background:linear-gradient(135deg,rgba(180,215,205,0.5),rgba(26,107,90,0.15));}
+body.theme-light .card-glass{background:linear-gradient(135deg,rgba(255,255,255,0.6),rgba(255,255,255,0.3));}
+body.theme-light .spp-hero{background:linear-gradient(135deg,rgba(180,215,205,0.5),rgba(26,107,90,0.15));}
+body.theme-light .profile-hero{background:linear-gradient(135deg,rgba(180,215,205,0.4),rgba(26,107,90,0.12));}
+body.theme-light .log-mode-toggle{background:rgba(0,0,0,0.06);}
+body.theme-light .spots-tabs{background:rgba(0,0,0,0.06);}
+body.theme-light .mode-btn.active{box-shadow:0 2px 8px rgba(26,107,90,0.25);}
+
+/* ══ SEAWATER THEME ══ */
+body.theme-seawater{
+  --deep:#020f1c;--water:#051a30;--teal:#0077b6;--teal-bright:#00b4d8;
+  --teal-light:rgba(0,180,216,0.14);--amber:#f77f00;--amber-light:rgba(247,127,0,0.18);
+  --amber-pale:rgba(247,127,0,0.07);--gold:#ffd60a;--text:#c8eef8;
+  --muted:rgba(200,238,248,0.48);--border:rgba(200,238,248,0.09);--border-strong:rgba(200,238,248,0.17);
+  --surface:rgba(0,100,160,0.1);--surface2:rgba(0,100,160,0.18);--surface3:rgba(0,100,160,0.27);
+  --glow:0 0 24px rgba(0,180,216,0.25);background:var(--deep);
+}
+body.theme-seawater::before{background:
+  radial-gradient(ellipse 80% 60% at 10% 0%,rgba(0,60,110,0.95) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 90% 100%,rgba(0,180,216,0.18) 0%,transparent 55%),
+  radial-gradient(ellipse 100% 100% at 50% 50%,#020f1c 0%,#010a14 100%);}
+body.theme-seawater .modal{background:#061828;}
+body.theme-seawater .form-input{background:rgba(0,100,160,0.22);color:#c8eef8;}
+body.theme-seawater .form-input::placeholder{color:rgba(200,238,248,0.28);}
+body.theme-seawater .form-input option{background:#061828;color:#c8eef8;}
+body.theme-seawater .btn-primary{background:linear-gradient(135deg,#0077b6,#00b4d8);box-shadow:0 4px 14px rgba(0,180,216,0.3);}
+body.theme-seawater .btn-primary:hover{box-shadow:0 6px 18px rgba(0,180,216,0.45);}
+body.theme-seawater .header-icon{background:linear-gradient(135deg,#0077b6,#00b4d8);}
+body.theme-seawater .stats-hero{background:linear-gradient(135deg,rgba(0,60,110,0.8),rgba(0,180,216,0.2));}
+body.theme-seawater .stats-hero-val{color:#00b4d8;}
+body.theme-seawater .catch-weight{color:#00b4d8;}
+body.theme-seawater .pb-weight{color:#f77f00;}
+body.theme-seawater .spp-hero{background:linear-gradient(135deg,rgba(0,60,110,0.85),rgba(0,180,216,0.2));}
+body.theme-seawater .profile-hero{background:linear-gradient(135deg,rgba(0,60,110,0.7),rgba(0,180,216,0.15));}
+body.theme-seawater .profile-avatar-big,body.theme-seawater .profile-btn{border-color:#00b4d8;}
+body.theme-seawater .nav-btn.active{color:#00b4d8;border-bottom-color:#00b4d8;}
+body.theme-seawater .teal-bright{color:#00b4d8;}
+body.theme-seawater .text-teal{color:#00b4d8;}
+body.theme-seawater .save-bar-dot.green{background:#00b4d8;}
+body.theme-seawater .species-card:hover{border-color:#00b4d8;}
+body.theme-seawater .form-input:focus{border-color:#00b4d8;box-shadow:0 0 0 3px rgba(0,180,216,0.15);}
+
+/* ══ THEME SWATCHES ══ */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+.theme-swatch{border:2px solid var(--border-strong);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.18s;}
+.theme-swatch:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+.theme-swatch.active{border-color:var(--teal-bright);box-shadow:0 0 0 3px var(--teal-light);}
+.theme-preview{height:60px;position:relative;overflow:hidden;}
+.theme-preview-dark{background:linear-gradient(135deg,#0b1e2d,#0e3348);}
+.theme-preview-light{background:linear-gradient(135deg,#f0ebe0,#e5dfd3);}
+.theme-preview-seawater{background:linear-gradient(135deg,#020f1c,#051a30);}
+.theme-preview-accent{position:absolute;bottom:0;left:0;right:0;height:20px;display:flex;gap:4px;padding:4px;}
+.theme-dot{width:12px;height:12px;border-radius:50%;}
+.theme-name{font-size:11.5px;font-weight:600;text-align:center;padding:7px 4px 8px;letter-spacing:0.2px;}
+.theme-preview-dark .theme-dot-1{background:#22957a;}
+.theme-preview-dark .theme-dot-2{background:#e8922a;}
+.theme-preview-dark .theme-dot-3{background:#e8e4dc;}
+.theme-preview-light .theme-dot-1{background:#1a7a65;}
+.theme-preview-light .theme-dot-2{background:#c06a0a;}
+.theme-preview-light .theme-dot-3{background:#18232e;}
+.theme-preview-seawater .theme-dot-1{background:#00b4d8;}
+.theme-preview-seawater .theme-dot-2{background:#f77f00;}
+.theme-preview-seawater .theme-dot-3{background:#c8eef8;}
 body{font-family:var(--ff-body);color:var(--text);font-size:15px;line-height:1.5;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background:
   radial-gradient(ellipse 80% 60% at 10% 0%,rgba(14,51,72,0.9) 0%,transparent 60%),
@@ -490,7 +574,43 @@ textarea.form-input{resize:vertical;min-height:70px;}
     </div>
     <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
   </div>
-  <div class="card">
+  <div class="card" style="margin-top:4px;">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Appearance</div>
+    <div class="theme-grid">
+      <div class="theme-swatch" id="swDark" onclick="applyTheme('dark')">
+        <div class="theme-preview theme-preview-dark">
+          <div class="theme-preview-accent">
+            <div class="theme-dot theme-dot-1"></div>
+            <div class="theme-dot theme-dot-2"></div>
+            <div class="theme-dot theme-dot-3"></div>
+          </div>
+        </div>
+        <div class="theme-name">🌑 Dark</div>
+      </div>
+      <div class="theme-swatch" id="swLight" onclick="applyTheme('light')">
+        <div class="theme-preview theme-preview-light">
+          <div class="theme-preview-accent">
+            <div class="theme-dot theme-dot-1"></div>
+            <div class="theme-dot theme-dot-2"></div>
+            <div class="theme-dot theme-dot-3"></div>
+          </div>
+        </div>
+        <div class="theme-name">☀️ Light</div>
+      </div>
+      <div class="theme-swatch" id="swSeawater" onclick="applyTheme('seawater')">
+        <div class="theme-preview theme-preview-seawater">
+          <div class="theme-preview-accent">
+            <div class="theme-dot theme-dot-1"></div>
+            <div class="theme-dot theme-dot-2"></div>
+            <div class="theme-dot theme-dot-3"></div>
+          </div>
+        </div>
+        <div class="theme-name">🌊 Seawater</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:4px;">
     <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Data</div>
     <div class="btn-row">
       <button class="btn btn-ghost btn-sm" onclick="exportData()">⬇ Export JSON</button>
@@ -2502,7 +2622,37 @@ function confirmClear(){
   save();renderDashboard();toast('All data cleared');
 }
 
+// ── THEME ──
+function applyTheme(theme){
+  document.body.classList.remove('theme-light','theme-seawater');
+  if(theme==='light') document.body.classList.add('theme-light');
+  if(theme==='seawater') document.body.classList.add('theme-seawater');
+  localStorage.setItem('fishingTheme', theme);
+  // Update swatch active state
+  ['dark','light','seawater'].forEach(t=>{
+    const el=document.getElementById('sw'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el) el.classList.toggle('active', t===theme);
+  });
+}
+
+function loadTheme(){
+  const t=localStorage.getItem('fishingTheme')||'dark';
+  applyTheme(t);
+}
+
+// Also update swatches when profile renders
+const _origRenderProfile = renderProfile;
+renderProfile = function(){
+  _origRenderProfile();
+  const t=localStorage.getItem('fishingTheme')||'dark';
+  ['dark','light','seawater'].forEach(th=>{
+    const el=document.getElementById('sw'+th.charAt(0).toUpperCase()+th.slice(1));
+    if(el) el.classList.toggle('active', th===t);
+  });
+};
+
 // ── INIT ──
+loadTheme();
 initLogForm();
 renderDashboard();
 initStorage();  // async — sets up file system in background
