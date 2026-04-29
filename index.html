@@ -233,6 +233,37 @@ textarea.form-input{resize:vertical;min-height:70px;}
 .empty-sub{font-size:13px;}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal);color:white;padding:10px 20px;border-radius:30px;font-size:13.5px;font-weight:500;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);z-index:999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* QUICK LOG TOGGLE */
+.log-mode-toggle{display:flex;background:var(--surface2);border-radius:10px;padding:3px;margin-bottom:14px;gap:3px;}
+.mode-btn{flex:1;background:none;border:none;border-radius:8px;padding:8px 12px;font-family:var(--ff-body);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.mode-btn.active{background:var(--teal);color:white;box-shadow:0 2px 8px rgba(34,149,122,0.3);}
+/* TIDE PICKER */
+.tide-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.tide-btn{background:var(--surface2);border:1px solid var(--border-strong);border-radius:8px;padding:8px 4px;font-family:var(--ff-body);font-size:11.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:center;white-space:nowrap;}
+.tide-btn:hover{border-color:var(--teal-bright);color:var(--text);}
+.tide-btn.active{background:var(--teal-light);border-color:var(--teal-bright);color:var(--teal-bright);font-weight:700;}
+/* SPOTS / SESSIONS TABS */
+.spots-tabs{display:flex;background:var(--surface2);border-radius:10px;padding:3px;margin-bottom:14px;gap:3px;}
+.spots-tab{flex:1;background:none;border:none;border-radius:8px;padding:8px 12px;font-family:var(--ff-body);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.spots-tab.active{background:var(--surface3);color:var(--text);font-weight:600;}
+/* MY SPOTS */
+.spot-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s;}
+.spot-item:hover{border-color:var(--teal-bright);}
+.spot-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.spot-name{font-family:var(--ff-display);font-size:17px;font-weight:600;letter-spacing:-0.3px;}
+.spot-badge{background:var(--teal-light);color:var(--teal-bright);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;white-space:nowrap;}
+.spot-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.spot-stat{background:var(--surface2);border-radius:8px;padding:7px 8px;text-align:center;}
+.spot-stat-val{font-family:var(--ff-display);font-size:16px;font-weight:600;line-height:1;}
+.spot-stat-lbl{font-size:9.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.3px;}
+.spot-species{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.spot-chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:2px 9px;font-size:11.5px;}
+/* DASHBOARD INSIGHTS */
+.insight-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.insight-tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
+.insight-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.insight-val{font-family:var(--ff-display);font-size:15px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.insight-sub{font-size:10.5px;color:var(--muted);margin-top:2px;}
 /* SAVE STATUS BAR */
 .save-bar{display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:11.5px;font-weight:500;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;user-select:none;min-height:32px;}
 .save-bar:hover{background:var(--surface2);}
@@ -280,7 +311,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
   <button class="nav-btn active" onclick="switchView('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</button>
   <button class="nav-btn" onclick="switchView('logCatch',this)"><span class="nav-icon">➕</span>Log Catch</button>
   <button class="nav-btn" onclick="switchView('myPBs',this)"><span class="nav-icon">⭐</span>My PBs</button>
-  <button class="nav-btn" onclick="switchView('sessions',this)"><span class="nav-icon">📅</span>Sessions</button>
+  <button class="nav-btn" onclick="switchView('spots',this)"><span class="nav-icon">📍</span>Spots</button>
   <button class="nav-btn" onclick="switchView('speciesGuide',this)"><span class="nav-icon">🐟</span>Species</button>
   <button class="nav-btn" onclick="switchView('profile',this)"><span class="nav-icon">👤</span>Profile</button>
 </nav>
@@ -297,6 +328,8 @@ textarea.form-input{resize:vertical;min-height:70px;}
       <div class="stat-tile"><div class="stat-tile-val" id="statSessions">0</div><div class="stat-tile-lbl">Sessions</div></div>
     </div>
   </div>
+  <div id="dashInsights" class="insight-row" style="display:none;"></div>
+
   <div class="section-hd">
     <div class="section-title">Recent Catches</div>
     <button class="btn btn-ghost btn-sm" onclick="switchView('logCatch',document.querySelectorAll('.nav-btn')[1])">+ Add</button>
@@ -311,48 +344,70 @@ textarea.form-input{resize:vertical;min-height:70px;}
 
 <!-- LOG CATCH -->
 <div id="logCatch" class="view">
-  <div class="section-title" style="margin-bottom:1rem;">Log a Catch</div>
+  <div class="log-mode-toggle">
+    <button class="mode-btn active" id="modeQuickBtn" onclick="setLogMode('quick')">⚡ Quick Log</button>
+    <button class="mode-btn" id="modeFullBtn" onclick="setLogMode('full')">📋 Full Details</button>
+  </div>
   <div class="card">
-    <div class="form-row" style="margin-bottom:10px;">
-      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="catchDate"></div>
-      <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input" id="catchTime"></div>
-    </div>
+    <!-- Always visible: Species + Weight/Length -->
     <div class="form-group" style="margin-bottom:10px;">
       <label class="form-label">Species</label>
       <div style="display:flex;gap:8px;">
-        <input type="text" class="form-input" id="catchFish" placeholder="e.g. Snapper" list="speciesList" style="flex:1;">
-        <button class="btn btn-species btn-sm" onclick="lookupSpecies()" title="Species info">🐟 Info</button>
+        <input type="text" class="form-input" id="catchFish" placeholder="e.g. Snapper" list="speciesList" style="flex:1;" oninput="autofillFromSpecies(this.value)">
+        <button class="btn btn-species btn-sm" onclick="lookupSpecies()">🐟 Info</button>
       </div>
       <datalist id="speciesList"></datalist>
     </div>
-    <div class="form-row triple" style="margin-bottom:10px;">
+    <div class="form-row" style="margin-bottom:10px;">
       <div class="form-group"><label class="form-label">Weight (kg)</label><input type="number" class="form-input" id="catchWeight" placeholder="2.4" step="0.01" min="0"></div>
       <div class="form-group"><label class="form-label">Length (cm)</label><input type="number" class="form-input" id="catchLength" placeholder="45" step="1" min="0"></div>
-      <div class="form-group"><label class="form-label">Method</label>
+    </div>
+    <!-- Photo (always visible) -->
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Photo</label>
+      <div class="photo-upload-zone" style="padding:0.9rem 1rem;">
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
+        <div style="font-size:22px;margin-bottom:3px;">📷</div>
+        <div style="font-size:12.5px;font-weight:500;">Tap to add</div>
+      </div>
+      <div class="photo-preview-grid" id="photoPreview"></div>
+    </div>
+    <!-- Full Details (hidden in quick mode) -->
+    <div id="fullFields" style="display:none;">
+      <div style="height:1px;background:var(--border);margin-bottom:12px;"></div>
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="catchDate"></div>
+        <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input" id="catchTime"></div>
+      </div>
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-input" id="catchLocation" placeholder="e.g. Lake Macquarie" list="locationList">
+          <datalist id="locationList"></datalist>
+        </div>
+        <div class="form-group"><label class="form-label">Bait / Lure</label><input type="text" class="form-input" id="catchBait" placeholder="e.g. Live prawn"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Method</label>
         <select class="form-input" id="catchMethod">
           <option value="">–</option><option>Spinning</option><option>Bait fishing</option>
           <option>Trolling</option><option>Fly fishing</option><option>Jigging</option>
           <option>Surfcasting</option><option>Rock fishing</option><option>Kayak</option><option>Boat</option>
         </select>
       </div>
-    </div>
-    <div class="form-row" style="margin-bottom:10px;">
-      <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="catchLocation" placeholder="e.g. Lake Macquarie"></div>
-      <div class="form-group"><label class="form-label">Bait / Lure</label><input type="text" class="form-input" id="catchBait" placeholder="e.g. Live prawn"></div>
-    </div>
-    <div class="form-group" style="margin-bottom:12px;">
-      <label class="form-label">Notes</label>
-      <textarea class="form-input" id="catchNotes" placeholder="Conditions, tackle, anything worth remembering…"></textarea>
-    </div>
-    <div class="form-group" style="margin-bottom:12px;">
-      <label class="form-label">Photos</label>
-      <div class="photo-upload-zone">
-        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this.files)">
-        <div style="font-size:24px;margin-bottom:4px;">📷</div>
-        <div style="font-size:13px;font-weight:500;">Tap to add photos</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Multiple allowed</div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Tide</label>
+        <div class="tide-picker" id="tidePicker">
+          <button class="tide-btn" onclick="setTide('high',this)">⬆ High</button>
+          <button class="tide-btn" onclick="setTide('rising',this)">📈 Rising</button>
+          <button class="tide-btn" onclick="setTide('falling',this)">📉 Falling</button>
+          <button class="tide-btn" onclick="setTide('low',this)">⬇ Low</button>
+        </div>
       </div>
-      <div class="photo-preview-grid" id="photoPreview"></div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input" id="catchNotes" placeholder="Conditions, tackle, anything worth remembering…"></textarea>
+      </div>
     </div>
     <button class="btn btn-primary btn-full" onclick="logCatch()">💾 Save Catch</button>
   </div>
@@ -373,13 +428,21 @@ textarea.form-input{resize:vertical;min-height:70px;}
   </div>
 </div>
 
-<!-- SESSIONS -->
-<div id="sessions" class="view">
-  <div class="section-hd">
-    <div class="section-title">Sessions</div>
-    <button class="btn btn-primary btn-sm" onclick="openModal('addSessionModal')">+ New</button>
+<!-- SPOTS + SESSIONS -->
+<div id="spots" class="view">
+  <div class="spots-tabs">
+    <button class="spots-tab active" id="tabMySpots" onclick="switchSpotTab('myspots',this)">📍 My Spots</button>
+    <button class="spots-tab" id="tabSessions" onclick="switchSpotTab('sessions',this)">📅 Sessions</button>
   </div>
-  <div id="sessionList"></div>
+  <div id="myspots-panel">
+    <div id="spotsList"></div>
+  </div>
+  <div id="sessions-panel" style="display:none;">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+      <button class="btn btn-primary btn-sm" onclick="openModal('addSessionModal')">+ New Session</button>
+    </div>
+    <div id="sessionList"></div>
+  </div>
 </div>
 
 <!-- SPECIES GUIDE -->
@@ -1712,7 +1775,7 @@ function switchView(name,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(name).classList.add('active');
   if(btn) btn.classList.add('active');
-  const renders = {dashboard:renderDashboard,myPBs:renderPBs,sessions:renderSessions,profile:renderProfile,speciesGuide:renderSpeciesGuide,logCatch:initLogForm};
+  const renders = {dashboard:renderDashboard,myPBs:renderPBs,spots:renderSpots,sessions:renderSessions,profile:renderProfile,speciesGuide:renderSpeciesGuide,logCatch:initLogForm};
   if(renders[name]) renders[name]();
 }
 
@@ -1746,6 +1809,39 @@ function renderDashboard(){
     </div>`;
   }).join('');
 
+  // ── Insights ──
+  const insightsEl=document.getElementById('dashInsights');
+  if(data.catches.length>=3&&insightsEl){
+    // Best month
+    const monthCounts={};
+    data.catches.forEach(c=>{const m=c.date.slice(0,7);monthCounts[m]=(monthCounts[m]||0)+1;});
+    const bestMonth=Object.entries(monthCounts).sort((a,b)=>b[1]-a[1])[0];
+    const bm=bestMonth?new Date(bestMonth[0]+'-15').toLocaleDateString('en-AU',{month:'short',year:'numeric'}):'–';
+    const bmCount=bestMonth?bestMonth[1]:0;
+    // Top spot
+    const spotCounts={};
+    data.catches.forEach(c=>{if(c.location){const l=c.location.trim();spotCounts[l]=(spotCounts[l]||0)+1;}});
+    const topSpot=Object.entries(spotCounts).sort((a,b)=>b[1]-a[1])[0];
+    const ts=topSpot?topSpot[0]:'–';
+    const tsCount=topSpot?topSpot[1]:0;
+    // Fave species
+    const spCounts={};
+    data.catches.forEach(c=>{const s=c.fish;spCounts[s]=(spCounts[s]||0)+1;});
+    const favSp=Object.entries(spCounts).sort((a,b)=>b[1]-a[1])[0];
+    const fs=favSp?favSp[0]:'–';
+    const fsCount=favSp?favSp[1]:0;
+    // Best catch ever
+    const best=data.catches.length?data.catches.reduce((a,b)=>b.weight>a.weight?b:a):null;
+    insightsEl.style.display='grid';
+    insightsEl.innerHTML=`
+      <div class="insight-tile"><div class="insight-lbl">🏆 Best Month</div><div class="insight-val">${bm}</div><div class="insight-sub">${bmCount} catch${bmCount!==1?'es':''}</div></div>
+      <div class="insight-tile"><div class="insight-lbl">📍 Top Spot</div><div class="insight-val">${ts}</div><div class="insight-sub">${tsCount} catch${tsCount!==1?'es':''}</div></div>
+      <div class="insight-tile"><div class="insight-lbl">🎣 Fave Species</div><div class="insight-val">${fs}</div><div class="insight-sub">${fsCount} catch${fsCount!==1?'es':''}</div></div>
+      <div class="insight-tile"><div class="insight-lbl">💪 Best Catch</div><div class="insight-val">${best?best.weight.toFixed(2)+' kg':'–'}</div><div class="insight-sub">${best?best.fish:'–'}</div></div>`;
+  } else if(insightsEl){
+    insightsEl.style.display='none';
+  }
+
   const pbs=allSpeciesPBs().sort((a,b)=>b.weight-a.weight).slice(0,4);
   const pe=document.getElementById('dashPBs');
   if(!pbs.length){pe.innerHTML='';return;}
@@ -1762,12 +1858,20 @@ function renderDashboard(){
 
 // ── LOG CATCH ──
 function initLogForm(){
-  if(!document.getElementById('catchDate').value)
-    document.getElementById('catchDate').value=new Date().toISOString().slice(0,10);
-  if(!document.getElementById('catchTime').value)
-    document.getElementById('catchTime').value=new Date().toTimeString().slice(0,5);
+  // Only set date/time if in full mode or field is empty
+  const dateField=document.getElementById('catchDate');
+  const timeField=document.getElementById('catchTime');
+  if(!dateField.value) dateField.value=new Date().toISOString().slice(0,10);
+  if(!timeField.value) timeField.value=new Date().toTimeString().slice(0,5);
+  // Species datalist
   const dl=document.getElementById('speciesList');
   dl.innerHTML=[...new Set(data.catches.map(c=>c.fish)),...SPECIES_DB.map(s=>s.common)].filter((v,i,a)=>a.indexOf(v)===i).sort().map(s=>`<option value="${s}">`).join('');
+  // Location datalist
+  const ll=document.getElementById('locationList');
+  if(ll) ll.innerHTML=[...new Set(data.catches.map(c=>c.location).filter(Boolean))].sort().map(l=>`<option value="${l}">`).join('');
+  // Reset tide
+  currentTide=null;
+  document.querySelectorAll('.tide-btn').forEach(b=>b.classList.remove('active'));
   pendingPhotos=[];
   document.getElementById('photoPreview').innerHTML='';
 }
@@ -1787,8 +1891,10 @@ function removePhoto(i){pendingPhotos.splice(i,1);renderPhotoPreview();}
 function logCatch(){
   const fish=document.getElementById('catchFish').value.trim();
   const weight=parseFloat(document.getElementById('catchWeight').value);
-  const date=document.getElementById('catchDate').value;
-  if(!fish||!weight||!date){toast('Species, weight & date required',true);return;}
+  // In quick mode use today's date/time automatically
+  const date=document.getElementById('catchDate').value||new Date().toISOString().slice(0,10);
+  const time=document.getElementById('catchTime').value||new Date().toTimeString().slice(0,5);
+  if(!fish||!weight){toast('Species and weight required',true);return;}
   const wasPB=getSpeciesPB(fish);
   data.catches.unshift({
     id:data.nextId++,fish,weight,
@@ -1796,7 +1902,8 @@ function logCatch(){
     location:document.getElementById('catchLocation').value.trim(),
     bait:document.getElementById('catchBait').value.trim(),
     method:document.getElementById('catchMethod').value,
-    date,time:document.getElementById('catchTime').value,
+    tide:currentTide||'',
+    date,time,
     notes:document.getElementById('catchNotes').value.trim(),
     photos:[...pendingPhotos]
   });
@@ -1869,6 +1976,7 @@ function showCatchDetail(id){
     </div>
     ${c.location?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">📍 ${c.location}</div>`:''}
     ${c.bait?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">🪱 ${c.bait}</div>`:''}
+    ${c.tide?`<div style="font-size:13px;color:var(--muted);margin-bottom:6px;">${{high:'⬆ High tide',rising:'📈 Rising tide',falling:'📉 Falling tide',low:'⬇ Low tide'}[c.tide]||''}</div>`:''}
     ${c.notes?`<div style="font-size:13px;font-style:italic;color:var(--muted);margin-top:6px;">"${c.notes}"</div>`:''}
     ${sp?`<button class="btn btn-species btn-full" style="margin-top:14px;" onclick="closeModal('catchDetailModal');showSpeciesDetail('${sp.key}')">🐟 View Species Info</button>`:''}
     <button class="btn btn-ghost btn-full" style="margin-top:8px;" onclick="closeModal('catchDetailModal')">Close</button>`;
@@ -1879,6 +1987,91 @@ function deleteCatch(id){
   if(!confirm('Delete this catch?'))return;
   data.catches=data.catches.filter(c=>c.id!==id);
   save();closeModal('catchDetailModal');toast('Catch deleted');renderDashboard();renderPBs();
+}
+
+// ── SPOTS + SESSIONS ──
+function switchSpotTab(tab, btn){
+  document.querySelectorAll('.spots-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('myspots-panel').style.display = tab==='myspots'?'block':'none';
+  document.getElementById('sessions-panel').style.display = tab==='sessions'?'block':'none';
+  if(tab==='myspots') renderMySpots();
+  if(tab==='sessions') renderSessions();
+}
+
+function renderSpots(){
+  renderMySpots();
+  // Reset to My Spots tab
+  document.querySelectorAll('.spots-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tabMySpots').classList.add('active');
+  document.getElementById('myspots-panel').style.display='block';
+  document.getElementById('sessions-panel').style.display='none';
+}
+
+function renderMySpots(){
+  const el=document.getElementById('spotsList');
+  if(!el) return;
+  // Compute spots from catch data
+  const spots={};
+  data.catches.forEach(c=>{
+    if(!c.location) return;
+    const key=c.location.trim();
+    if(!spots[key]) spots[key]={name:key,catches:[],totalWeight:0,species:new Set()};
+    spots[key].catches.push(c);
+    spots[key].totalWeight+=c.weight;
+    spots[key].species.add(c.fish);
+  });
+  const list=Object.values(spots).sort((a,b)=>b.catches.length-a.catches.length);
+  if(!list.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📍</div><div class="empty-title">No spots yet</div><div class="empty-sub">Locations you enter when logging catches will appear here</div></div>';
+    return;
+  }
+  el.innerHTML=list.map(spot=>{
+    const best=spot.catches.reduce((a,b)=>b.weight>a.weight?b:a);
+    const recent=[...spot.catches].sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+    const speciesChips=[...spot.species].slice(0,4).map(s=>`<div class="spot-chip">${getFishEmoji(s)} ${s}</div>`).join('');
+    const sessionCount=data.sessions.filter(s=>s.location&&s.location.toLowerCase().includes(spot.name.toLowerCase())).length;
+    return `<div class="spot-item" onclick="showSpotDetail('${spot.name.replace(/'/g,"\\'")}')">
+      <div class="spot-hd">
+        <div>
+          <div class="spot-name">📍 ${spot.name}</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">Last fished: ${formatDate(recent.date)}${sessionCount?' · '+sessionCount+' session'+(sessionCount!==1?'s':''):''}</div>
+        </div>
+        <div class="spot-badge">${spot.catches.length} catch${spot.catches.length!==1?'es':''}</div>
+      </div>
+      <div class="spot-stats">
+        <div class="spot-stat"><div class="spot-stat-val">${spot.totalWeight.toFixed(1)}<span style="font-size:10px;color:var(--muted)">kg</span></div><div class="spot-stat-lbl">Total</div></div>
+        <div class="spot-stat"><div class="spot-stat-val">${best.weight.toFixed(2)}<span style="font-size:10px;color:var(--muted)">kg</span></div><div class="spot-stat-lbl">Best Fish</div></div>
+        <div class="spot-stat"><div class="spot-stat-val">${spot.species.size}</div><div class="spot-stat-lbl">Species</div></div>
+      </div>
+      ${speciesChips?`<div class="spot-species">${speciesChips}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function showSpotDetail(spotName){
+  const catches=data.catches.filter(c=>c.location&&c.location.trim()===spotName).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const species=[...new Set(catches.map(c=>c.fish))];
+  const totalW=catches.reduce((s,c)=>s+c.weight,0);
+  const best=catches.reduce((a,b)=>b.weight>a.weight?b:a);
+  document.getElementById('catchDetailContent').innerHTML=`
+    <div class="modal-drag"></div>
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">My Spot</div>
+    <div style="font-family:var(--ff-display);font-size:22px;font-weight:700;margin-bottom:14px;">📍 ${spotName}</div>
+    <div class="detail-grid">
+      <div class="detail-tile"><div class="detail-tile-lbl">Visits</div><div class="detail-tile-val">${catches.length}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Total Weight</div><div class="detail-tile-val" style="color:var(--teal-bright)">${totalW.toFixed(1)} kg</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Best Fish</div><div class="detail-tile-val" style="font-size:13px;">${best.weight.toFixed(2)} kg ${best.fish}</div></div>
+      <div class="detail-tile"><div class="detail-tile-lbl">Species</div><div class="detail-tile-val">${species.length}</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 8px;">All Catches</div>
+    ${catches.map(c=>`<div class="catch-item" onclick="closeModal('catchDetailModal');showCatchDetail(${c.id})">
+      <div class="catch-thumb">${catchThumbHtml(c)}</div>
+      <div class="catch-info"><div class="catch-species">${c.fish}${isPB(c)?'<span class="pb-badge">PB</span>':''}</div><div class="catch-meta">${formatDate(c.date)}</div></div>
+      <div class="catch-right"><div class="catch-weight">${c.weight.toFixed(2)}</div><div class="catch-weight-unit">kg</div></div>
+    </div>`).join('')}
+    <button class="btn btn-ghost btn-full" style="margin-top:14px;" onclick="closeModal('catchDetailModal')">Close</button>`;
+  openModal('catchDetailModal');
 }
 
 // ── SESSIONS ──
