@@ -220,6 +220,12 @@ textarea.form-input{resize:vertical;min-height:70px;}
 .detail-tile-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
 .detail-tile-val{font-size:16px;font-weight:600;font-family:var(--ff-display);}
 
+.spp-photo-wrap{position:relative;margin-bottom:14px;}
+.spp-photo-wrap img{display:block;border-radius:10px;}
+.spp-photo-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.spp-photo-src-lbl{font-size:11px;color:var(--muted);font-style:italic;}
+.spp-custom-badge{position:absolute;top:8px;left:8px;background:var(--amber);color:white;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.5px;}
+
 /* MISC */
 .empty{text-align:center;padding:3rem 1rem;color:var(--muted);}
 .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.6;}
@@ -227,6 +233,24 @@ textarea.form-input{resize:vertical;min-height:70px;}
 .empty-sub{font-size:13px;}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal);color:white;padding:10px 20px;border-radius:30px;font-size:13.5px;font-weight:500;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);z-index:999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* SAVE STATUS BAR */
+.save-bar{display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:11.5px;font-weight:500;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;user-select:none;min-height:32px;}
+.save-bar:hover{background:var(--surface2);}
+.save-bar-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background 0.3s;}
+.save-bar-dot.green{background:#3dd68c;}
+.save-bar-dot.amber{background:var(--amber);animation:pulse 2s infinite;}
+.save-bar-dot.red{background:#f08080;}
+.save-bar-dot.grey{background:rgba(232,228,220,0.3);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.save-bar-text{flex:1;color:var(--muted);}
+.save-bar-text strong{color:var(--text);font-weight:600;}
+.save-bar-action{font-size:11px;color:var(--teal-bright);font-weight:600;white-space:nowrap;}
+/* FILE SETUP MODAL CONTENT */
+.setup-option{background:var(--surface2);border:1px solid var(--border-strong);border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:10px;cursor:pointer;transition:all 0.15s;display:flex;align-items:flex-start;gap:12px;}
+.setup-option:hover{border-color:var(--teal-bright);background:var(--teal-light);}
+.setup-option-icon{font-size:28px;flex-shrink:0;line-height:1;}
+.setup-option-title{font-weight:600;font-size:14px;margin-bottom:3px;}
+.setup-option-desc{font-size:12px;color:var(--muted);line-height:1.5;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:2px;}
@@ -245,6 +269,12 @@ textarea.form-input{resize:vertical;min-height:70px;}
   </div>
   <div class="profile-btn" id="profileBtn" onclick="switchView('profile',document.querySelectorAll('.nav-btn')[5])">😊</div>
 </header>
+
+<div class="save-bar" id="saveBar" onclick="handleSaveBarClick()">
+  <div class="save-bar-dot grey" id="saveBarDot"></div>
+  <div class="save-bar-text" id="saveBarText">Checking storage…</div>
+  <div class="save-bar-action" id="saveBarAction"></div>
+</div>
 
 <nav class="nav">
   <button class="nav-btn active" onclick="switchView('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</button>
@@ -360,7 +390,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
     <input type="text" class="form-input species-search" id="speciesSearch" placeholder="Search species…" oninput="renderSpeciesGuide()">
   </div>
   <div class="species-filters">
-    <button class="filter-btn active" onclick="setFilter('all',this)">All (47)</button>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All (67)</button>
     <button class="filter-btn" onclick="setFilter('saltwater',this)">🌊 Saltwater</button>
     <button class="filter-btn" onclick="setFilter('freshwater',this)">🏞 Freshwater</button>
     <button class="filter-btn" onclick="setFilter('estuary',this)">🌿 Estuary</button>
@@ -405,6 +435,31 @@ textarea.form-input{resize:vertical;min-height:70px;}
       <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importData(this.files)">
     </div>
     <div style="margin-top:12px;"><button class="btn btn-danger btn-sm" onclick="confirmClear()">🗑 Clear All Data</button></div>
+  </div>
+</div>
+
+<!-- FILE SETUP MODAL -->
+<div class="modal-backdrop" id="fileSetupModal">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-title">💾 Where should your journal live?</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Choose how your catches are saved. <strong style="color:var(--text);">We strongly recommend "Save to a file"</strong> — clearing your browser will not affect it.</p>
+
+    <div class="setup-option" onclick="setupFileSystem()">
+      <div class="setup-option-icon">📁</div>
+      <div>
+        <div class="setup-option-title">Save to a file on my device</div>
+        <div class="setup-option-desc">You choose where the file lives. Works in Chrome and Edge. Clears browser history, cache, cookies — none of it touches your journal. <strong>Recommended.</strong></div>
+      </div>
+    </div>
+
+    <div class="setup-option" onclick="setupBrowserOnly()">
+      <div class="setup-option-icon">🌐</div>
+      <div>
+        <div class="setup-option-title">Browser storage only</div>
+        <div class="setup-option-desc">Saved in this browser. Fast and simple, but clearing cache or history will wipe your data. Use Export JSON regularly as a backup. <strong>Use if on Safari or Firefox.</strong></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -893,7 +948,7 @@ const SPECIES_DB = [
   },
   {key:'sootygrunt',common:'Sooty Grunter',aka:'Sooty, Black Bream (NT/QLD)',scientific:'Hephaestus fuliginosus',emoji:'🐟',type:'freshwater',
     img:'https://en.wikipedia.org/wiki/Special:FilePath/Hephaestus_fuliginosus.jpg',
-    desc:'A tough, dark-coloured freshwater fighter of Australia's tropical north. Deep bronze to almost black body, large scales, powerful build. A cult favourite among top-end freshwater anglers.',
+    desc:'A tough, dark-coloured freshwater fighter of Australia\'s tropical north. Deep bronze to almost black body, large scales, powerful build. A cult favourite among top-end freshwater anglers.',
     id_tips:'Dark bronze to almost black or very dark olive body. Large scales with slight golden tinge. Chunky, deep-bodied profile. Large rounded tail. Strong resemblance to bream but much darker and found only in northern freshwater.',
     weight:'0.3–3 kg typical · 5+ kg possible',length:'25–55 cm',
     habitat:'Clear rocky streams, waterholes, river pools, billabongs in tropical North Australia.',
@@ -965,12 +1020,12 @@ const SPECIES_DB = [
   },
   {key:'dhufish',common:'West Australian Dhufish',aka:'Dhu, Jewfish (WA)',scientific:'Glaucosoma hebraicum',emoji:'🐟',type:'saltwater',
     img:'https://en.wikipedia.org/wiki/Special:FilePath/Glaucosoma_hebraicum.jpg',
-    desc:'Western Australia's most iconic reef fish. Pink to rosy-red body with a distinctive dark saddle behind the dorsal fin. Highly territorial — known for powerful dives back to the reef when hooked.',
+    desc:'Western Australia\'s most iconic reef fish. Pink to rosy-red body with a distinctive dark saddle behind the dorsal fin. Highly territorial — known for powerful dives back to the reef when hooked.',
     id_tips:'Pink to rosy-red body. Key feature: distinctive dark oval saddle/blotch on the upper back just behind the dorsal fin. Large mouth, large eyes, very large distinctive pectoral fins. Unique to WA — no lookalikes in WA waters.',
     weight:'1–10 kg typical · 25+ kg possible',length:'40–120 cm',
     habitat:'Offshore rocky reefs and limestone ledges, 20–100 m depth. Highly territorial.',
     distribution:'Endemic to Western Australia.',
-    eating:{rating:5,label:'World-class',notes:'WA's finest eating fish. Exceptional moist, sweet, white flesh. Pan-fry, bake or steam. A true delicacy.'},
+    eating:{rating:5,label:'World-class',notes:'WA\'s finest eating fish. Exceptional moist, sweet, white flesh. Pan-fry, bake or steam. A true delicacy.'},
     legal:[{s:'WA',min:'50 cm',bag:'2'},{s:'NSW',min:'–',bag:'–'},{s:'QLD',min:'–',bag:'–'},{s:'SA',min:'–',bag:'–'},{s:'VIC',min:'–',bag:'–'}],
     bait:['Octopus','Squid','Livebait','Knife jigs','Whole fish'],
     season:'Year-round. Peaks winter–spring (Jun–Oct) in WA.'
@@ -1013,7 +1068,7 @@ const SPECIES_DB = [
   },
   {key:'seamullet',common:'Sea Mullet',aka:'Mullet, Flatback Mullet, Bully',scientific:'Mugil cephalus',emoji:'🐟',type:'estuary',
     img:'https://en.wikipedia.org/wiki/Special:FilePath/Mugil_cephalus.jpg',
-    desc:'One of Australia's most abundant coastal fish. Grey-silver torpedo-shaped body with a distinctive adipose eyelid. Important ecologically and commercially. Spectacular autumn spawning runs.',
+    desc:'One of Australia\'s most abundant coastal fish. Grey-silver torpedo-shaped body with a distinctive adipose eyelid. Important ecologically and commercially. Spectacular autumn spawning runs.',
     id_tips:'Blue-grey to olive back, silver sides, white belly. Distinctive adipose eyelid partially covering the eye — key ID feature. Blunt snout, small terminal mouth. Thick-scaled body. Often seen in large schools in estuaries and river mouths.',
     weight:'0.5–4 kg typical',length:'30–75 cm',
     habitat:'Estuaries, coastal rivers, beaches, tidal flats. Highly adaptable.',
@@ -1070,6 +1125,250 @@ const SPECIES_DB = [
     legal:[{s:'WA',min:'25 cm',bag:'12'},{s:'SA',min:'25 cm',bag:'20'},{s:'VIC',min:'28 cm',bag:'20'},{s:'NSW',min:'25 cm',bag:'20'},{s:'TAS',min:'25 cm',bag:'20'}],
     bait:['Bloodworms','Prawns','Nippers','Soft plastics','Bread'],
     season:'Year-round. Cooler months (Apr–Sep) most productive.'
+  },
+  // ── ESTUARY ADDITIONS ──
+  {key:'sandwhiting',common:'Sand Whiting',aka:'Summer Whiting, Silver Whiting',scientific:'Sillago ciliata',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Sillago_ciliata.jpg',
+    desc:'The most widespread and commonly caught whiting species in eastern Australia. Slender silver body and a preference for warm sandy shallows. A summer staple for shore-based anglers.',
+    id_tips:'Slender silver body, pale sandy-yellow tinge on back. Distinguished from King George Whiting by the absence of spots and smaller overall size. Two separate dorsal fins. Often found in schools over clean sand.',
+    weight:'0.1-0.5 kg typical',length:'20-40 cm',
+    habitat:'Sandy estuaries, tidal flats, surf beaches, shallow coastal bays. Prefers clean sandy substrate.',
+    distribution:'Eastern Australia from QLD to SA. Extremely common in NSW and QLD estuaries.',
+    eating:{rating:4,label:'Excellent',notes:'Delicate, sweet white flesh. Excellent pan-fried, battered, or grilled. One of the best eating fish for its size.'},
+    legal:[{s:'NSW',min:'27 cm',bag:'20'},{s:'VIC',min:'27 cm',bag:'20'},{s:'QLD',min:'23 cm',bag:'30'},{s:'SA',min:'27 cm',bag:'20'},{s:'WA',min:'23 cm',bag:'No limit'}],
+    bait:['Yabbies (nippers)','Worms','Pippis','Prawns','Small soft plastics'],
+    season:'Year-round. Peak summer (Nov-Mar) on shallow flats.'
+  },
+  {key:'trumpeterwhiting',common:'Trumpeter Whiting',aka:'Winter Whiting, Spotted Whiting',scientific:'Sillago maculata',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Sillago_maculata.jpg',
+    desc:'A smaller whiting found in deeper estuary channels. Distinguished by rows of brown-orange spots. Often caught alongside sand whiting but prefers murkier, deeper water.',
+    id_tips:'Silver body with rows of distinctive brown-orange or yellowish spots the key identifier over sand whiting. Slightly more elongated snout. Found in deeper, murkier channels than sand whiting.',
+    weight:'0.1-0.3 kg typical',length:'15-30 cm',
+    habitat:'Deeper estuary channels, turbid bays, sandy-muddy flats.',
+    distribution:'Eastern Australia QLD, NSW, VIC. Common in deeper estuarine channels.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating though smaller than sand whiting. Same delicate sweet flesh. Great as live bait too.'},
+    legal:[{s:'NSW',min:'20 cm',bag:'20'},{s:'VIC',min:'20 cm',bag:'20'},{s:'QLD',min:'20 cm',bag:'30'},{s:'SA',min:'20 cm',bag:'20'},{s:'WA',min:'20 cm',bag:'No limit'}],
+    bait:['Worms','Prawns','Yabbies','Pippis'],
+    season:'Year-round. Peaks in cooler months hence "Winter Whiting".'
+  },
+  {key:'tarwhine',common:'Tarwhine',aka:'Sea Bream, Silver Bream',scientific:'Rhabdosargus sarba',emoji:'🐠',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Rhabdosargus_sarba.jpg',
+    desc:'A schooling bream relative often found mixed with yellowfin bream. Silver body with golden-yellow horizontal stripes along the flanks. Often overlooked but a solid sport fish on light tackle.',
+    id_tips:'Silver body with distinctive gold-yellow horizontal stripes running along the sides. More rounded snout than yellowfin bream. The gold stripes make identification straightforward.',
+    weight:'0.2-1 kg typical',length:'20-38 cm',
+    habitat:'Estuaries, shallow coastal reefs, sandy bays, seagrass beds. Often schools with bream.',
+    distribution:'Eastern and southern Australia QLD, NSW, VIC, SA, WA.',
+    eating:{rating:3,label:'Good',notes:'Good eating, similar to bream. Firm white flesh. Best bled immediately.'},
+    legal:[{s:'NSW',min:'20 cm',bag:'20'},{s:'VIC',min:'20 cm',bag:'20'},{s:'QLD',min:'20 cm',bag:'20'},{s:'SA',min:'20 cm',bag:'20'},{s:'WA',min:'20 cm',bag:'12'}],
+    bait:['Prawns','Worms','Nippers','Bread','Soft plastics'],
+    season:'Year-round. More active in warmer months.'
+  },
+  {key:'silvertrevally',common:'Silver Trevally',aka:'White Trevally, Skippy, Skipjack',scientific:'Pseudocaranx georgianus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Pseudocaranx_georgianus.jpg',
+    desc:'One of the most common and hard-fighting trevally species in southern Australia. Silver body, yellow tinge on fins, and a black spot on the gill cover. Reliable from jetties, rocks, and shallow reefs.',
+    id_tips:'Silver body with a yellow-gold tinge on fins. Distinctive small black spot on the upper edge of the gill cover. Deeply forked tail. Scutes along lateral line near tail are characteristic of all trevally.',
+    weight:'0.2-2 kg typical',length:'20-55 cm',
+    habitat:'Shallow coastal reefs, rocky headlands, jetties, sandy bays. Very common inshore.',
+    distribution:'Southern and eastern Australia NSW, VIC, SA, TAS, WA.',
+    eating:{rating:3,label:'Good',notes:'Reasonable eating oily flesh best eaten fresh. Bleed and ice immediately. Good smoked.'},
+    legal:[{s:'NSW',min:'20 cm',bag:'10'},{s:'VIC',min:'20 cm',bag:'10'},{s:'SA',min:'20 cm',bag:'10'},{s:'WA',min:'25 cm',bag:'5'},{s:'QLD',min:'20 cm',bag:'10'}],
+    bait:['Prawns','Pilchards','Squid','Metal slugs','Soft plastics'],
+    season:'Year-round. Most active spring-autumn.'
+  },
+  // ── SURF AND COASTAL ADDITIONS ──
+  {key:'australianherring',common:'Australian Herring',aka:'Tommy Ruff, Bay Trout',scientific:'Arripis georgianus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Arripis_georgianus.jpg',
+    desc:'A popular southern Australian sport fish closely related to Australian Salmon. Small, silver-blue body with golden spots. Excellent eating and great sport on ultra-light tackle. A favourite from jetties and beaches.',
+    id_tips:'Small, streamlined silver body with rows of golden-yellow spots on the upper sides. Forked tail. Very similar to young Australian Salmon but smaller and with more pronounced golden spots. Rarely exceeds 35 cm.',
+    weight:'0.1-0.4 kg typical',length:'15-35 cm',
+    habitat:'Open beaches, rocky headlands, shallow bays, jetties. Follows bait schools.',
+    distribution:'Southern Australia SA, WA, VIC, TAS. The "Tommy Ruff" name is most common in SA.',
+    eating:{rating:4,label:'Excellent',notes:'Outstanding eating for its size. Sweet, firm flesh. Excellent battered, smoked, or pan-fried. A southern favourite.'},
+    legal:[{s:'SA',min:'18 cm',bag:'30'},{s:'WA',min:'18 cm',bag:'30'},{s:'VIC',min:'18 cm',bag:'20'},{s:'NSW',min:'18 cm',bag:'20'},{s:'TAS',min:'18 cm',bag:'30'}],
+    bait:['Bread','Dough','Small prawns','Whitebait','Maggots'],
+    season:'Year-round in SA and WA. Most abundant autumn-winter.'
+  },
+  {key:'dart',common:'Swallowtail Dart',aka:'Dart, Swallowtail',scientific:'Trachinotus botla',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Trachinotus_botla.jpg',
+    desc:'A fast, shimmering fish of the northern surf zone. Deep, compressed silver body with a dramatic sickle-shaped tail. Aggressive feeder charging through breaking waves to take bait and lures.',
+    id_tips:'Deep, very compressed silver body with a dramatically elongated, sickle-shaped tail with black tips. No spots or bars. Very reflective silver colouring. Found in the surf zone of northern beaches.',
+    weight:'0.2-2 kg typical',length:'20-50 cm',
+    habitat:'Sandy beaches, surf gutters, river mouths, estuaries. Found in the surf zone.',
+    distribution:'Northern Australia QLD, NT, WA north coast. Common on tropical beaches.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating. Firm white flesh, minimal bones. Great pan-fried or BBQ.'},
+    legal:[{s:'QLD',min:'20 cm',bag:'20'},{s:'NT',min:'20 cm',bag:'No limit'},{s:'WA',min:'20 cm',bag:'No limit'},{s:'NSW',min:'20 cm',bag:'20'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Pippis','Prawns','Worms','Small lures','Soft plastics'],
+    season:'Year-round in tropics. Summer peaks when fish move into surf zones.'
+  },
+  // ── REEF AND DEMERSAL ADDITIONS ──
+  {key:'redemperor',common:'Red Emperor',aka:'Government Bream, Red Kelp',scientific:'Lutjanus sebae',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lutjanus_sebae.jpg',
+    desc:'One of the most prestigious reef fish. Juveniles have striking red-and-white banded colouring; adults become uniformly deep red. A prized deep-water catch known for powerful resistance.',
+    id_tips:'Juveniles unmistakeable bold red and white vertical bands. Adults deep red overall with a paler belly. Large mouth, robust body. Distinguished from other emperors by its much deeper, heavier build.',
+    weight:'1-10 kg typical',length:'40-120 cm',
+    habitat:'Deep offshore reefs, rocky bottom, coral ledges. Typically 30-180 m depth.',
+    distribution:'Northern and north-eastern Australia QLD (GBR), NT, WA north coast.',
+    eating:{rating:5,label:'World-class',notes:'Premium eating. Firm, moist, sweet white flesh. Pan-fry, bake or steam. Highly valued commercially.'},
+    legal:[{s:'QLD',min:'55 cm',bag:'5'},{s:'NT',min:'55 cm',bag:'5'},{s:'WA',min:'55 cm',bag:'5'},{s:'NSW',min:'40 cm',bag:'5'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Whole fish bait','Squid','Octopus','Deep-drop rigs','Jigs'],
+    season:'Year-round. Dry season peaks (Apr-Sep) in northern waters.'
+  },
+  {key:'pearlperch',common:'Pearl Perch',aka:'Epaulette Groper',scientific:'Glaucosoma scapulare',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Glaucosoma_scapulare.jpg',
+    desc:'A highly regarded east coast deepwater fish. Silver-bronze body with a distinctive dark shoulder mark. Prized for exceptional eating quality and related to the WA Dhufish.',
+    id_tips:'Silver to bronze-grey body. Distinctive dark epaulette (shoulder mark) just behind the gill cover. Large eyes adapted for deep water. Similar to Dhufish but smaller and without the dark saddle on the back.',
+    weight:'0.5-5 kg typical',length:'30-70 cm',
+    habitat:'Offshore rocky reefs and ledges, 50-200 m depth. Prefers cooler deep water.',
+    distribution:'Eastern Australia QLD to NSW. Most common on mid-NSW and south QLD coast.',
+    eating:{rating:5,label:'World-class',notes:'Outstanding eating. Moist, sweet, delicate white flesh. Pan-fry, bake or steam. One of the best fish on the east coast.'},
+    legal:[{s:'NSW',min:'35 cm',bag:'5'},{s:'QLD',min:'35 cm',bag:'5'},{s:'VIC',min:'35 cm',bag:'5'},{s:'SA',min:'-',bag:'-'},{s:'WA',min:'-',bag:'-'}],
+    bait:['Squid','Pilchards','Prawns','Knife jigs','Cut fish'],
+    season:'Year-round. Best in winter when fish concentrate on structure.'
+  },
+  {key:'grassemperor',common:'Grass Emperor',aka:'Long-nosed Emperor',scientific:'Lethrinus laticaudis',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lethrinus_laticaudis.jpg',
+    desc:'A common northern emperor found over seagrass beds and shallow reef lagoons. Olive-grey to greenish body with a distinctively longer, pointed snout compared to other emperors.',
+    id_tips:'Olive-grey to greenish body, sometimes with faint vertical barring. Key feature is the noticeably longer, more pointed snout compared to other emperors like Spangled or Redthroat. Often found in shallower water.',
+    weight:'0.3-3 kg typical',length:'25-55 cm',
+    habitat:'Shallow coral lagoons, seagrass beds, sandy reef flats. Inshore and reef edge.',
+    distribution:'Northern QLD, NT, WA north coast. Common on the GBR inshore reefs.',
+    eating:{rating:4,label:'Excellent',notes:'Good eating with firm, sweet flesh. Pan-fry or steam whole. Popular in the tropics.'},
+    legal:[{s:'QLD',min:'35 cm',bag:'10 (combined emperor)'},{s:'NT',min:'35 cm',bag:'10'},{s:'WA',min:'35 cm',bag:'10'},{s:'NSW',min:'35 cm',bag:'5'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Prawns','Crab','Squid','Worms','Small hardbodies'],
+    season:'Year-round on tropical reefs.'
+  },
+  {key:'mosessnapper',common:'Moses Snapper',aka:'Moses Perch, Slatey Bream',scientific:'Lutjanus russellii',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Lutjanus_russellii.jpg',
+    desc:'A reef snapper easily identified by a distinctive black spot on the upper flank. Pinkish-red to olive body, common around tropical reef structures.',
+    id_tips:'Key identifier: a large, distinct black spot just above the lateral line below the soft dorsal fin. Pinkish to olive body with reddish fins. Distinguished from other snappers by this single black blotch.',
+    weight:'0.3-3 kg typical',length:'25-50 cm',
+    habitat:'Coral reefs, rocky structures, reef edges, bommies. Schooling species.',
+    distribution:'Northern QLD, NT, WA north coast. Very common on tropical reefs.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating. Firm, white, sweet flesh. Pan-fry or steam whole.'},
+    legal:[{s:'QLD',min:'35 cm',bag:'10 (combined snapper)'},{s:'NT',min:'35 cm',bag:'10'},{s:'WA',min:'35 cm',bag:'10'},{s:'NSW',min:'35 cm',bag:'5'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Prawns','Squid','Soft plastics','Hardbodies','Pilchards'],
+    season:'Year-round on tropical reefs.'
+  },
+  {key:'goldbandsnapper',common:'Goldband Snapper',aka:'Saddletail Snapper',scientific:'Pristipomoides multidens',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Pristipomoides_multidens.jpg',
+    desc:'A spectacular deep-water snapper with a vivid pink-red body and iridescent yellow bands. Found over deep offshore reefs and one of the most prized eating fish in northern Australia.',
+    id_tips:'Vibrant pink to reddish body with distinctive iridescent yellow-gold spots or bands. Large eyes. Deeply forked tail. The colourful markings make it one of the most visually striking snappers.',
+    weight:'0.5-5 kg typical',length:'30-75 cm',
+    habitat:'Deep offshore reefs, rocky bottom, continental shelf. 50-300 m depth.',
+    distribution:'Northern Australia QLD offshore, NT, WA north coast.',
+    eating:{rating:5,label:'World-class',notes:'Superb eating. Moist, sweet, firm white flesh. Excellent steamed, pan-fried, or sashimi.'},
+    legal:[{s:'QLD',min:'40 cm',bag:'10'},{s:'NT',min:'40 cm',bag:'10'},{s:'WA',min:'40 cm',bag:'10'},{s:'NSW',min:'40 cm',bag:'5'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Whole fish bait','Squid','Deep-drop rigs','Knife jigs','Octopus'],
+    season:'Year-round. Best on calm days allowing deep anchoring.'
+  },
+  {key:'teraglin',common:'Teraglin',aka:'Trag, Tarag',scientific:'Atractoscion aequidens',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Atractoscion_aequidens.jpg',
+    desc:'A deep-water relative of the mulloway with a similar silver body and white spots. A nocturnal hunter of offshore gutters, often confused with mulloway but found in deeper water.',
+    id_tips:'Very similar to mulloway but with more, smaller white spots along the lateral line and a more pointed snout. Generally found deeper (40-200 m) offshore. The row of small white spots is more prominent than in mulloway.',
+    weight:'0.5-8 kg typical',length:'40-100 cm',
+    habitat:'Offshore gutters, deep rocky reefs, sandy bottom near structure. 40-200 m depth.',
+    distribution:'Eastern Australia QLD to NSW and VIC. Deep water offshore species.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating. Large white flaky flesh, mild flavour. Very similar to mulloway. Bleed immediately.'},
+    legal:[{s:'NSW',min:'38 cm',bag:'5'},{s:'QLD',min:'38 cm',bag:'5'},{s:'VIC',min:'38 cm',bag:'5'},{s:'SA',min:'-',bag:'-'},{s:'WA',min:'-',bag:'-'}],
+    bait:['Squid','Live bait','Whole pilchards','Soft plastics'],
+    season:'Year-round offshore. Night fishing often most productive.'
+  },
+  {key:'blueyetrevalla',common:'Blue-eye Trevalla',aka:'Blue-eye, Warehou, Blue-eye Cod',scientific:'Hyperoglyphe antarctica',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Hyperoglyphe_antarctica.jpg',
+    desc:'A large, deep-water giant of the continental shelf. Steel-blue to olive-bronze body and distinctive blue eyes. One of the most sought-after premium eating fish in southern Australian waters.',
+    id_tips:'Large, robust body. Steel-blue to olive-bronze colouring on the back, silver-white underneath. Distinctive blue-grey eyes. Single continuous dorsal fin. Found only in deep water (100-600 m).',
+    weight:'3-20 kg typical',length:'60-170 cm',
+    habitat:'Continental shelf and slope, deep offshore structure. 100-600 m depth.',
+    distribution:'Southern Australia NSW south coast, VIC, TAS, SA. Deep water only.',
+    eating:{rating:5,label:'World-class',notes:'Among the finest eating fish in Australia. Rich, moist, white flesh with a buttery texture. Outstanding pan-fried, poached or baked.'},
+    legal:[{s:'NSW',min:'45 cm',bag:'5'},{s:'VIC',min:'45 cm',bag:'5'},{s:'TAS',min:'45 cm',bag:'5'},{s:'SA',min:'45 cm',bag:'5'},{s:'QLD',min:'45 cm',bag:'5'}],
+    bait:['Deep drop rigs','Whole squid','Cut fish','Heavy jigs'],
+    season:'Year-round. Targeted on calm days allowing deep anchoring over the shelf.'
+  },
+  // ── PELAGIC ADDITIONS ──
+  {key:'southernbluefin',common:'Southern Bluefin Tuna',aka:'SBT, Southern Bluefin',scientific:'Thunnus maccoyii',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Thunnus_maccoyii.jpg',
+    desc:'One of the most valuable and iconic fish in southern Australian waters. Dark blue-black back, silver-white belly. A seasonal target for southern offshore anglers.',
+    id_tips:'Dark metallic blue-black back, silver belly. Shorter pectoral fins than yellowfin tuna (reaching only to start of second dorsal fin). Colourless finlets. Distinguished from yellowfin by shorter pectoral fins and lack of yellow colouring.',
+    weight:'10-100 kg typical',length:'100-250 cm',
+    habitat:'Open ocean, offshore current lines, temperature breaks. Highly migratory.',
+    distribution:'Southern Australian waters SA, VIC, TAS, WA south coast. Seasonal.',
+    eating:{rating:5,label:'World-class',notes:'Premium sashimi-grade tuna. Rich, fatty, deep-red flesh. Most commercially valuable tuna species. Must be bled and iced immediately.'},
+    legal:[{s:'SA',min:'Check quota/licence',bag:'Check rules'},{s:'VIC',min:'Check rules',bag:'Strict limits'},{s:'TAS',min:'Check rules',bag:'Strict limits'},{s:'WA',min:'Check rules',bag:'Strict limits'},{s:'NSW',min:'Check rules',bag:'Strict limits'}],
+    bait:['Trolled skirted lures','Livebait (yakkas, slimy mac)','Stick baits','Jigs'],
+    season:'SA and VIC peaks May-Oct. TAS peaks Oct-Apr. Highly migratory and variable.'
+  },
+  {key:'spottedmackerel',common:'Spotted Mackerel',aka:'School Mackerel, Dottie',scientific:'Scomberomorus munroi',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Scomberomorus_munroi.jpg',
+    desc:'The smaller, more prolific cousin of the Spanish Mackerel. Streamlined body with distinctive rows of oval spots on the flanks. Often found in large schools closer to shore.',
+    id_tips:'Streamlined silver body with rows of oval dark spots on the lower flanks more clearly defined than Spanish Mackerel bars. Shorter and less elongated snout than Spanish Mackerel. Smaller overall, rarely exceeds 80 cm.',
+    weight:'0.5-5 kg typical',length:'40-90 cm',
+    habitat:'Inshore and nearshore coastal waters, bays, around bait schools.',
+    distribution:'Eastern Australia QLD and NSW north coast. Common inshore species.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating, better than Spanish Mackerel by many accounts. Firm, white flesh. Best fresh. Smoke beautifully.'},
+    legal:[{s:'QLD',min:'60 cm',bag:'10'},{s:'NSW',min:'60 cm',bag:'5'},{s:'NT',min:'60 cm',bag:'5'},{s:'WA',min:'60 cm',bag:'3'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Trolled lures','Metal slugs','Livebait','Feathers','Soft plastics'],
+    season:'QLD and NSW peaks winter-spring (May-Oct) as schools move north.'
+  },
+  {key:'blackmarlin',common:'Black Marlin',aka:'Marlin, Pacific Black Marlin',scientific:'Istiompax indica',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Istiompax_indica.jpg',
+    desc:'The pinnacle of Australian game fishing. Massive, cobalt-blue body with a long rigid bill. Capable of spectacular aerial displays. The Coral Sea is world-famous for giant black marlin.',
+    id_tips:'Enormous, powerfully built marlin. Dark blue-black to dark grey back, silver-white belly. Rigid, non-rotating bill. Broad, rounded pectoral fins that cannot fold flat against the body this distinguishes it from blue marlin.',
+    weight:'50-500+ kg',length:'200-400 cm',
+    habitat:'Warm offshore waters, current lines, FADs, seamounts, reef edges.',
+    distribution:'QLD (Coral Sea famous Oct-Dec), NT, WA offshore. Highly migratory.',
+    eating:{rating:2,label:'Catch and release',notes:'Almost all serious anglers practise strict catch and release. Please release all marlin.'},
+    legal:[{s:'QLD',min:'Strong C&R ethic',bag:'C&R'},{s:'NT',min:'C&R recommended',bag:'C&R'},{s:'WA',min:'C&R recommended',bag:'C&R'},{s:'NSW',min:'C&R recommended',bag:'C&R'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Trolled skirted lures','Livebait (tuna, mackerel)','Skirts','Switchbaits'],
+    season:'Coral Sea giant marlin season Oct-Dec. Year-round for smaller fish in the north.'
+  },
+  {key:'sailfish',common:'Indo-Pacific Sailfish',aka:'Sailfish, Sail',scientific:'Istiophorus platypterus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Istiophorus_platypterus.jpg',
+    desc:'One of the ocean\'s most spectacular fish. Dark blue back, silver flanks with light blue spots, and an enormous sail-like dorsal fin. Known for spectacular leaping runs when hooked.',
+    id_tips:'Unmistakeable the enormous sail-like dorsal fin taller than the body depth is unlike any other species. Dark cobalt-blue back, silver belly with pale blue spots. Long, slender bill.',
+    weight:'20-80 kg typical',length:'150-300 cm',
+    habitat:'Warm offshore waters, current lines, inshore FADs in the tropics.',
+    distribution:'Northern Australia QLD, NT, WA north coast. Highly migratory.',
+    eating:{rating:2,label:'Catch and release',notes:'Universally practised catch and release. One of the great sportfish please release all sailfish.'},
+    legal:[{s:'QLD',min:'C&R strongly recommended',bag:'C&R'},{s:'NT',min:'C&R',bag:'C&R'},{s:'WA',min:'C&R',bag:'C&R'},{s:'NSW',min:'C&R',bag:'C&R'},{s:'SA',min:'-',bag:'-'}],
+    bait:['Trolled lures','Livebait','Rigged garfish','Stick baits'],
+    season:'Northern QLD peaks winter-spring (Jun-Oct). Year-round in NT and WA north.'
+  },
+  {key:'hairtail',common:'Hairtail',aka:'Ribbonfish, Cutlassfish, Silver Scabbard',scientific:'Trichiurus lepturus',emoji:'🐟',type:'estuary',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Trichiurus_lepturus.jpg',
+    desc:'One of the most distinctive fish in Australia a long, ribbon-like silver body tapering to a whip-like point with no tail fin. A nocturnal winter predator of deep channels and bays.',
+    id_tips:'Completely unmistakeable. A long, flat, ribbon-like silver body that tapers to a fine point with no tail fin. Fang-like teeth. Brilliant metallic silver colour. Found in deeper water at night.',
+    weight:'0.2-2 kg typical',length:'60-150 cm',
+    habitat:'Deep estuarine channels, offshore bays, harbour depths. Nocturnal comes to shallower water at night.',
+    distribution:'Eastern and southern Australia QLD, NSW, VIC, SA. Common in winter.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating and underrated. Firm white flesh with a mild, delicate flavour. Pan-fry or bake. Remove the skin easily.'},
+    legal:[{s:'NSW',min:'No min',bag:'No limit'},{s:'VIC',min:'No min',bag:'No limit'},{s:'QLD',min:'No min',bag:'No limit'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'}],
+    bait:['Live bait','Prawns','Pilchards','Soft plastics (glow)','Jigs'],
+    season:'Winter (May-Sep) most productive. Night fishing in deep channels.'
+  },
+  {key:'yellowtailscad',common:'Yellowtail Scad',aka:'Yakkas, Jack Mackerel',scientific:'Trachurus novaezelandiae',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Trachurus_novaezelandiae.jpg',
+    desc:'The essential live bait for kingfish. Small, schooling torpedo-shaped fish with a distinctive yellow lateral stripe and tail. Found in massive schools around structures and wharves.',
+    id_tips:'Small, streamlined silvery fish. Distinctive yellow-gold lateral stripe and yellowish tail. Hard scutes along the lateral line near the tail. Often found in huge schools under lights and wharves.',
+    weight:'0.05-0.2 kg typical',length:'15-30 cm',
+    habitat:'Open water around structures, wharves, FADs, buoys. Schooling species.',
+    distribution:'Eastern and southern Australia. Very common from QLD to SA.',
+    eating:{rating:4,label:'Excellent',notes:'Excellent eating fresh. Whole fried or grilled. Outstanding as live bait for kingfish. Best eaten same day.'},
+    legal:[{s:'NSW',min:'No min',bag:'No limit'},{s:'VIC',min:'No min',bag:'No limit'},{s:'QLD',min:'No min',bag:'No limit'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'}],
+    bait:['Bread','Sabiki rigs','Light line with small hooks','Small jigs'],
+    season:'Year-round. Most abundant in warmer months around structures.'
+  },
+  {key:'slimymackerel',common:'Slimy Mackerel',aka:'Pacific Mackerel, Blue Mackerel',scientific:'Scomber australasicus',emoji:'🐟',type:'saltwater',
+    img:'https://en.wikipedia.org/wiki/Special:FilePath/Scomber_australasicus.jpg',
+    desc:'A small, oily schooling mackerel used as live bait for marlin, tuna, and kingfish. Greenish-blue back with wavy dark markings. Also excellent eating when very fresh.',
+    id_tips:'Small, streamlined mackerel shape. Green-blue back with dark wavy or broken markings. Two separate dorsal fins, small finlets near the tail. Named "slimy" because it secretes thick mucus when handled.',
+    weight:'0.05-0.3 kg typical',length:'15-35 cm',
+    habitat:'Open coastal and offshore waters. Highly schooling, follows bait aggregations.',
+    distribution:'Eastern and southern Australia. Very common from QLD to WA.',
+    eating:{rating:3,label:'Good when fresh',notes:'Must be eaten same day as deteriorates fast. Excellent smoked. Most caught for live bait for larger pelagics.'},
+    legal:[{s:'NSW',min:'No min',bag:'No limit'},{s:'VIC',min:'No min',bag:'No limit'},{s:'QLD',min:'No min',bag:'No limit'},{s:'SA',min:'No min',bag:'No limit'},{s:'WA',min:'No min',bag:'No limit'}],
+    bait:['Sabiki rigs','Feathers','Tiny jigs','Bread around berley'],
+    season:'Year-round. Most abundant in warmer months around bait schools.'
   }
 
 ];
@@ -1113,14 +1412,219 @@ const DEMO = {
     {id:2,date:'2025-04-05',location:'Port Stephens',conditions:'Glassy, sunny',duration:'Half day',notes:'Monster Barra.'},
     {id:3,date:'2025-03-15',location:'Sydney Harbour',conditions:'Light SE, clear',duration:'Half day',notes:'Snapper PB day!'}
   ],
-  nextId:7
+  nextId:7,
+  speciesPhotos:{}
 };
 
 let data = JSON.parse(localStorage.getItem('fishingJournal')||'null') || DEMO;
+if(!data.speciesPhotos) data.speciesPhotos = {};
 let pendingPhotos = [];
+let currentSpeciesKey = null;
 let activeFilter = 'all';
 
-function save(){try{localStorage.setItem('fishingJournal',JSON.stringify(data));}catch(e){toast('Storage full',true);}}
+// ══════════════════════════════════════════════════════════════
+//  FILE SYSTEM STORAGE ENGINE
+// ══════════════════════════════════════════════════════════════
+const FS_SUPPORTED = ('showSaveFilePicker' in window);
+let fileHandle = null;       // current FileSystemFileHandle
+let saveMode = null;         // 'file' | 'browser' | null (not chosen yet)
+let saveQueued = false;
+
+// ── IndexedDB helpers (for persisting the file handle) ──
+function openIDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open('FishingJournalDB',1);
+    r.onupgradeneeded=e=>e.target.result.createObjectStore('store');
+    r.onsuccess=e=>res(e.target.result);
+    r.onerror=rej;
+  });
+}
+async function idbSet(key,val){
+  try{const db=await openIDB();return new Promise((res,rej)=>{const tx=db.transaction('store','readwrite');tx.objectStore('store').put(val,key);tx.oncomplete=res;tx.onerror=rej;});}catch(e){}
+}
+async function idbGet(key){
+  try{const db=await openIDB();return new Promise((res,rej)=>{const tx=db.transaction('store','readonly');const r=tx.objectStore('store').get(key);r.onsuccess=()=>res(r.result);r.onerror=rej;});}catch(e){return null;}
+}
+
+// ── Save bar UI ──
+function setSaveBar(dot,text,action){
+  const d=document.getElementById('saveBarDot');
+  const t=document.getElementById('saveBarText');
+  const a=document.getElementById('saveBarAction');
+  if(d){d.className='save-bar-dot '+dot;}
+  if(t) t.innerHTML=text;
+  if(a) a.textContent=action||'';
+}
+
+// ── Core save function ──
+function save(){
+  // Always write to localStorage as safety net
+  try{localStorage.setItem('fishingJournal',JSON.stringify(data));}catch(e){}
+  // If file mode, write to file (debounced)
+  if(saveMode==='file'&&fileHandle){
+    if(!saveQueued){
+      saveQueued=true;
+      setTimeout(async()=>{
+        saveQueued=false;
+        await writeToFile();
+      },400);
+    }
+  }
+}
+
+async function writeToFile(){
+  if(!fileHandle) return;
+  try{
+    const w=await fileHandle.createWritable();
+    await w.write(JSON.stringify(data,null,2));
+    await w.close();
+    setSaveBar('green','<strong>Auto-saved</strong> to '+fileHandle.name,'📁');
+    // brief flash
+    setTimeout(()=>{
+      if(saveMode==='file') setSaveBar('green','Saved to <strong>'+fileHandle.name+'</strong>','📁 Change file');
+    },1500);
+  }catch(e){
+    setSaveBar('red','<strong>File write failed</strong> — data safe in browser','⚠ Tap to fix');
+  }
+}
+
+async function readFromFile(){
+  if(!fileHandle) return null;
+  try{
+    const file=await fileHandle.getFile();
+    const text=await file.text();
+    const parsed=JSON.parse(text);
+    if(parsed&&parsed.catches) return parsed;
+  }catch(e){}
+  return null;
+}
+
+// ── Setup: user picks file storage ──
+async function setupFileSystem(){
+  closeModal('fileSetupModal');
+  if(!FS_SUPPORTED){setupBrowserOnly();return;}
+  try{
+    const handle=await window.showSaveFilePicker({
+      suggestedName:'fishing_journal.json',
+      types:[{description:'Fishing Journal',accept:{'application/json':['.json']}}]
+    });
+    fileHandle=handle;
+    await idbSet('fileHandle',handle);
+    saveMode='file';
+    await idbSet('saveMode','file');
+    // Write current data immediately
+    await writeToFile();
+    setSaveBar('green','Saved to <strong>'+handle.name+'</strong>','📁 Change file');
+    toast('Journal will now auto-save to '+handle.name+' 📁');
+  }catch(e){
+    // User cancelled
+    setupBrowserOnly();
+  }
+}
+
+function setupBrowserOnly(){
+  closeModal('fileSetupModal');
+  saveMode='browser';
+  idbSet('saveMode','browser');
+  save();
+  if(FS_SUPPORTED){
+    setSaveBar('amber','<strong>Browser storage only</strong> — data lost if cache cleared','Tap to use file');
+  } else {
+    setSaveBar('grey','<strong>Browser storage</strong> — export JSON regularly as backup','');
+  }
+  toast('Using browser storage. Export regularly as backup.');
+}
+
+// ── Handle save bar click ──
+async function handleSaveBarClick(){
+  if(saveMode==='file'&&fileHandle){
+    // Let them change the file
+    try{
+      const handle=await window.showSaveFilePicker({
+        suggestedName:'fishing_journal.json',
+        types:[{description:'Fishing Journal',accept:{'application/json':['.json']}}]
+      });
+      fileHandle=handle;
+      await idbSet('fileHandle',handle);
+      await writeToFile();
+      toast('Now saving to '+handle.name);
+    }catch(e){}
+  } else if(saveMode==='browser'&&FS_SUPPORTED){
+    openModal('fileSetupModal');
+  } else if(!saveMode){
+    openModal('fileSetupModal');
+  } else if(saveMode==='file'&&!fileHandle){
+    await reconnectFile();
+  }
+}
+
+// ── Reconnect to previously chosen file ──
+async function reconnectFile(){
+  const stored=await idbGet('fileHandle');
+  if(!stored) return false;
+  try{
+    const perm=await stored.queryPermission({mode:'readwrite'});
+    if(perm==='granted'){
+      fileHandle=stored;
+      setSaveBar('green','Saved to <strong>'+stored.name+'</strong>','📁 Change file');
+      return true;
+    }
+    // Need user gesture to request permission — show prompt
+    setSaveBar('amber','Tap to reconnect to <strong>'+stored.name+'</strong>','Tap here');
+    document.getElementById('saveBar').onclick=async()=>{
+      const perm2=await stored.requestPermission({mode:'readwrite'});
+      document.getElementById('saveBar').onclick=handleSaveBarClick;
+      if(perm2==='granted'){
+        fileHandle=stored;
+        // Read from file (may be more current)
+        const fileData=await readFromFile();
+        if(fileData&&fileData.catches){
+          data={...data,...fileData};
+          if(!data.speciesPhotos) data.speciesPhotos={};
+          renderDashboard();
+        }
+        await writeToFile();
+        setSaveBar('green','Saved to <strong>'+stored.name+'</strong>','📁 Change file');
+        toast('Reconnected to '+stored.name+' 📁');
+      } else {
+        setSaveBar('amber','<strong>Permission denied</strong> — using browser storage','Tap to retry');
+      }
+    };
+    return false;
+  }catch(e){return false;}
+}
+
+// ── App startup: check what storage mode was set ──
+async function initStorage(){
+  const storedMode=await idbGet('saveMode');
+  if(!storedMode){
+    // First time ever — show setup modal
+    setSaveBar('amber','<strong>Choose where to save your journal</strong>','Tap to set up');
+    openModal('fileSetupModal');
+    return;
+  }
+  saveMode=storedMode;
+  if(storedMode==='file'){
+    if(!FS_SUPPORTED){
+      // Browser no longer supports it (unlikely) — fall back
+      saveMode='browser';
+      setSaveBar('grey','<strong>Browser storage</strong> — export regularly','');
+      return;
+    }
+    // Try to reconnect
+    const ok=await reconnectFile();
+    if(!ok&&saveMode==='file'){
+      // reconnectFile sets its own UI, nothing else to do
+    }
+  } else {
+    // browser mode
+    if(FS_SUPPORTED){
+      setSaveBar('amber','<strong>Browser storage only</strong> — clear cache = data lost','Switch to file');
+    } else {
+      setSaveBar('grey','<strong>Browser storage</strong> — export JSON regularly','');
+    }
+  }
+}
 
 // ── HELPERS ──
 function formatDate(d){
@@ -1141,6 +1645,58 @@ function allSpeciesPBs(){
 function totalWeight(){return data.catches.reduce((s,c)=>s+c.weight,0);}
 function getFishEmoji(n){return lookupByName(n)?.emoji || '🐟';}
 function eatStars(r){return '★'.repeat(r)+'☆'.repeat(5-r);}
+
+// ── PHOTO HELPERS ──
+// Best photo for a catch item (own photo → species custom → commons → null)
+function catchPhoto(c){
+  if(c.photos&&c.photos.length) return c.photos[0];
+  const sp=lookupByName(c.fish);
+  if(!sp) return null;
+  if(data.speciesPhotos[sp.key]) return data.speciesPhotos[sp.key];
+  return sp.img||null;
+}
+// Best photo for a species in the guide (custom upload → catch photo → commons → null)
+// Returns {src, type:'custom'|'catch'|'commons'}
+function speciesPhoto(sp){
+  if(data.speciesPhotos[sp.key]) return {src:data.speciesPhotos[sp.key],type:'custom'};
+  const withPhoto=data.catches.find(c=>{
+    const m=lookupByName(c.fish);
+    return m&&m.key===sp.key&&c.photos&&c.photos.length;
+  });
+  if(withPhoto) return {src:withPhoto.photos[0],type:'catch'};
+  if(sp.img) return {src:sp.img,type:'commons'};
+  return null;
+}
+// HTML for a catch thumbnail (img tag or emoji)
+function catchThumbHtml(c,size){
+  const src=catchPhoto(c);
+  const emoji=getFishEmoji(c.fish);
+  if(!src) return emoji;
+  return '<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\''+emoji+'\'">';
+}
+// Upload a custom species photo
+function uploadSpeciesPhoto(key,input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    data.speciesPhotos[key]=e.target.result;
+    save();
+    // refresh the modal
+    closeModal('speciesDetailModal');
+    showSpeciesDetail(key);
+    toast('Photo saved for this species ✓');
+  };
+  r.readAsDataURL(file);
+}
+// Clear custom species photo (revert to commons/catch)
+function clearCurrentSpeciesPhoto(){ clearSpeciesPhoto(currentSpeciesKey); }
+function clearSpeciesPhoto(key){
+  delete data.speciesPhotos[key];
+  save();
+  closeModal('speciesDetailModal');
+  showSpeciesDetail(key);
+  toast('Reverted to original photo');
+}
 
 function toast(msg,err=false){
   const el=document.getElementById('toast');
@@ -1179,9 +1735,9 @@ function renderDashboard(){
   const el=document.getElementById('recentList');
   if(!recent.length){el.innerHTML='<div class="empty"><div class="empty-icon">🐟</div><div class="empty-title">No catches yet</div><div class="empty-sub">Log your first fish!</div></div>';return;}
   el.innerHTML=recent.map(c=>{
-    const pb=isPB(c);const hp=c.photos&&c.photos.length;
+    const pb=isPB(c);
     return `<div class="catch-item" onclick="showCatchDetail(${c.id})">
-      <div class="catch-thumb">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
+      <div class="catch-thumb">${catchThumbHtml(c)}</div>
       <div class="catch-info">
         <div class="catch-species">${c.fish}${pb?'<span class="pb-badge">PB</span>':''}</div>
         <div class="catch-meta">${c.location||'Unknown'} · ${formatDate(c.date)}</div>
@@ -1194,9 +1750,8 @@ function renderDashboard(){
   const pe=document.getElementById('dashPBs');
   if(!pbs.length){pe.innerHTML='';return;}
   pe.innerHTML=`<div class="pb-grid">${pbs.map(c=>{
-    const hp=c.photos&&c.photos.length;
     return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
-      <div class="pb-card-img">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
+      <div class="pb-card-img">${catchThumbHtml(c)}</div>
       <div class="pb-crown">PB</div>
       <div class="pb-card-body"><div class="pb-species">${c.fish}</div>
       <div><span class="pb-weight">${c.weight.toFixed(2)}</span> <span style="font-size:10px;color:var(--muted);">kg</span></div>
@@ -1272,9 +1827,8 @@ function renderPBs(){
   if(!pbs.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   grid.innerHTML=pbs.map(c=>{
-    const hp=c.photos&&c.photos.length;
     return `<div class="pb-card" onclick="showCatchDetail(${c.id})">
-      <div class="pb-card-img">${hp?`<img src="${c.photos[0]}" alt="">`:getFishEmoji(c.fish)}</div>
+      <div class="pb-card-img">${catchThumbHtml(c)}</div>
       <div class="pb-crown">PB</div>
       <div class="pb-card-body"><div class="pb-species">${c.fish}</div>
       <div><span class="pb-weight">${c.weight.toFixed(2)}</span> <span style="font-size:10px;color:var(--muted);">kg</span></div>
@@ -1287,10 +1841,19 @@ function renderPBs(){
 function showCatchDetail(id){
   const c=data.catches.find(x=>x.id===id);if(!c)return;
   const pb=isPB(c);
-  const hp=c.photos&&c.photos.length;
   const sp=lookupByName(c.fish);
-  const imgHtml=hp?`<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;">${c.photos.map(p=>`<img src="${p}" style="height:180px;border-radius:12px;flex-shrink:0;object-fit:cover;">`).join('')}</div>`
-    :`<div style="font-size:60px;text-align:center;padding:20px 0;background:var(--surface2);border-radius:12px;margin-bottom:16px;">${getFishEmoji(c.fish)}</div>`;
+  // Show catch photos if available, else fallback to species photo/emoji
+  let imgHtml;
+  if(c.photos&&c.photos.length){
+    imgHtml=`<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;">${c.photos.map(p=>`<img src="${p}" style="height:180px;border-radius:12px;flex-shrink:0;object-fit:cover;">`).join('')}</div>`;
+  } else {
+    const fallbackSrc = catchPhoto(c);
+    imgHtml = fallbackSrc && fallbackSrc !== (c.photos&&c.photos[0])
+      ? `<div style="margin-bottom:16px;border-radius:12px;overflow:hidden;height:160px;background:var(--surface2);">
+           <img src="${fallbackSrc}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=font-size:60px;text-align:center;padding:30px>${getFishEmoji(c.fish)}</div>'">
+         </div>`
+      : `<div style="font-size:60px;text-align:center;padding:20px 0;background:var(--surface2);border-radius:12px;margin-bottom:16px;">${getFishEmoji(c.fish)}</div>`;
+  }
   document.getElementById('catchDetailContent').innerHTML=`
     <div class="modal-drag"></div>
     ${imgHtml}
@@ -1383,15 +1946,16 @@ function renderSpeciesGuide(){
   empty.style.display='none';
   const typeTag={saltwater:'tag-salt',freshwater:'tag-fresh',estuary:'tag-estuary'};
   const typeLabel={saltwater:'Saltwater',freshwater:'Freshwater',estuary:'Estuary'};
-  grid.innerHTML=list.map(s=>`
-    <div class="species-card" onclick="showSpeciesDetail('${s.key}')">
-      <div class="species-card-img-wrap">
-        ${s.img
-          ? `<img src="${s.img}" alt="${s.common}" class="species-card-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-             <div class="species-card-emoji-fb">${s.emoji}</div>`
-          : `<div class="species-card-emoji-fb">${s.emoji}</div>`
-        }
-      </div>
+  grid.innerHTML=list.map(s=>{
+    const sPhoto=speciesPhoto(s);
+    const imgHtml=sPhoto
+      ? '<img src="'+sPhoto.src+'" alt="'+s.common+'" class="species-card-photo" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+        +(sPhoto.type==='custom'?'<div class="spp-custom-badge">MY PHOTO</div>':'')
+        +(sPhoto.type==='catch'?'<div class="spp-custom-badge" style="background:var(--teal);">MY CATCH</div>':'')
+        +'<div class="species-card-emoji-fb">'+s.emoji+'</div>'
+      : '<div class="species-card-emoji-fb">'+s.emoji+'</div>';
+    return `<div class="species-card" onclick="showSpeciesDetail('${s.key}')">
+      <div class="species-card-img-wrap">${imgHtml}</div>
       <div style="padding:8px 10px 10px;">
         <div class="species-card-name">${s.common}</div>
         <div class="species-card-sci">${s.scientific}</div>
@@ -1400,7 +1964,8 @@ function renderSpeciesGuide(){
           <span class="species-type-tag ${typeTag[s.type]}">${typeLabel[s.type]}</span>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function showSpeciesDetail(key){
@@ -1414,13 +1979,33 @@ function showSpeciesDetail(key){
   const myCatches=data.catches.filter(c=>c.fish.toLowerCase()===s.common.toLowerCase()||lookupByName(c.fish)?.key===s.key);
   const myPB=myCatches.length?myCatches.reduce((a,b)=>b.weight>a.weight?b:a):null;
 
+  currentSpeciesKey = s.key;
+  const sPhoto=speciesPhoto(s);
+  const customSet=!!(data.speciesPhotos[s.key]);
+  const photoSrc=sPhoto?sPhoto.src:null;
+  const photoType=sPhoto?sPhoto.type:null;
+  const photoSourceLabel={custom:'📷 Your photo',catch:'📷 Your catch photo',commons:'📷 Wikipedia Commons'}[photoType]||'';
+
   document.getElementById('speciesDetailContent').innerHTML=`
     <div class="modal-drag"></div>
     <div class="spp-hero">
-      ${s.img
-        ? `<img src="${s.img}" alt="${s.common}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="spp-emoji" style="display:none;">${s.emoji}</span>`
-        : `<span class="spp-emoji">${s.emoji}</span>`
-      }
+      <div class="spp-photo-wrap">
+        ${photoSrc
+          ? '<img id="sppImg" src="'+photoSrc+'" alt="'+s.common+'" style="width:100%;height:180px;object-fit:cover;border-radius:10px;" onerror="this.style.display=\'none\';document.getElementById(\'sppEmoFb\').style.display=\'block\'">'
+            +'<div id="sppEmoFb" class="spp-emoji" style="display:none;">'+s.emoji+'</div>'
+          : '<div class="spp-emoji">'+s.emoji+'</div>'
+        }
+        <div class="spp-photo-controls">
+          <span class="spp-photo-src-lbl">${photoSourceLabel}</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+              📷 ${customSet?'Change photo':'Upload photo'}
+              <input type="file" accept="image/*" style="display:none;" onchange="uploadSpeciesPhoto('${s.key}',this)">
+            </label>
+            ${customSet ? '<button class="btn btn-ghost btn-sm" onclick="clearCurrentSpeciesPhoto()">↩ Use Commons photo</button>' : ''}
+          </div>
+        </div>
+      </div>
       <div class="spp-name">${s.common}</div>
       ${s.aka?`<div class="spp-aka">Also: ${s.aka}</div>`:''}
       <div class="spp-sci">${s.scientific}</div>
@@ -1510,7 +2095,8 @@ function handleAvatar(files){
 function exportData(){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported ⬇');
+  a.download='fishing_journal_'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast(fileHandle?'Backup exported (file storage active) ⬇':'Exported ⬇');
 }
 
 function importData(files){
@@ -1523,14 +2109,18 @@ function importData(files){
 }
 
 function confirmClear(){
-  if(!confirm('Delete ALL data? This cannot be undone.'))return;
-  data={catches:[],sessions:[],nextId:1,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''}};
+  const msg = fileHandle
+    ? 'Delete ALL data from both the app AND your saved file? This cannot be undone.'
+    : 'Delete ALL data? This cannot be undone.';
+  if(!confirm(msg))return;
+  data={catches:[],sessions:[],nextId:1,profile:{name:'',waters:'',sinceYear:'',favSpecies:'',avatar:''},speciesPhotos:{}};
   save();renderDashboard();toast('All data cleared');
 }
 
 // ── INIT ──
 initLogForm();
 renderDashboard();
+initStorage();  // async — sets up file system in background
 </script>
 </body>
 </html>
